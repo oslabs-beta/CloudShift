@@ -4,7 +4,10 @@
   "description": "A cloud-to-cloud migration tool.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/server.js",
+    "build": "NODE_ENV=production webpack",
+    "dev": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve"
   },
   "repository": {
     "type": "git",
@@ -28,7 +31,8 @@
   "dependencies": {
     "express": "^4.18.2",
     "rclone.js": "^0.6.6",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
