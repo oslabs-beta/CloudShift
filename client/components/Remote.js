@@ -38,7 +38,7 @@ const Remote = (props) => {
   }, [remote.accessId, remote.secretKey, remote.name, remote.accountId]);
 
   let correctInputClass = "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-  let wrongInputClass = "block py-2.5 px-0 w-full text-sm text-red-600 bg-transparent border-2 border-b-2 border-red-600  rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer"
+  let wrongInputClass = "block py-2.5 px-0 w-full text-sm text-red-600 bg-transparent border-0 border-b-2 border-red-600 appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer"
   
   
   return (
