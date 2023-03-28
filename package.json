@@ -1,0 +1,40 @@
+{
+  "name": "cloudshift",
+  "version": "1.0.0",
+  "description": "A cloud-to-cloud migration tool.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oslabs-beta/CloudShift.git"
+  },
+  "keywords": [
+    "cloud",
+    "migration",
+    "aws",
+    "cloudshift",
+    "cloudflare",
+    "r2",
+    "s3"
+  ],
+  "author": "Andrew Altman, Ansel Santos, Jamey Huffnagle, Philip Luc, Zachary de Jesus",
+  "license": "(MIT)",
+  "bugs": {
+    "url": "https://github.com/oslabs-beta/CloudShift/issues"
+  },
+  "homepage": "https://github.com/oslabs-beta/CloudShift#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "rclone.js": "^0.6.6",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "nodemon": "^2.0.22"
+  }
+}
