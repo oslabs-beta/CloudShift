@@ -1,54 +1,31 @@
-import React, { useReducer } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Remote from './components/Remote';
 import Button from './components/Button';
 import Overlay from './components/Overlay';
 //import styles if necessary
+//may need to import functions from slices here
 
-const initalState = {
-  isMigrating: false,
-  origin: { name: '', accessId: '', secretKey: '' },
-  destination: {
-    name: '',
-    secretKey: '',
-    accessId: '',
-    accountId: '',
-  },
-
-  //     AWS: Access ID, Secret Key, and "Service" aka S3
-
-  // 12:27
-  // CF: Access Id, Secret Key, and Account ID
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case 'add':
-      return [
-        ...state,
-        {
-          id: state.length,
-          name: action.name,
-        },
-      ];
-    default:
-      return state;
-  }
-}
 
 const App = (props) => {
-  const [state, dispatch] = useReducer(reducer, { age: 42 });
-  //Some Things to track in State...
-  //isMigrating / loading status
-  //From/To component input fields
 
-  //Components to return
-  //two remote components
-  //button
-  //overlay?
-  //graphic/animation for loading status
+  //if state.origin access credentials are null then destination componenet should be greyed out ?
+  //should destination componenet only be rendered when origin access creds are in state ?
+  const originInput = useSelector((state) => state.GUI.origin)
+  const {name,accessId,secretKey,accountId,service} = originInput;
+  console.log(originInput)
+  
   return (
     <>
-      <Remote></Remote>
+      <Remote provider={'Origin'}></Remote>
+      <div>
+      {
+        (!name && !accessId) && (!secretKey && accountId) && !service ?
+        <Remote provider={'Destination'}></Remote> :
+        <h1>Hi</h1>
+      }
+      </div>
+      
       <Button></Button>
       <Overlay></Overlay>
     </>

@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { migrationStatusChange } from '../slice.js';
 
 const Button = (props) => {
   //Some Things to track in State...
@@ -10,7 +12,13 @@ const Button = (props) => {
   //button
   //overlay?
   //graphic/animation for loading status
-  return <h1>Button</h1>;
+
+  const dispatch = useDispatch();
+  const changeMigrationStatus = () => {
+    dispatch(migrationStatusChange(true));
+  };
+
+  return <button onClick={() => changeMigrationStatus()}>Start</button>;
 };
 
 export default Button;
