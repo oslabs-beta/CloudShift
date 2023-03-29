@@ -7,8 +7,6 @@ import Overlay from './components/Overlay';
 //may need to import functions from slices here
 
 const App = (props) => {
-  //if state.origin access credentials are null then destination componenet should be greyed out ?
-  //should destination componenet only be rendered when origin access creds are in state ?
   const { render } = useSelector((state) => state.GUI.destination);
   return (
     <>

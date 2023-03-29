@@ -1,18 +1,41 @@
 import React from 'react';
+import {
+  updateRemoteCredentials,
+  checkInputCredentials,
+  formatState,
+} from '../slice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Remote = (props) => {
+  const dispatch = useDispatch();
+  const { origin, destination } = useSelector((state) => state.GUI);
+
   return (
     <>
       <h1>{props.provider}</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(e.target.accessId.value, e.target.secretKey.value);
-          // CF: ^[a-z0-9]{32}$ -- Access ID
-          // CF: ^[a-z0-9]{64}$ -- Secret Pass
-          // AKID: (?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])
-          // SK: (?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])
-        }} 
+          const accessId = e.target.accessId.value;
+          const secretKey = e.target.secretKey.value;
+          const accountId = e.target.accountId
+            ? e.target.accountId.value
+            : null;
+          const results = checkInputCredentials(accessId, secretKey);
+          if (!results) {
+            console.log('Credentials appear to be incorrect');
+          } else {
+            const newState = formatState(
+              results,
+              accessId,
+              secretKey,
+              accountId,
+              origin,
+              destination
+            );
+            dispatch(updateRemoteCredentials(newState));
+          }
+        }}
       >
         <div>
           {' '}
@@ -24,6 +47,14 @@ const Remote = (props) => {
           <label htmlFor="secretKey">Secret Key:</label>
           <input name="secretKey"></input>
         </div>
+        {destination.name === 'CloudFlare R2' && (
+          <div>
+            {' '}
+            <label htmlFor="accountId">Account Id:</label>
+            <input name="accountId"></input>
+          </div>
+        )}
+
         <button type="submit">Submit</button>
       </form>
     </>

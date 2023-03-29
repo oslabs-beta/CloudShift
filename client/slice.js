@@ -14,8 +14,8 @@ const slice = createSlice({
     destination: {
       render: false,
       name: '',
-      secretKey: 'asdf',
-      accessId: 'asdf',
+      secretKey: '',
+      accessId: '',
       accountId: '',
       service: '',
     },
@@ -24,19 +24,92 @@ const slice = createSlice({
     migrationStatusChange: (state, action) => {
       state.isMigrating = action.payload;
     },
-    captureOriginCredentials: (state, action) => {
-      state.origin.accessId = action.accessId;
-      state.origin.secretKey = action.secretKey;
+    updateRemoteCredentials: (state, action) => {
+      state.origin = action.payload.origin;
+      state.destination = action.payload.destination;
     },
   },
 });
 
 export default slice.reducer;
 
-export const { migrationStatusChange, captureOriginCredentials } =
-  slice.actions;
+export const { migrationStatusChange, updateRemoteCredentials } = slice.actions;
 
-//     AWS: Access ID, Secret Key, and "Service" aka S3
+export const checkInputCredentials = (accessId, secretKey) => {
+  const isAmazonAccessId = /(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])/.test(
+    accessId
+  );
+  const isAmazonSecretKey =
+    /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/.test(secretKey);
 
-// 12:27
-// CF: Access Id, Secret Key, and Account ID
+  const isCloudflareAccessId = /^[a-z0-9]{32}$/.test(accessId);
+  const isCloudflareSecretKey = /^[a-z0-9]{64}$/.test(secretKey);
+  if (isAmazonAccessId && isAmazonSecretKey) {
+    return 'Amazon';
+  } else if (isCloudflareAccessId && isCloudflareSecretKey) {
+    return 'CloudFlare';
+  } else {
+    return false;
+  }
+};
+
+//modify data for state with a func?...
+
+export const formatState = (
+  input,
+  accessId,
+  secretKey,
+  accountId,
+  currentOrigin,
+  currentDestination
+) => {
+  if (currentOrigin.name) {
+    const updatedDestination = Object.assign({}, currentDestination);
+    updatedDestination.accessId = accessId;
+    updatedDestination.secretKey = secretKey;
+    updatedDestination.accountId = accountId;
+    return { origin: {...currentOrigin}, destination: {...updatedDestination} };
+  }
+  if (input === 'Amazon') {
+    return {
+      origin: {
+        name: input,
+        accessId: accessId,
+        secretKey: secretKey,
+        accountId: null,
+        service: 'S3',
+      },
+      destination: {
+        render: true,
+        name: 'CloudFlare R2',
+        secretKey: null,
+        accessId: null,
+        accountId: null,
+        service: null,
+      },
+    };
+  } else {
+    return {
+      origin: {
+        name: 'CloudFlare R2',
+        accessId: accessId,
+        secretKey: secretKey,
+        accountId: null,
+        service: null,
+      },
+      destination: {
+        render: true,
+        name: input,
+        secretKey: null,
+        accessId: null,
+        accountId: null,
+        service: 'S3',
+      },
+    };
+  }
+};
+
+//update destination.render
+//populate destination name with cf and render accountId field
+//amazon populate service field in state and render on page
+//populate name field and render on page
