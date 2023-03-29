@@ -12,9 +12,10 @@ const slice = createSlice({
       service: '',
     },
     destination: {
+      render: false,
       name: '',
-      secretKey: '',
-      accessId: '',
+      secretKey: 'asdf',
+      accessId: 'asdf',
       accountId: '',
       service: '',
     },
@@ -32,7 +33,8 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export const { migrationStatusChange, captureOriginCredentials } = slice.actions;
+export const { migrationStatusChange, captureOriginCredentials } =
+  slice.actions;
 
 //     AWS: Access ID, Secret Key, and "Service" aka S3
 
