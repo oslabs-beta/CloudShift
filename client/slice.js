@@ -81,21 +81,21 @@ export const formatState = (
       },
       destination: {
         render: true,
-        name: 'CloudFlare R2',
+        name: 'CloudFlare',
         secretKey: null,
         accessId: null,
         accountId: null,
-        service: null,
+        service: 'R2',
       },
     };
   } else {
     return {
       origin: {
-        name: 'CloudFlare R2',
+        name: 'CloudFlare',
         accessId: accessId,
         secretKey: secretKey,
         accountId: null,
-        service: null,
+        service: 'R2',
       },
       destination: {
         render: true,

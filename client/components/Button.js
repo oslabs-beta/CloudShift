@@ -18,7 +18,7 @@ const Button = (props) => {
     dispatch(migrationStatusChange(true));
   };
 
-  return <button onClick={() => changeMigrationStatus()}>Start</button>;
+  return <button onClick={() => changeMigrationStatus()}>Start Migration</button>;
 };
 
 export default Button;

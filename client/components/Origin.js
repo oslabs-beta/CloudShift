@@ -6,13 +6,18 @@ import {
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Remote = (props) => {
+const Origin = (props) => {
   const dispatch = useDispatch();
   const { origin, destination } = useSelector((state) => state.GUI);
 
   return (
     <>
-      <h1>{props.provider}</h1>
+      <h1>Origin</h1>
+      {props.name && (
+        <h2>
+          {props.name} {props.service}
+        </h2>
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -40,14 +45,22 @@ const Remote = (props) => {
         <div>
           {' '}
           <label htmlFor="accessId">Access Id:</label>
-          <input name="accessId"></input>
+          {origin.accessId && props.provider === 'Origin' ? (
+            <p>'check'</p>
+          ) : (
+            <input name="accessId"></input>
+          )}
         </div>
         <div>
           {' '}
           <label htmlFor="secretKey">Secret Key:</label>
-          <input name="secretKey"></input>
+          {origin.secretKey && props.provider === 'Origin' ? (
+            <p>'check'</p>
+          ) : (
+            <input name="secretKey"></input>
+          )}
         </div>
-        {destination.name === 'CloudFlare R2' && (
+        {props.name === 'CloudFlare' && (
           <div>
             {' '}
             <label htmlFor="accountId">Account Id:</label>
@@ -61,4 +74,4 @@ const Remote = (props) => {
   );
 };
 
-export default Remote;
+export default Origin;
