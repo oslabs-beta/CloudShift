@@ -45,30 +45,22 @@ const Origin = (props) => {
         <div>
           {' '}
           <label htmlFor="accessId">Access Id:</label>
-          {origin.accessId && props.provider === 'Origin' ? (
-            <p>'check'</p>
-          ) : (
-            <input name="accessId"></input>
-          )}
+          {origin.accessId ? <p>'check'</p> : <input name="accessId"></input>}
         </div>
         <div>
           {' '}
           <label htmlFor="secretKey">Secret Key:</label>
-          {origin.secretKey && props.provider === 'Origin' ? (
-            <p>'check'</p>
-          ) : (
-            <input name="secretKey"></input>
-          )}
+          {origin.secretKey ? <p>'check'</p> : <input name="secretKey"></input>}
         </div>
         {props.name === 'CloudFlare' && (
           <div>
             {' '}
             <label htmlFor="accountId">Account Id:</label>
-            <input name="accountId"></input>
+           {origin.accountId ? <p>'check'</p> : <input name="accountId"></input>}
           </div>
         )}
 
-        <button type="submit">Submit</button>
+       {!origin.accessId && !origin.secretKey && <button type="submit">Submit</button>}
       </form>
     </>
   );

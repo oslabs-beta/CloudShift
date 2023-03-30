@@ -45,7 +45,7 @@ const Destination = (props) => {
         <div>
           {' '}
           <label htmlFor="accessId">Access Id:</label>
-          {origin.accessId && props.provider === 'Origin' ? (
+          {destination.accessId ? (
             <p>'check'</p>
           ) : (
             <input name="accessId"></input>
@@ -54,7 +54,7 @@ const Destination = (props) => {
         <div>
           {' '}
           <label htmlFor="secretKey">Secret Key:</label>
-          {origin.secretKey && props.provider === 'Origin' ? (
+          {destination.secretKey ? (
             <p>'check'</p>
           ) : (
             <input name="secretKey"></input>
@@ -64,11 +64,15 @@ const Destination = (props) => {
           <div>
             {' '}
             <label htmlFor="accountId">Account Id:</label>
-            <input name="accountId"></input>
+            {destination.accountId ? (
+              <p>'check'</p>
+            ) : (
+              <input name="accountId"></input>
+            )}
           </div>
         )}
 
-        <button type="submit">Submit</button>
+        {!destination.accessId && !destination.secretKey && <button type="submit">Submit</button>}
       </form>
     </>
   );

@@ -68,7 +68,10 @@ export const formatState = (
     updatedDestination.accessId = accessId;
     updatedDestination.secretKey = secretKey;
     updatedDestination.accountId = accountId;
-    return { origin: {...currentOrigin}, destination: {...updatedDestination} };
+    return {
+      origin: { ...currentOrigin },
+      destination: { ...updatedDestination },
+    };
   }
   if (input === 'Amazon') {
     return {
@@ -113,3 +116,4 @@ export const formatState = (
 //populate destination name with cf and render accountId field
 //amazon populate service field in state and render on page
 //populate name field and render on page
+
