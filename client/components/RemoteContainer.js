@@ -10,6 +10,7 @@ export const RemoteContainer = (props) => {
     <>
       {' '}
       <Origin
+        remoteType={'origin'}
         originAccessIdHandler={originAccessIdHandler}
         secretKeyHandler={originsecretKeyHandler}
         accountIdHandler={accountIdHandler}
@@ -19,6 +20,7 @@ export const RemoteContainer = (props) => {
       <div>
         {origin.accessId && origin.secretKey && (
           <Destination
+            remoteType={'destination'}
             accessIdHandler={destinationAccessIdHandler}
             secretKeyHandler={destinationSecretKeyHandler}
             accountIdHandler={accountIdHandler}
@@ -37,24 +39,23 @@ const originAccessIdHandler = (e, origin, destination) => {
     accessId
   );
   const isCloudflareAccessId = /^[a-z0-9]{32}$/.test(accessId);
-  //   const provider = checkInputCredentials(e.target.value);
   if (isAmazonAccessId || isCloudflareAccessId) {
     const provider = isAmazonAccessId ? 'Amazon' : 'CloudFlare';
     const providerService = isAmazonAccessId ? 'S3' : 'R2';
-    const destinationProvider = provider === 'Amazon' ? 'CloudFlare' :'Amazon';
-    const destinationService = provider === 'Amazon' ? 'R2' :'S3';
+    const destinationProvider = provider === 'Amazon' ? 'CloudFlare' : 'Amazon';
+    const destinationService = provider === 'Amazon' ? 'R2' : 'S3';
     return {
       origin: {
         ...origin,
         name: provider,
         accessId: accessId,
-        service: providerService
+        service: providerService,
       },
       destination: {
         ...destination,
         name: destinationProvider,
-        service: destinationService
-      }
+        service: destinationService,
+      },
     };
   } else {
     //this should probably just return a red check mark
@@ -88,19 +89,18 @@ const originsecretKeyHandler = (e, origin) => {
   }
 };
 
-const destinationAccessIdHandler = (e, destination) => {
+const destinationAccessIdHandler = (e, origin, destination) => {
   const accessId = e.target.value;
-  const isAmazonAccessId = /(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])/.test(
-    accessId
-  );
-  const isCloudflareAccessId = /^[a-z0-9]{32}$/.test(accessId);
-  //   const provider = checkInputCredentials(e.target.value);
-  if (isAmazonAccessId || isCloudflareAccessId) {
-    // const provider = isAmazonAccessId ? 'Amazon' : 'CloudFlare';
+  const isValidAccessId =
+    origin.name === 'Amazon'
+      ? /^[a-z0-9]{32}$/.test(accessId)
+      : /(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])/.test(accessId);
+  if (isValidAccessId) {
+    const provider = origin.name === 'CloudFlare' ? 'Amazon' : 'CloudFlare';
     return {
       destination: {
         ...destination,
-        // name: provider,
+        name: provider,
         accessId: accessId,
       },
     };
@@ -111,13 +111,16 @@ const destinationAccessIdHandler = (e, destination) => {
   }
 };
 
-const destinationSecretKeyHandler = (e, destination) => {
+const destinationSecretKeyHandler = (e, origin, destination) => {
   const secretKey = e.target.value;
-  const isAmazonSecretKey =
-    /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/.test(secretKey);
-  const isCloudflareSecretKey = /^[a-z0-9]{64}$/.test(secretKey);
-  if (isAmazonSecretKey || isCloudflareSecretKey) {
-    const provider = isAmazonSecretKey ? 'Amazon' : 'CloudFlare';
+  const isValidAccessId =
+    origin.name === 'Amazon'
+      ? /^[a-z0-9]{64}$/.test(secretKey)
+      : /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/.test(
+          secretKey
+        );
+  if (isValidAccessId) {
+    const provider = origin.name === 'CloudFlare' ? 'Amazon' : 'CloudFlare';
     return {
       destination: {
         ...destination,
@@ -136,87 +139,17 @@ const destinationSecretKeyHandler = (e, destination) => {
   }
 };
 
-const accountIdHandler = (e) => {
-
-}
-
-//these were formatter functions...
-
-const updateOriginState = () => {};
-
-const updatedDestinationState = () => {};
-
-//original input credential checks...
-
-const checkInputCredentials = (string) => {
-  const isAmazonAccessId = /(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])/.test(string);
-  const isAmazonSecretKey =
-    /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/.test(string);
-
-  const isCloudflareAccessId = /^[a-z0-9]{32}$/.test(string);
-  const isCloudflareSecretKey = /^[a-z0-9]{64}$/.test(string);
-  if (isAmazonAccessId || isAmazonSecretKey) {
-    return 'Amazon';
-  } else if (isCloudflareAccessId || isCloudflareSecretKey) {
-    return 'CloudFlare';
+const accountIdHandler = (e, origin, destination, parentComponent) => {
+  console.log(e.target, parentComponent);
+  if (parentComponent === 'origin') {
+    return {
+      origin: { ...origin, accountId: e.target.value },
+      destination: { ...destination },
+    };
   } else {
-    return false;
+    return {
+      destination: { ...destination, accountId: e.target.value },
+      origin: { ...origin },
+    };
   }
 };
-
-// const formatState = (
-//   provider,
-//   accessId,
-//   secretKey,
-//   accountId,
-//   currentOrigin,
-//   currentDestination
-// ) => {
-//   if (currentOrigin.name) {
-//     const updatedDestination = Object.assign({}, currentDestination);
-//     updatedDestination.accessId = accessId;
-//     updatedDestination.secretKey = secretKey;
-//     updatedDestination.accountId = accountId;
-//     return {
-//       origin: { ...currentOrigin },
-//       destination: { ...updatedDestination },
-//     };
-//   }
-//   if (provider === 'Amazon') {
-//     return {
-//       origin: {
-//         name: provider,
-//         accessId: accessId,
-//         secretKey: secretKey,
-//         accountId: null,
-//         service: 'S3',
-//       },
-//       destination: {
-//         render: true,
-//         name: 'CloudFlare',
-//         secretKey: null,
-//         accessId: null,
-//         accountId: null,
-//         service: 'R2',
-//       },
-//     };
-//   } else {
-//     return {
-//       origin: {
-//         name: 'CloudFlare',
-//         accessId: accessId,
-//         secretKey: secretKey,
-//         accountId: null,
-//         service: 'R2',
-//       },
-//       destination: {
-//         render: true,
-//         name: provider,
-//         secretKey: null,
-//         accessId: null,
-//         accountId: null,
-//         service: 'S3',
-//       },
-//     };
-//   }
-// };

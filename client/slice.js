@@ -43,8 +43,10 @@ const slice = createSlice({
       state.destination = action.payload.destination;
     },
     updateAccountId: (state, action) => {
-      state.origin = state.action.payload
-    }
+      const {origin, destination} = action.payload
+      state.origin = origin;
+      state.destination = destination;
+    },
   },
 });
 
@@ -57,4 +59,5 @@ export const {
   updateOriginSecretKey,
   updateDestinationSecretKey,
   updateDestinationAccessId,
+  updateAccountId,
 } = slice.actions;

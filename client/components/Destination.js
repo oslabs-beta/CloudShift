@@ -2,13 +2,13 @@ import React from 'react';
 import {
   updateDestinationAccessId,
   updateDestinationSecretKey,
-  accountIdHandler
+  updateAccountId,
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Destination = (props) => {
   const dispatch = useDispatch();
-  const { destination } = useSelector((state) => state.GUI);
+  const { origin, destination } = useSelector((state) => state.GUI);
 
   return (
     <>
@@ -28,7 +28,7 @@ const Destination = (props) => {
           <input
             name="accessId"
             onChange={(e) => {
-              const newState = props.accessIdHandler(e, destination);
+              const newState = props.accessIdHandler(e, origin, destination);
               dispatch(updateDestinationAccessId(newState));
             }}
           ></input>
@@ -43,7 +43,7 @@ const Destination = (props) => {
           <input
             name="secretKey"
             onChange={(e) => {
-              const newState = props.secretKeyHandler(e, destination);
+              const newState = props.secretKeyHandler(e, origin, destination);
               dispatch(updateDestinationSecretKey(newState));
             }}
           ></input>
@@ -53,16 +53,20 @@ const Destination = (props) => {
         <div>
           {' '}
           <label htmlFor="accountId">Account Id:</label>
-          {destination.accountId ? (
-            <div>{'\u2705'}</div>
-          ) : (
-            <input name="accountId"></input>
-          )}
+          <input
+            name="accountId"
+            onChange={(e) => {
+              const newState = props.accountIdHandler(
+                e,
+                origin,
+                destination,
+                props.remoteType
+              );
+              dispatch(updateAccountId(newState));
+            }}
+          ></input>
+          {destination.accountId.length > 1 && <div>{'\u2705'}</div>}
         </div>
-      )}
-
-      {!destination.accessId && !destination.secretKey && (
-        <button type="submit">Submit</button>
       )}
     </>
   );

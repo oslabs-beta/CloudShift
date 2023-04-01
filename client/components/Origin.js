@@ -2,6 +2,7 @@ import React from 'react';
 import {
   updateOriginSecretKey,
   updateOriginAccessId,
+  updateAccountId,
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,7 +11,7 @@ const Origin = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
 
   return (
-    <form>
+    <>
       <h1>Origin</h1>
       {props.name && (
         <h2>
@@ -27,7 +28,11 @@ const Origin = (props) => {
             name="accessId"
             id="originAccessId"
             onChange={(e) => {
-              const newState = props.originAccessIdHandler(e, origin, destination);
+              const newState = props.originAccessIdHandler(
+                e,
+                origin,
+                destination
+              );
               dispatch(updateOriginAccessId(newState));
             }}
           ></input>
@@ -53,21 +58,22 @@ const Origin = (props) => {
         <div>
           {' '}
           <label htmlFor="accountId">Account Id:</label>
-          {origin.accountId ? (
-            <div>{'\u2705'}</div>
-          ) : (
-            <input
-              name="accountId"
-              id="originAccountId"
-              onChange={(e) => {
-                const newState = props.accountIdHandler(e, origin, destination);
-                dispatch(updateAccountId(newState));
-              }}
-            ></input>
-          )}
+          <input
+            name="accountId"
+            onChange={(e) => {
+              const newState = props.accountIdHandler(
+                e,
+                origin,
+                destination,
+                props.remoteType
+              );
+              dispatch(updateAccountId(newState));
+            }}
+          ></input>
+          {origin.accountId.length > 1 && <div>{'\u2705'}</div>}
         </div>
       )}
-    </section>
+    </>
   );
 };
 
