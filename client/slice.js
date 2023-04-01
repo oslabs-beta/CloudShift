@@ -44,6 +44,8 @@ const slice = createSlice({
     },
     updateAccountId: (state, action) => {
       state.origin = state.action.payload
+      state.garbage = gargee.payload
+      //trying to fix mergie issue
     }
   },
 });
