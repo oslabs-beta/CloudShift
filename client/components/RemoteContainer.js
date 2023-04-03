@@ -89,6 +89,9 @@ const originsecretKeyHandler = (e, origin) => {
   }
 };
 
+//async call using Amazon SDK to retrieve buckets and generate drop down menu
+
+
 const destinationAccessIdHandler = (e, origin, destination) => {
   const accessId = e.target.value;
   const isValidAccessId =

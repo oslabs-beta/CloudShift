@@ -10,17 +10,19 @@ const slice = createSlice({
       accessId: '',
       secretKey: '',
       accountId: '',
+      selectedBucket: '',
       service: '',
-      buckets: []
+      bucketOptions: ['one', 'two'],
     },
     destination: {
       name: '',
       secretKey: '',
       accessId: '',
       accountId: '',
+      selectedBucket: '',
       service: '',
-      buckets: []
-    }
+      bucketOptions: ['one', 'two'],
+    },
   },
   reducers: {
     migrationStatusChange: (state, action) => {
@@ -49,7 +51,10 @@ const slice = createSlice({
       const { origin, destination } = action.payload;
       state.origin = origin;
       state.destination = destination;
-    }
+    },
+    updateSelectedBucket: (state, action) => {
+      state[action.payload.remote].selectedBucket = action.payload.bucket;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserBuckets.fulfilled),
@@ -59,7 +64,7 @@ const slice = createSlice({
         else if (originOrDestination === 'destination')
           state.destination.buckets = buckets;
       };
-  }
+  },
 });
 
 export default slice.reducer;
@@ -71,5 +76,6 @@ export const {
   updateOriginSecretKey,
   updateDestinationSecretKey,
   updateDestinationAccessId,
-  updateAccountId
+  updateAccountId,
+  updateSelectedBucket,
 } = slice.actions;

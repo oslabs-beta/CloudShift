@@ -5,10 +5,27 @@ import {
   updateAccountId,
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
+import BucketSelect from './BucketSelect';
 
 const Destination = (props) => {
   const dispatch = useDispatch();
   const { origin, destination } = useSelector((state) => state.GUI);
+
+  let bucketSelect;
+
+  const requireAccountId = props.name === 'CloudFlare' ? true : false;
+
+  if (!requireAccountId) {
+    bucketSelect = destination.accessId && destination.secretKey && (
+      <BucketSelect remote={'destination'}></BucketSelect>
+    );
+  } else {
+    bucketSelect = destination.accessId &&
+      destination.secretKey &&
+      destination.accountId && (
+        <BucketSelect remote={'destination'}></BucketSelect>
+      );
+  }
 
   return (
     <>
@@ -68,6 +85,7 @@ const Destination = (props) => {
           {destination.accountId.length > 1 && <div>{'\u2705'}</div>}
         </div>
       )}
+      {bucketSelect}
     </>
   );
 };
