@@ -49,6 +49,9 @@ const slice = createSlice({
       const { origin, destination } = action.payload;
       state.origin = origin;
       state.destination = destination;
+    },
+    updateOriginBuckets: (state, action) => {
+      state.origin.buckets = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -71,5 +74,6 @@ export const {
   updateOriginSecretKey,
   updateDestinationSecretKey,
   updateDestinationAccessId,
-  updateAccountId
+  updateAccountId,
+  updateOriginBuckets
 } = slice.actions;

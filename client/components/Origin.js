@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import {
   updateOriginSecretKey,
   updateOriginAccessId,
-  updateAccountId
+  updateAccountId,
+  updateOriginBuckets
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
@@ -11,10 +12,25 @@ const Origin = (props) => {
   const dispatch = useDispatch();
   const { origin, destination } = useSelector((state) => state.GUI);
 
+  //REFACTOR TO RTK QUERY.
+  //THIS GETS THE BUCKETS.
   useEffect(() => {
     if (origin.accessId && origin.secretKey) {
       if (origin.name === 'Cloudflare' && !origin.accountId) return;
-      dispatch(getUserBuckets('origin'));
+      (async () => {
+        const res = await fetch('/listBuckets', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            accessId: origin.accessId,
+            secretKey: origin.secretKey
+          })
+        });
+        const data = await res.json();
+        dispatch(updateOriginBuckets(data));
+      })();
     }
   }, [origin.accessId, origin.secretKey, origin.name, origin.accountId]);
 
