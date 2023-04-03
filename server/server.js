@@ -13,10 +13,9 @@ An alternative to trying to access the bucket locations is giving the use the av
 https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-account/classes/listregionscommand.html
 */
 
-AWS.config.update({
-  //PUT ACCESS CREDENTIALS WITH CORRECT FORMAT HERE!
-});
-const s3 = new AWS.S3();
+// AWS.config.update({
+// });
+// const s3 = new AWS.S3();
 
 const getBucketLoc = async () => {
   try {
@@ -41,4 +40,9 @@ const getBucketLists = async () => {
       }
     })
     .promise();
+  //data.Buckets is an array of objects.
+  //for each object, you want the .Name property.
+  // data.Buckets.forEach((bucket) => console.log(bucket.Name));
 };
+
+module.exports = { getBucketLoc, getBucketLists };

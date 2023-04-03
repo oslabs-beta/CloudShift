@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   updateOriginSecretKey,
   updateOriginAccessId,
-  updateAccountId,
+  updateAccountId
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { getUserBuckets } from '../services/getBuckets';
 
 const Origin = (props) => {
   const dispatch = useDispatch();
   const { origin, destination } = useSelector((state) => state.GUI);
+
+  useEffect(() => {
+    if (origin.accessId && origin.secretKey) {
+      if (origin.name === 'Cloudflare' && !origin.accountId) return;
+      dispatch(getUserBuckets('origin'));
+    }
+  }, [origin.accessId, origin.secretKey, origin.name, origin.accountId]);
 
   return (
     <>

@@ -11,9 +11,9 @@ module.exports = {
   target: 'web',
   devServer: {
     port: '8080',
-    proxy: {
-      '/': 'http://localhost:3000',
-    },
+    // proxy: {
+    //   '/': 'http://localhost:3000',
+    // },
     static: {
       directory: path.join(__dirname, './client/public'),
     },
@@ -31,6 +31,18 @@ module.exports = {
         exclude: /node_modules/,
         use: 'babel-loader',
       },
+      {
+        test: /\.(gif|png|jpe?g)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'assets/images/',
+            },
+          },
+        ],
+      },     
       {
         test: /\.scss?/,
         exclude: /node_modules/,
