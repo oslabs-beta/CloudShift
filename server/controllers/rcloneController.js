@@ -16,13 +16,24 @@ const rcloneCopy = rclone(
 
 const rcloneListBuckets = async (req, res, next) => {
   try {
-    const { accessId, secretKey } = req.body;
+    const { accessId, secretKey, serviceProvider, accountId } = req.body;
+    console.log(accessId, secretKey, serviceProvider, accountId);
 
     //Set the config file for retrieving buckets.
-    AWS.config.update({
-      accessKeyId: accessId,
-      secretAccessKey: secretKey
-    });
+    if (serviceProvider === 'Amazon') {
+      AWS.config.update({
+        accessKeyId: accessId,
+        secretAccessKey: secretKey
+      });
+    } else if (serviceProvider === 'CloudFlare') {
+      AWS.config.update({
+        accessKeyId: accessId,
+        secretAccessKey: secretKey,
+        signatureVersion: 'v4',
+        endpoint: `https://${accountId}.r2.cloudflarestorage.com/`
+      });
+    }
+
     const s3 = new AWS.S3();
 
     //Return the list of buckets, names only.
@@ -34,7 +45,6 @@ const rcloneListBuckets = async (req, res, next) => {
     res.locals.buckets = buckets;
     return next();
   } catch (e) {
-    console.log(e);
     return next(e);
   }
 };
