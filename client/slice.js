@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getUserBuckets } from './services/getBuckets';
 
 const slice = createSlice({
   name: 'GUI',
@@ -10,6 +11,7 @@ const slice = createSlice({
       secretKey: '',
       accountId: '',
       service: '',
+      buckets: []
     },
     destination: {
       name: '',
@@ -17,7 +19,8 @@ const slice = createSlice({
       accessId: '',
       accountId: '',
       service: '',
-    },
+      buckets: []
+    }
   },
   reducers: {
     migrationStatusChange: (state, action) => {
@@ -46,8 +49,17 @@ const slice = createSlice({
       const { origin, destination } = action.payload;
       state.origin = origin;
       state.destination = destination;
-    },
+    }
   },
+  extraReducers: (builder) => {
+    builder.addCase(getUserBuckets.fulfilled),
+      (state, action) => {
+        const { buckets, originOrDestination } = action.payload;
+        if (originOrDestination === 'origin') state.origin.buckets = buckets;
+        else if (originOrDestination === 'destination')
+          state.destination.buckets = buckets;
+      };
+  }
 });
 
 export default slice.reducer;
@@ -59,5 +71,5 @@ export const {
   updateOriginSecretKey,
   updateDestinationSecretKey,
   updateDestinationAccessId,
-  updateAccountId,
+  updateAccountId
 } = slice.actions;
