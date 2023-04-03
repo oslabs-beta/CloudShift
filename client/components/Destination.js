@@ -1,14 +1,52 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   updateDestinationAccessId,
   updateDestinationSecretKey,
   updateAccountId,
+  updateDestinationBuckets,
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Destination = (props) => {
   const dispatch = useDispatch();
   const { origin, destination } = useSelector((state) => state.GUI);
+
+  let bucketSelect;
+
+  const requireAccountId = props.name === 'CloudFlare' ? true : false;
+
+  if (!requireAccountId) {
+    bucketSelect = destination.accessId && destination.secretKey && (
+      <BucketSelect remote={'destination'}></BucketSelect>
+    );
+  } else {
+    bucketSelect = destination.accessId &&
+      destination.secretKey &&
+      destination.accountId && (
+        <BucketSelect remote={'destination'}></BucketSelect>
+      );
+  }
+
+  useEffect(() => {
+    if (destination.accessId && destination.secretKey) {
+      if (destination.name === 'Cloudflare' && !destination.accountId) return;
+      (async () => {
+        const res = await fetch('/listBuckets', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            accessId: destination.accessId,
+            secretKey: destination.secretKey
+          })
+        });
+        const data = await res.json();
+        console.log('data',data)
+        dispatch(updateDestinationBuckets(data));
+      })();
+    }
+  }, [destination.accessId, destination.secretKey, destination.name, destination.accountId]);
 
   return (
     <>
