@@ -21,7 +21,7 @@ export const getUserBuckets = createAsyncThunk(
       //YOU'LL PROBABLY WANT TO DO A LOT OF ERROR HANDLING HERE!!
       const data = await s3.listBuckets().promise();
       const buckets = data.Buckets.map((bucket) => bucket.Name);
-      console.log('DATA', data);
+      //console.log('DATA', data);
       return { buckets, originOrDestination };
     } catch (e) {
       console.log(e);
