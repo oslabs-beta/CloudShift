@@ -52,10 +52,12 @@ const slice = createSlice({
       state.origin = origin;
       state.destination = destination;
     },
-    updateSelectedBucket: (state, action) => {
+    updateOriginBuckets: (state, action) => {
+      state.origin.buckets = action.payload;
+    }    updateSelectedBucket: (state, action) => {
       state[action.payload.remote].selectedBucket = action.payload.bucket;
     },
-  },
+ },
   extraReducers: (builder) => {
     builder.addCase(getUserBuckets.fulfilled),
       (state, action) => {
@@ -77,5 +79,6 @@ export const {
   updateDestinationSecretKey,
   updateDestinationAccessId,
   updateAccountId,
+  updateOriginBuckets,
   updateSelectedBucket,
 } = slice.actions;

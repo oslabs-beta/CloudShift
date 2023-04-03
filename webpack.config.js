@@ -6,30 +6,30 @@ module.exports = {
   mode: 'development',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'index_bundle.js',
+    filename: 'index_bundle.js'
   },
   target: 'web',
   devServer: {
     port: '8080',
-    // proxy: {
-    //   '/': 'http://localhost:3000',
-    // },
+    proxy: {
+      '/': 'http://localhost:3000'
+    },
     static: {
-      directory: path.join(__dirname, './client/public'),
+      directory: path.join(__dirname, './client/public')
     },
     open: true,
     hot: true,
-    liveReload: true,
+    liveReload: true
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json'],
+    extensions: ['.js', '.jsx', '.json']
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: 'babel-loader',
+        use: 'babel-loader'
       },
       {
         test: /\.(gif|png|jpe?g)$/,
@@ -38,11 +38,11 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'assets/images/',
-            },
-          },
-        ],
-      },     
+              outputPath: 'assets/images/'
+            }
+          }
+        ]
+      },
       {
         test: /\.scss?/,
         exclude: /node_modules/,
@@ -52,14 +52,14 @@ module.exports = {
           // Translates CSS into CommonJS
           'css-loader',
           // Compiles Sass to CSS
-          'sass-loader',
-        ],
-      },
-    ],
+          'sass-loader'
+        ]
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './client/public/index.html'),
-    }),
-  ],
+      template: path.resolve(__dirname, './client/public/index.html')
+    })
+  ]
 };
