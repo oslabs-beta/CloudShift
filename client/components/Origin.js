@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import {
   updateOriginSecretKey,
   updateOriginAccessId,
-  updateAccountId,,
+  updateAccountId,
   updateOriginBuckets
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,20 +12,6 @@ import BucketSelect from './BucketSelect';
 const Origin = (props) => {
   const dispatch = useDispatch();
   const { origin, destination } = useSelector((state) => state.GUI);
-
-  let bucketSelect;
-
-  const requireAccountId = props.name === 'CloudFlare' ? true : false;
-
-  if (!requireAccountId) {
-    bucketSelect = origin.accessId && origin.secretKey && (
-      <BucketSelect remote={'origin'}></BucketSelect>
-    );
-  } else {
-    bucketSelect = origin.accessId && origin.secretKey && origin.accountId && (
-      <BucketSelect remote={'origin'}></BucketSelect>
-    );
-  }
 
   let bucketSelect;
 

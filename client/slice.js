@@ -54,10 +54,11 @@ const slice = createSlice({
     },
     updateOriginBuckets: (state, action) => {
       state.origin.buckets = action.payload;
-    }    updateSelectedBucket: (state, action) => {
+    },
+    updateSelectedBucket: (state, action) => {
       state[action.payload.remote].selectedBucket = action.payload.bucket;
     },
- },
+  },
   extraReducers: (builder) => {
     builder.addCase(getUserBuckets.fulfilled),
       (state, action) => {
