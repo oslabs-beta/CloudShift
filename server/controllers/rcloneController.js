@@ -17,9 +17,10 @@ const rcloneCopy = rclone(
 const rcloneListBuckets = async (req, res, next) => {
   try {
     const { accessId, secretKey, serviceProvider, accountId } = req.body;
-    console.log(accessId, secretKey, serviceProvider, accountId);
+    //console.log(accessId, secretKey, serviceProvider, accountId);
 
     //Set the config file for retrieving buckets.
+    
     if (serviceProvider === 'Amazon') {
       AWS.config.update({
         accessKeyId: accessId,
@@ -45,6 +46,7 @@ const rcloneListBuckets = async (req, res, next) => {
     res.locals.buckets = buckets;
     return next();
   } catch (e) {
+    console.log(e)
     return next(e);
   }
 };

@@ -6,6 +6,7 @@ import {
   updateDestinationBuckets,
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
+import BucketSelect from './BucketSelect'
 
 const Destination = (props) => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const Destination = (props) => {
 
   useEffect(() => {
     if (destination.accessId && destination.secretKey) {
-      if (destination.name === 'Cloudflare' && !destination.accountId) return;
+      if (destination.name === 'CloudFlare' && !destination.accountId) return;
       (async () => {
         const res = await fetch('/listBuckets', {
           method: 'POST',
@@ -38,11 +39,13 @@ const Destination = (props) => {
           },
           body: JSON.stringify({
             accessId: destination.accessId,
-            secretKey: destination.secretKey
+            secretKey: destination.secretKey,
+            serviceProvider: destination.name,
+            accountId: destination.accountId
           })
         });
         const data = await res.json();
-        console.log('data',data)
+        console.log('data2',data)
         dispatch(updateDestinationBuckets(data));
       })();
     }
@@ -106,6 +109,7 @@ const Destination = (props) => {
           {destination.accountId.length > 1 && <div>{'\u2705'}</div>}
         </div>
       )}
+      {bucketSelect}
     </>
   );
 };

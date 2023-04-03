@@ -7,10 +7,23 @@ import {
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
+import BucketSelect from './BucketSelect'
 
 const Origin = (props) => {
   const dispatch = useDispatch();
   const { origin, destination } = useSelector((state) => state.GUI);
+
+  let bucketSelect;
+  const requireAccountId = props.name === 'CloudFlare' ? true : false;
+  if (!requireAccountId) {
+    bucketSelect = origin.accessId && origin.secretKey && (
+      <BucketSelect remote={'origin'}></BucketSelect>
+    );
+  } else {
+    bucketSelect = origin.accessId && origin.secretKey && origin.accountId && (
+      <BucketSelect remote={'origin'}></BucketSelect>
+    );
+  }
 
   //REFACTOR TO RTK QUERY.
   //THIS GETS THE BUCKETS.
@@ -99,6 +112,7 @@ const Origin = (props) => {
           {origin.accountId.length > 1 && <div>{'\u2705'}</div>}
         </div>
       )}
+      {bucketSelect}
     </>
   );
 };

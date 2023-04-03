@@ -10,6 +10,7 @@ const slice = createSlice({
       accessId: '',
       secretKey: '',
       accountId: '',
+      selectedBucket: '',
       service: '',
       bucketOptions: [],
     },
@@ -18,6 +19,7 @@ const slice = createSlice({
       secretKey: '',
       accessId: '',
       accountId: '',
+      selectedBucket: '',
       service: '',
       bucketOptions: [],
     },
@@ -43,6 +45,7 @@ const slice = createSlice({
       state.destination = action.payload.destination;
     },
     updateDestinationSecretKey: (state, action) => {
+     
       state.destination = action.payload.destination;
     },
     updateAccountId: (state, action) => {

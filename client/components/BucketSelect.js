@@ -4,6 +4,7 @@ import { updateSelectedBucket } from '../slice';
 
 const BucketSelect = (props) => {
   const dispatch = useDispatch();
+  console.log('remote',props.remote)
   const { bucketOptions } = useSelector((state) => state.GUI[props.remote]);
   console.log('bucketOptions',bucketOptions)
   const options = [];
