@@ -16,7 +16,7 @@ const Origin = (props) => {
   //THIS GETS THE BUCKETS.
   useEffect(() => {
     if (origin.accessId && origin.secretKey) {
-      if (origin.name === 'Cloudflare' && !origin.accountId) return;
+      if (origin.name === 'CloudFlare' && !origin.accountId) return;
       (async () => {
         const res = await fetch('/listBuckets', {
           method: 'POST',
@@ -25,7 +25,9 @@ const Origin = (props) => {
           },
           body: JSON.stringify({
             accessId: origin.accessId,
-            secretKey: origin.secretKey
+            secretKey: origin.secretKey,
+            serviceProvider: origin.name,
+            accountId: origin.accountId
           })
         });
         const data = await res.json();
