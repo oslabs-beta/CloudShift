@@ -43,9 +43,6 @@ const rCloneCopyController = (req, res, next) => {
 const rcloneListBuckets = async (req, res, next) => {
   try {
     const { accessId, secretKey, serviceProvider, accountId } = req.body;
-    //console.log(accessId, secretKey, serviceProvider, accountId);
-
-    //Set the config file for retrieving buckets.
 
     if (serviceProvider === 'Amazon') {
       AWS.config.update({
@@ -53,6 +50,7 @@ const rcloneListBuckets = async (req, res, next) => {
         secretAccessKey: secretKey
       });
     } else if (serviceProvider === 'CloudFlare') {
+      console.log('HERE IS THE SERVICE PROVIDER', serviceProvider);
       AWS.config.update({
         accessKeyId: accessId,
         secretAccessKey: secretKey,
