@@ -40,10 +40,10 @@ const originAccessIdHandler = (e, origin, destination) => {
   );
   const isCloudflareAccessId = /^[a-z0-9]{32}$/.test(accessId);
   if (isAmazonAccessId || isCloudflareAccessId) {
-    const provider = isAmazonAccessId ? 'Amazon' : 'CloudFlare';
+    const provider = isAmazonAccessId ? 'AWS' : 'Cloudflare';
     const providerService = isAmazonAccessId ? 'S3' : 'R2';
-    const destinationProvider = provider === 'Amazon' ? 'CloudFlare' : 'Amazon';
-    const destinationService = provider === 'Amazon' ? 'R2' : 'S3';
+    const destinationProvider = provider === 'AWS' ? 'Cloudflare' : 'AWS';
+    const destinationService = provider === 'AWS' ? 'R2' : 'S3';
     return {
       origin: {
         ...origin,
@@ -60,7 +60,11 @@ const originAccessIdHandler = (e, origin, destination) => {
   } else {
     //this should probably just return a red check mark
     console.log('Credentials appear to be incorrect');
-    return { origin: { ...origin } };
+    return { origin: { 
+      ...origin,
+      accessId: '', 
+      name: ''} 
+    };
   }
 };
 
@@ -70,7 +74,7 @@ const originsecretKeyHandler = (e, origin) => {
     /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/.test(secretKey);
   const isCloudflareSecretKey = /^[a-z0-9]{64}$/.test(secretKey);
   if (isAmazonSecretKey || isCloudflareSecretKey) {
-    const provider = isAmazonSecretKey ? 'Amazon' : 'CloudFlare';
+    const provider = isAmazonSecretKey ? 'AWS' : 'Cloudflare';
     return {
       origin: {
         ...origin,
@@ -84,6 +88,7 @@ const originsecretKeyHandler = (e, origin) => {
     return {
       origin: {
         ...origin,
+        secretKey: '',
       },
     };
   }
@@ -92,11 +97,11 @@ const originsecretKeyHandler = (e, origin) => {
 const destinationAccessIdHandler = (e, origin, destination) => {
   const accessId = e.target.value;
   const isValidAccessId =
-    origin.name === 'Amazon'
+    origin.name ==='AWS'
       ? /^[a-z0-9]{32}$/.test(accessId)
       : /(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])/.test(accessId);
   if (isValidAccessId) {
-    const provider = origin.name === 'CloudFlare' ? 'Amazon' : 'CloudFlare';
+    const provider = origin.name === 'Cloudflare' ? 'AWS' : 'Cloudflare';
     return {
       destination: {
         ...destination,
@@ -107,20 +112,20 @@ const destinationAccessIdHandler = (e, origin, destination) => {
   } else {
     //this should probably just return a red check mark
     console.log('Credentials appear to be incorrect');
-    return { destination: { ...destination } };
+    return { destination: { ...destination, accessId: '' }};
   }
 };
 
 const destinationSecretKeyHandler = (e, origin, destination) => {
   const secretKey = e.target.value;
   const isValidAccessId =
-    origin.name === 'Amazon'
+    origin.name === 'AWS'
       ? /^[a-z0-9]{64}$/.test(secretKey)
       : /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/.test(
           secretKey
         );
   if (isValidAccessId) {
-    const provider = origin.name === 'CloudFlare' ? 'Amazon' : 'CloudFlare';
+    const provider = origin.name === 'Cloudflare' ? 'AWS' : 'Cloudflare';
     return {
       destination: {
         ...destination,
@@ -134,6 +139,7 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
     return {
       destination: {
         ...destination,
+        secretKey: '',
       },
     };
   }

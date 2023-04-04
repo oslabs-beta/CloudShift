@@ -14,7 +14,7 @@ const Destination = (props) => {
 
   let bucketSelect;
 
-  const requireAccountId = props.name === 'CloudFlare' ? true : false;
+  const requireAccountId = props.name === 'Cloudflare' ? true : false;
 
   if (!requireAccountId) {
     bucketSelect = destination.accessId && destination.secretKey && (
@@ -30,7 +30,7 @@ const Destination = (props) => {
 
   useEffect(() => {
     if (destination.accessId && destination.secretKey) {
-      if (destination.name === 'CloudFlare' && !destination.accountId) return;
+      if (destination.name === 'Cloudflare' && !destination.accountId) return;
       (async () => {
         const res = await fetch('/listBuckets', {
           method: 'POST',
@@ -63,9 +63,7 @@ const Destination = (props) => {
       <div>
         {' '}
         <label htmlFor="accessId">Access Id:</label>
-        {destination.accessId ? (
-          <div>{'\u2705'}</div>
-        ) : (
+       
           <input
             name="accessId"
             onChange={(e) => {
@@ -73,14 +71,14 @@ const Destination = (props) => {
               dispatch(updateDestinationAccessId(newState));
             }}
           ></input>
-        )}
+         {destination.accessId && 
+          <div>{'\u2705'}</div>
+         }
       </div>
       <div>
         {' '}
         <label htmlFor="secretKey">Secret Key:</label>
-        {destination.secretKey ? (
-          <div>{'\u2705'}</div>
-        ) : (
+      
           <input
             name="secretKey"
             onChange={(e) => {
@@ -88,9 +86,13 @@ const Destination = (props) => {
               dispatch(updateDestinationSecretKey(newState));
             }}
           ></input>
-        )}
+
+{destination.secretKey && 
+          <div>{'\u2705'}</div>
+}
+        
       </div>
-      {props.name === 'CloudFlare' && (
+      {props.name === 'Cloudflare' && (
         <div>
           {' '}
           <label htmlFor="accountId">Account Id:</label>

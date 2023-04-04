@@ -70,7 +70,7 @@ const assignVariablesForFS = (req, res, next) => {
   if (originProvider === 'AWS') {
     res.locals.awsAccessId = originAccessId;
     res.locals.awsSecretKey = originSecretKey;
-  } else if (originProvider === 'CloudFlare') {
+  } else if (originProvider === 'Cloudflare') {
     res.locals.cloudflareAccessId = originAccessId;
     res.locals.cloudflareSecretKey = originSecretKey;
     res.locals.cloudflareAccountId = originAccountId;
@@ -79,7 +79,7 @@ const assignVariablesForFS = (req, res, next) => {
   if (destinationProvider === 'AWS') {
     res.locals.awsAccessId = destAccessId;
     res.locals.awsSecretKey = destSecretKey;
-  } else if (destinationProvider === 'CloudFlare') {
+  } else if (destinationProvider === 'Cloudflare') {
     res.locals.cloudflareAccessId = destAccessId;
     res.locals.cloudflareSecretKey = destSecretKey;
     res.locals.cloudflareAccountId = destAccountId;

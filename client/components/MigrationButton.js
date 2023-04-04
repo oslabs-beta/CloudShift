@@ -17,13 +17,13 @@ const StartMigrationButton = () => {
     if (!isMigrating) return;
     //Create the request body.
     const body = {
-      originProvider: origin.name === 'Amazon' ? 'AWS' : origin.name,
+      originProvider: origin.name === 'AWS' ? 'AWS' : origin.name,
       originAccessId: origin.accessId,
       originSecretKey: origin.secretKey,
       originAccountId: origin.accountId,
       originBucket: origin.selectedBucket,
       destinationProvider:
-        destination.name === 'Amazon' ? 'AWS' : destination.name,
+        destination.name === 'AWS' ? 'AWS' : destination.name,
       destAccessId: destination.accessId,
       destSecretKey: destination.secretKey,
       destAccountId: destination.accountId,
