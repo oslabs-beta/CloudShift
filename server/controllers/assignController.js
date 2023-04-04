@@ -37,6 +37,19 @@ const getBucketLoc = async (req, res, next) => {
       console.log('Error:', err);
     }
   }
+  //DO A CHECK THERE TO SEE IF AWS REGION IS BLANK, IF SO, THROW AN ERROR TO THE CLIENT.
+  //WILL NEED TO MODIFY LOGIC TO CONSIDER IF BOTH BUCKETS ARE AWS AT SOME POINT.
+  if (!res.locals.awsRegion) {
+    return next({
+      log: 'Error in getBucketLoc',
+      message: `Could not select AWS region for bucket ${
+        req.body.originProvider === 'AWS'
+          ? req.body.originBucket
+          : req.body.destinationBucket
+      }. Make sure your credentials have correct permissions and try again.`
+    });
+  }
+
   return next();
 };
 
