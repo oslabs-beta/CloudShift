@@ -49,9 +49,13 @@ const path = require('path');
 const express = require('express');
 const fsController = require('./controllers/fsController.js');
 const {
-  rcloneCopy,
+  rCloneCopyController,
   rcloneListBuckets
 } = require('./controllers/rcloneController');
+const {
+  assignVariablesForFS,
+  getBucketLoc
+} = require('./controllers/assignController.js');
 
 const app = express();
 
@@ -69,9 +73,16 @@ app.post('/listBuckets', rcloneListBuckets, (req, res) => {
   res.status(200).json(res.locals.buckets);
 });
 
-app.post('/transfer', fsController.config, (req, res) => {
-  res.sendStatus(200);
-});
+app.post(
+  '/transfer',
+  getBucketLoc,
+  assignVariablesForFS,
+  fsController.config,
+  rCloneCopyController,
+  (req, res) => {
+    res.sendStatus(200);
+  }
+);
 
 //404 NEEDED
 
