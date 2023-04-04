@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/server.js",
     "build": "NODE_ENV=production webpack",
-    "devWithServer": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve",
+    "devWithServer": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve & npx tailwindcss -i ./client/input.css -o ./client/public/output.css --watch --watch",
     "dev": " NODE_ENV=development webpack serve"
   },
   "repository": {
@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/oslabs-beta/CloudShift#readme",
   "dependencies": {
-    "@reduxjs/toolkit": "^1.9.3",
     "@aws-sdk/client-s3": "^3.301.0",
+    "@reduxjs/toolkit": "^1.9.3",
     "aws-sdk": "^2.1346.0",
     "express": "^4.18.2",
     "file-loader": "^6.2.0",
@@ -53,6 +53,7 @@
     "sass": "^1.60.0",
     "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",
+    "tailwindcss": "^3.3.1",
     "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.1"
