@@ -7,7 +7,7 @@ import {
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
-import BucketSelect from './BucketSelect'
+import BucketSelect from './BucketSelect';
 
 const Origin = (props) => {
   const dispatch = useDispatch();
