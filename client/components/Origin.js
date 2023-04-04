@@ -14,7 +14,7 @@ const Origin = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
 
   let bucketSelect;
-  const requireAccountId = props.name === 'CloudFlare' ? true : false;
+  const requireAccountId = props.name === 'Cloudflare' ? true : false;
   if (!requireAccountId) {
     bucketSelect = origin.accessId && origin.secretKey && (
       <BucketSelect remote={'origin'}></BucketSelect>
@@ -29,7 +29,7 @@ const Origin = (props) => {
   //THIS GETS THE BUCKETS.
   useEffect(() => {
     if (origin.accessId && origin.secretKey) {
-      if (origin.name === 'CloudFlare' && !origin.accountId) return;
+      if (origin.name === 'Cloudflare' && !origin.accountId) return;
       (async () => {
         const res = await fetch('/listBuckets', {
           method: 'POST',
@@ -60,9 +60,7 @@ const Origin = (props) => {
       <div>
         {' '}
         <label htmlFor="accessId">Access Id:</label>
-        {origin.accessId ? (
-          <div>{'\u2705'}</div>
-        ) : (
+     
           <input
             name="accessId"
             id="originAccessId"
@@ -75,14 +73,14 @@ const Origin = (props) => {
               dispatch(updateOriginAccessId(newState));
             }}
           ></input>
-        )}
+           {origin.accessId && 
+          <div>{'\u2705'}</div>
+           }
       </div>
       <div>
         {' '}
         <label htmlFor="secretKey">Secret Key:</label>
-        {origin.secretKey ? (
-          <div>{'\u2705'}</div>
-        ) : (
+    
           <input
             name="secretKey"
             id="originSecretKey"
@@ -91,9 +89,13 @@ const Origin = (props) => {
               dispatch(updateOriginSecretKey(newState));
             }}
           ></input>
-        )}
+          
+          {origin.secretKey && 
+          <div>{'\u2705'}</div>
+          }  
+
       </div>
-      {props.name === 'CloudFlare' && (
+      {props.name === 'Cloudflare' && (
         <div>
           {' '}
           <label htmlFor="accountId">Account Id:</label>

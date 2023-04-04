@@ -6,8 +6,8 @@ import cloudflare_edited from '../public/cloudflare_edited.png';
 
 const Overlay = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
-  const originSrc = origin.name === 'Amazon' ? aws_edited : cloudflare_edited;
-  const destinationSrc = destination.name === 'Amazon' ? aws_edited : cloudflare_edited;
+  const originSrc = origin.name === 'AWS' ? aws_edited : cloudflare_edited;
+  const destinationSrc = destination.name === 'AWS' ? aws_edited : cloudflare_edited;
   return (
     <div>
       <div>

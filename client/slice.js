@@ -5,6 +5,7 @@ const slice = createSlice({
   name: 'GUI',
   initialState: {
     isMigrating: false,
+    errState: '',
     origin: {
       name: '',
       accessId: '',

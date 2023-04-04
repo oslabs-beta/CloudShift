@@ -44,12 +44,12 @@ const rcloneListBuckets = async (req, res, next) => {
   try {
     const { accessId, secretKey, serviceProvider, accountId } = req.body;
 
-    if (serviceProvider === 'Amazon') {
+    if (serviceProvider ==='AWS') {
       AWS.config.update({
         accessKeyId: accessId,
         secretAccessKey: secretKey
       });
-    } else if (serviceProvider === 'CloudFlare') {
+    } else if (serviceProvider === 'Cloudflare') {
       console.log('HERE IS THE SERVICE PROVIDER', serviceProvider);
       AWS.config.update({
         accessKeyId: accessId,
