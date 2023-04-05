@@ -1,6 +1,7 @@
 const rclone = require('rclone.js');
 const { resolve } = require('path');
 const AWS = require('aws-sdk');
+const errorGenerator = require('./errorGenerator');
 
 const rCloneCopyController = (req, res, next) => {
   //Build the strings for rClone to do the copying.
@@ -14,8 +15,6 @@ const rCloneCopyController = (req, res, next) => {
   const originString = `${originProvider.toLowerCase()}:${originBucket.toLowerCase()}`;
   const destinationString = `${destinationProvider.toLowerCase()}:${destinationBucket.toLowerCase()}`;
 
-  console.log(originString, destinationString);
-
   try {
     const rcloneCopy = rclone('copy', originString, destinationString, {
       env: {
@@ -24,7 +23,6 @@ const rCloneCopyController = (req, res, next) => {
       progress: true
     });
 
-    console.log('TRANSFER IN PROGRESS');
     rcloneCopy.stdout.on('data', (data) => {
       console.log(data.toString());
     });
@@ -64,7 +62,6 @@ const rcloneListBuckets = async (req, res, next) => {
         secretAccessKey: secretKey
       });
     } else if (serviceProvider === 'Cloudflare') {
-      console.log('HERE IS THE SERVICE PROVIDER', serviceProvider);
       AWS.config.update({
         accessKeyId: accessId,
         secretAccessKey: secretKey,
@@ -86,8 +83,8 @@ const rcloneListBuckets = async (req, res, next) => {
   } catch (error) {
     return next({
       //CAN ADD ROBUST, SPECIFIC ERROR HANDLING LATER ON. EX, IF SERVICE IS CLOUDFLARE AND MESSAGE IS "UNAUTHORIZED", IT'S LIKELY AN INCORRECT ACCESS ID.
-      log: 'Error in rcloneListBuckets middleware.',
-      message: error.message
+      log: error.message,
+      message: errorGenerator(error, serviceProvider)
     });
   }
 };

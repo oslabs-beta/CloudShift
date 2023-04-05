@@ -616,20 +616,12 @@ video {
   display: grid;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
 .w-4\/5 {
   width: 80%;
 }
 
 .w-full {
   width: 100%;
-}
-
-.w-screen {
-  width: 100vw;
 }
 
 .origin-\[0\] {

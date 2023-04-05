@@ -17,7 +17,7 @@ const getBucketLoc = async (req, res, next) => {
       //NEED TO RETURN US-EAST-1 IF STRING IS ''.
       if (res.locals.awsRegion === '') res.locals.awsRegion = 'us-east-1';
     } catch (err) {
-      console.log('Error:', err);
+      // console.log('Error:', err);
     }
   }
   if (req.body.destinationProvider === 'AWS') {
