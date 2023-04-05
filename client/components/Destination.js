@@ -7,6 +7,9 @@ import {
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import BucketSelect from './BucketSelect';
+import aws_edited from '../public/aws_edited.png'
+import cloudflare_edited from '../public/cloudflare_edited.png'
+
 
 const Destination = (props) => {
   const dispatch = useDispatch();
@@ -60,6 +63,13 @@ const Destination = (props) => {
     <>
       <div>
         <div class="relative z-0 w-4/5 mb-6 group text-center text-lg">
+          {!destination.name ?
+            null :
+            <img src={destination.name === 'AWS' ?
+              aws_edited :
+              cloudflare_edited} >
+            </img>
+          }
           Destination
           {props.name && (
             <>
