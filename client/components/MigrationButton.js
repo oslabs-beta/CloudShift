@@ -27,7 +27,6 @@ const StartMigrationButton = () => {
       destAccountId: destination.accountId,
       destinationBucket: destination.selectedBucket
     };
-    console.log(body);
     //Do the migration.
     (async () => {
       await fetch('/transfer', {

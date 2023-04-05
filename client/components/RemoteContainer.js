@@ -63,7 +63,6 @@ const originAccessIdHandler = (e, origin, destination) => {
     };
   } else {
     //this should probably just return a red check mark
-    console.log('Credentials appear to be incorrect');
     return {
       origin: {
         ...origin,
@@ -90,7 +89,6 @@ const originsecretKeyHandler = (e, origin) => {
     };
   } else {
     //this should probably just return a red check mark
-    console.log('Credentials appear to be incorrect');
     return {
       origin: {
         ...origin,
@@ -117,7 +115,6 @@ const destinationAccessIdHandler = (e, origin, destination) => {
     };
   } else {
     //this should probably just return a red check mark
-    console.log('Credentials appear to be incorrect');
     return { destination: { ...destination, accessId: '' } };
   }
 };
@@ -141,7 +138,6 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
     };
   } else {
     //this should probably just return a red check mark
-    console.log('Credentials appear to be incorrect');
     return {
       destination: {
         ...destination,
@@ -152,7 +148,6 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
 };
 
 const accountIdHandler = (e, origin, destination, parentComponent) => {
-  console.log(e.target, parentComponent);
   if (parentComponent === 'origin') {
     return {
       origin: { ...origin, accountId: e.target.value },
