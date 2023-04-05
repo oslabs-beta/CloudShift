@@ -45,7 +45,6 @@ const Destination = (props) => {
           })
         });
         const data = await res.json();
-        console.log('data2', data);
         dispatch(updateDestinationBuckets(data));
       })();
     }

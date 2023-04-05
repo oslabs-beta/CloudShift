@@ -1,6 +1,7 @@
 const rclone = require('rclone.js');
 const { resolve } = require('path');
 const AWS = require('aws-sdk');
+const errorGenerator = require('./errorGenerator');
 
 const rCloneCopyController = (req, res, next) => {
   //Build the strings for rClone to do the copying.
@@ -14,8 +15,6 @@ const rCloneCopyController = (req, res, next) => {
   const originString = `${originProvider.toLowerCase()}:${originBucket.toLowerCase()}`;
   const destinationString = `${destinationProvider.toLowerCase()}:${destinationBucket.toLowerCase()}`;
 
-  console.log(originString, destinationString);
-
   try {
     const rcloneCopy = rclone('copy', originString, destinationString, {
       env: {
@@ -24,7 +23,6 @@ const rCloneCopyController = (req, res, next) => {
       progress: true
     });
 
-    console.log('TRANSFER IN PROGRESS');
     rcloneCopy.stdout.on('data', (data) => {
       console.log(data.toString());
     });
@@ -64,7 +62,6 @@ const rcloneListBuckets = async (req, res, next) => {
         secretAccessKey: secretKey
       });
     } else if (serviceProvider === 'Cloudflare') {
-      console.log('HERE IS THE SERVICE PROVIDER', serviceProvider);
       AWS.config.update({
         accessKeyId: accessId,
         secretAccessKey: secretKey,
@@ -76,18 +73,21 @@ const rcloneListBuckets = async (req, res, next) => {
     const s3 = new AWS.S3();
 
     //Return the list of buckets, names only.
-    //SEE WHAT HAPPENS IF THE BUCKET LIST IS EMPTY. DOES IT THROW AN ERROR OR NOT.
-    //YOU CAN ERROR CHECK HERE TO SEE IF CREDENTIALS ARE INVALID!!!
-    //YOU'LL PROBABLY WANT TO DO A LOT OF ERROR HANDLING HERE!!
     const data = await s3.listBuckets().promise();
     const buckets = data.Buckets.map((bucket) => bucket.Name);
+    //Throw an error if there are no buckets associated with
+    if (!buckets.length)
+      return next({
+        message: `There are no buckets associated with your ${serviceProvider} account.`
+      });
     res.locals.buckets = buckets;
     return next();
   } catch (error) {
+    const { message, field } = errorGenerator(error, serviceProvider);
     return next({
-      //CAN ADD ROBUST, SPECIFIC ERROR HANDLING LATER ON. EX, IF SERVICE IS CLOUDFLARE AND MESSAGE IS "UNAUTHORIZED", IT'S LIKELY AN INCORRECT ACCESS ID.
-      log: 'Error in rcloneListBuckets middleware.',
-      message: error.message
+      log: error.message,
+      message,
+      field
     });
   }
 };
