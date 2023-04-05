@@ -8,26 +8,30 @@ export const RemoteContainer = (props) => {
 
   return (
     <>
-      {' '}
-      <Origin
-        remoteType={'origin'}
-        originAccessIdHandler={originAccessIdHandler}
-        secretKeyHandler={originsecretKeyHandler}
-        accountIdHandler={accountIdHandler}
-        name={origin.name}
-        service={origin.service}
-      ></Origin>
-      <div>
-        {origin.accessId && origin.secretKey && (
-          <Destination
-            remoteType={'destination'}
-            accessIdHandler={destinationAccessIdHandler}
-            secretKeyHandler={destinationSecretKeyHandler}
+      <div class="grid grid-rows-1 grid-flow-col gap-40 mx-32 my-16 p-6">
+        <div>
+          <Origin
+            remoteType={'origin'}
+            originAccessIdHandler={originAccessIdHandler}
+            secretKeyHandler={originsecretKeyHandler}
             accountIdHandler={accountIdHandler}
-            name={destination.name}
-            service={destination.service}
-          ></Destination>
-        )}
+            name={origin.name}
+            service={origin.service}
+          />
+        </div>
+
+        <div>
+          {origin.accessId && origin.secretKey && origin.selectedBucket && (
+            <Destination
+              remoteType={'destination'}
+              accessIdHandler={destinationAccessIdHandler}
+              secretKeyHandler={destinationSecretKeyHandler}
+              accountIdHandler={accountIdHandler}
+              name={destination.name}
+              service={destination.service}
+            />
+          )}
+        </div>
       </div>
     </>
   );
@@ -49,21 +53,23 @@ const originAccessIdHandler = (e, origin, destination) => {
         ...origin,
         name: provider,
         accessId: accessId,
-        service: providerService,
+        service: providerService
       },
       destination: {
         ...destination,
         name: destinationProvider,
-        service: destinationService,
-      },
+        service: destinationService
+      }
     };
   } else {
     //this should probably just return a red check mark
     console.log('Credentials appear to be incorrect');
-    return { origin: { 
-      ...origin,
-      accessId: '', 
-      name: ''} 
+    return {
+      origin: {
+        ...origin,
+        accessId: '',
+        name: ''
+      }
     };
   }
 };
@@ -79,8 +85,8 @@ const originsecretKeyHandler = (e, origin) => {
       origin: {
         ...origin,
         name: provider,
-        secretKey: secretKey,
-      },
+        secretKey: secretKey
+      }
     };
   } else {
     //this should probably just return a red check mark
@@ -88,8 +94,8 @@ const originsecretKeyHandler = (e, origin) => {
     return {
       origin: {
         ...origin,
-        secretKey: '',
-      },
+        secretKey: ''
+      }
     };
   }
 };
@@ -97,7 +103,7 @@ const originsecretKeyHandler = (e, origin) => {
 const destinationAccessIdHandler = (e, origin, destination) => {
   const accessId = e.target.value;
   const isValidAccessId =
-    origin.name ==='AWS'
+    origin.name === 'AWS'
       ? /^[a-z0-9]{32}$/.test(accessId)
       : /(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])/.test(accessId);
   if (isValidAccessId) {
@@ -106,13 +112,13 @@ const destinationAccessIdHandler = (e, origin, destination) => {
       destination: {
         ...destination,
         name: provider,
-        accessId: accessId,
-      },
+        accessId: accessId
+      }
     };
   } else {
     //this should probably just return a red check mark
     console.log('Credentials appear to be incorrect');
-    return { destination: { ...destination, accessId: '' }};
+    return { destination: { ...destination, accessId: '' } };
   }
 };
 
@@ -130,8 +136,8 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
       destination: {
         ...destination,
         name: provider,
-        secretKey: secretKey,
-      },
+        secretKey: secretKey
+      }
     };
   } else {
     //this should probably just return a red check mark
@@ -139,8 +145,8 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
     return {
       destination: {
         ...destination,
-        secretKey: '',
-      },
+        secretKey: ''
+      }
     };
   }
 };
@@ -150,12 +156,12 @@ const accountIdHandler = (e, origin, destination, parentComponent) => {
   if (parentComponent === 'origin') {
     return {
       origin: { ...origin, accountId: e.target.value },
-      destination: { ...destination },
+      destination: { ...destination }
     };
   } else {
     return {
       destination: { ...destination, accountId: e.target.value },
-      origin: { ...origin },
+      origin: { ...origin }
     };
   }
 };

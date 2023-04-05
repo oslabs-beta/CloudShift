@@ -2,13 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
+import ReactDOM from "react-dom" 
 
 
 const Overlay = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
   const originSrc = origin.name === 'AWS' ? aws_edited : cloudflare_edited;
   const destinationSrc = destination.name === 'AWS' ? aws_edited : cloudflare_edited;
-  return (
+  return ReactDOM.createPortal(
     <div>
       <div>
         <section>
@@ -21,7 +22,8 @@ const Overlay = (props) => {
         </section>
         <p>placeholder for progress bar</p>
       </div>
-    </div>
+    </div>,
+    document.querySelector('#portal')
   );
 };
 
