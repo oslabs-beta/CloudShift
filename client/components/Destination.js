@@ -3,10 +3,10 @@ import {
   updateDestinationAccessId,
   updateDestinationSecretKey,
   updateAccountId,
-  updateDestinationBuckets,
+  updateDestinationBuckets
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
-import BucketSelect from './BucketSelect'
+import BucketSelect from './BucketSelect';
 
 const Destination = (props) => {
   const dispatch = useDispatch();
@@ -45,73 +45,103 @@ const Destination = (props) => {
           })
         });
         const data = await res.json();
-        console.log('data2',data)
+        console.log('data2', data);
         dispatch(updateDestinationBuckets(data));
       })();
     }
-  }, [destination.accessId, destination.secretKey, destination.name, destination.accountId]);
+  }, [
+    destination.accessId,
+    destination.secretKey,
+    destination.name,
+    destination.accountId
+  ]);
 
   return (
     <>
-      <h1>Destination</h1>
-      {props.name && (
-        <h2>
-          {props.name} {props.service}
-        </h2>
-      )}
-
       <div>
-        {' '}
-        <label htmlFor="accessId">Access Id:</label>
-       
+        <div class="relative z-0 w-4/5 mb-6 group text-center text-lg">
+          Destination
+          {props.name && (
+            <>
+              : {props.name} {props.service}
+            </>
+          )}
+        </div>
+
+        <div class="relative z-0 w-4/5 mb-6 group">
           <input
-            name="accessId"
+            type="key"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            required
+            name="destAccessId"
+            id="destinationAccessId"
             onChange={(e) => {
               const newState = props.accessIdHandler(e, origin, destination);
               dispatch(updateDestinationAccessId(newState));
             }}
           ></input>
-         {destination.accessId && 
-          <div>{'\u2705'}</div>
-         }
-      </div>
-      <div>
-        {' '}
-        <label htmlFor="secretKey">Secret Key:</label>
-      
+          <label
+            htmlFor="destAccessId"
+            for="destinationAccessId"
+            class="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Access ID{destination.accessId ? <>{' \u2705'}</> : <></>}
+          </label>
+        </div>
+
+        <div class="block relative z-0 w-4/5 mb-6 group">
           <input
-            name="secretKey"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            required
+            type="key"
+            name="destSecretKey"
+            id="destSecretKey"
             onChange={(e) => {
               const newState = props.secretKeyHandler(e, origin, destination);
               dispatch(updateDestinationSecretKey(newState));
             }}
           ></input>
 
-{destination.secretKey && 
-          <div>{'\u2705'}</div>
-}
-        
-      </div>
-      {props.name === 'Cloudflare' && (
-        <div>
-          {' '}
-          <label htmlFor="accountId">Account Id:</label>
-          <input
-            name="accountId"
-            onChange={(e) => {
-              const newState = props.accountIdHandler(
-                e,
-                origin,
-                destination,
-                props.remoteType
-              );
-              dispatch(updateAccountId(newState));
-            }}
-          ></input>
-          {destination.accountId.length > 1 && <div>{'\u2705'}</div>}
+          <label
+            htmlFor="destSecretKey"
+            for="destSecretKey"
+            class="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Secret Key{destination.secretKey ? <>{' \u2705'}</> : <></>}
+          </label>
         </div>
-      )}
-      {bucketSelect}
+
+        {props.name === 'Cloudflare' && (
+          <div class="relative z-0 w-4/5 mb-6 group">
+            <input
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+              type="id"
+              id="destAccountId"
+              name="destAccountId"
+              onChange={(e) => {
+                const newState = props.accountIdHandler(
+                  e,
+                  origin,
+                  destination,
+                  props.remoteType
+                );
+                dispatch(updateAccountId(newState));
+              }}
+            ></input>
+            <label
+              for="destAccountId"
+              class="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Account ID {destination.accountId.length > 1 && <>{'\u2705'}</>}
+            </label>
+          </div>
+        )}
+        <div class="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
+      </div>
     </>
   );
 };
