@@ -9,6 +9,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
 import BucketSelect from './BucketSelect';
+import aws_edited from '../public/aws_edited.png'
+import cloudflare_edited from '../public/cloudflare_edited.png'
 
 const Origin = (props) => {
   const dispatch = useDispatch();
@@ -60,6 +62,8 @@ const Origin = (props) => {
     <>
       <div>
         <div class="relative z-0 w-4/5 mb-6 group text-center text-lg">
+          {!origin.name ? null : <img src={origin.name === 'AWS' ? aws_edited : cloudflare_edited} ></img>}
+
           Origin
           {props.name && (
             <>
