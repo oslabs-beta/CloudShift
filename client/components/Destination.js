@@ -4,6 +4,7 @@ import {
   updateDestinationSecretKey,
   updateAccountId,
   updateDestinationBuckets,
+  updateErrorState,
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import BucketSelect from './BucketSelect'
@@ -45,8 +46,13 @@ const Destination = (props) => {
           })
         });
         const data = await res.json();
-        console.log('data2',data)
-        dispatch(updateDestinationBuckets(data));
+        console.log('data2', data)
+        if (!Array.isArray(data)) {
+          dispatch(updateErrorState(data))
+        }
+        else {
+          dispatch(updateDestinationBuckets(data));
+        }
       })();
     }
   }, [destination.accessId, destination.secretKey, destination.name, destination.accountId]);
@@ -63,34 +69,34 @@ const Destination = (props) => {
       <div>
         {' '}
         <label htmlFor="accessId">Access Id:</label>
-       
-          <input
-            name="accessId"
-            onChange={(e) => {
-              const newState = props.accessIdHandler(e, origin, destination);
-              dispatch(updateDestinationAccessId(newState));
-            }}
-          ></input>
-         {destination.accessId && 
+
+        <input
+          name="accessId"
+          onChange={(e) => {
+            const newState = props.accessIdHandler(e, origin, destination);
+            dispatch(updateDestinationAccessId(newState));
+          }}
+        ></input>
+        {destination.accessId &&
           <div>{'\u2705'}</div>
-         }
+        }
       </div>
       <div>
         {' '}
         <label htmlFor="secretKey">Secret Key:</label>
-      
-          <input
-            name="secretKey"
-            onChange={(e) => {
-              const newState = props.secretKeyHandler(e, origin, destination);
-              dispatch(updateDestinationSecretKey(newState));
-            }}
-          ></input>
 
-{destination.secretKey && 
+        <input
+          name="secretKey"
+          onChange={(e) => {
+            const newState = props.secretKeyHandler(e, origin, destination);
+            dispatch(updateDestinationSecretKey(newState));
+          }}
+        ></input>
+
+        {destination.secretKey &&
           <div>{'\u2705'}</div>
-}
-        
+        }
+
       </div>
       {props.name === 'Cloudflare' && (
         <div>
