@@ -12,7 +12,9 @@ const App = (props) => {
   );
   return (
     <>
-      <div className="nav flex items-center justify-between mr-36 ml-20 p-6 text-xl">
+
+
+      <div className="nav flex items-center justify-between mr-36 ml-20 p-6 text-xl ">
         <div>CloudShift</div>
         <div>
           <a href="#">Github</a>
@@ -23,6 +25,7 @@ const App = (props) => {
         <MigrationButton></MigrationButton>
       )}
       {isMigrating && <Overlay></Overlay>}
+
     </>
   );
 };

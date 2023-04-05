@@ -9,7 +9,7 @@ export const RemoteContainer = (props) => {
   return (
     <>
       <div class="grid grid-rows-1 grid-flow-col gap-40 mx-32 my-16 p-6">
-        <div>
+        <div >
           <Origin
             remoteType={'origin'}
             originAccessIdHandler={originAccessIdHandler}
@@ -125,8 +125,8 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
     origin.name === 'AWS'
       ? /^[a-z0-9]{64}$/.test(secretKey)
       : /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/.test(
-          secretKey
-        );
+        secretKey
+      );
   if (isValidAccessId) {
     const provider = origin.name === 'Cloudflare' ? 'AWS' : 'Cloudflare';
     return {
