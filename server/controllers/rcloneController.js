@@ -41,10 +41,24 @@ const rCloneCopyController = (req, res, next) => {
 };
 
 const rcloneListBuckets = async (req, res, next) => {
-  try {
-    const { accessId, secretKey, serviceProvider, accountId } = req.body;
+  const { accessId, secretKey, serviceProvider, accountId } = req.body;
+  //Make sure all required parameters exist on the req.body.
+  if (!accessId || !secretKey || !serviceProvider)
+    return next({
+      log: 'Error in rcloneListBuckets middleware.',
+      message:
+        'Must POST a Service Provider, Access ID, Secret Key, and an Account ID.'
+    });
+  //Cloudflare specific required parameters.
+  if (serviceProvider === 'Cloudflare' && !accountId)
+    return next({
+      log: 'Error in rcloneListBuckets middleware.',
+      message: 'Must POST an Account ID when using Cloudflare.'
+    });
 
-    if (serviceProvider ==='AWS') {
+  //Update the AWS config file with correct credentials depending on the service.
+  try {
+    if (serviceProvider === 'AWS') {
       AWS.config.update({
         accessKeyId: accessId,
         secretAccessKey: secretKey
@@ -69,9 +83,12 @@ const rcloneListBuckets = async (req, res, next) => {
     const buckets = data.Buckets.map((bucket) => bucket.Name);
     res.locals.buckets = buckets;
     return next();
-  } catch (e) {
-    console.log(e);
-    return next(e);
+  } catch (error) {
+    return next({
+      //CAN ADD ROBUST, SPECIFIC ERROR HANDLING LATER ON. EX, IF SERVICE IS CLOUDFLARE AND MESSAGE IS "UNAUTHORIZED", IT'S LIKELY AN INCORRECT ACCESS ID.
+      log: 'Error in rcloneListBuckets middleware.',
+      message: error.message
+    });
   }
 };
 
