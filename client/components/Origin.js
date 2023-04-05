@@ -3,7 +3,8 @@ import {
   updateOriginSecretKey,
   updateOriginAccessId,
   updateAccountId,
-  updateOriginBuckets
+  updateOriginBuckets,
+  updateErrorState
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
@@ -44,8 +45,14 @@ const Origin = (props) => {
           })
         });
         const data = await res.json();
-        dispatch(updateOriginBuckets(data));
-      })();
+        if (!Array.isArray(data)) {
+          dispatch(updateErrorState(data))
+        } else {
+          dispatch(updateOriginBuckets(data));
+        }
+      }
+
+      )();
     }
   }, [origin.accessId, origin.secretKey, origin.name, origin.accountId]);
 
@@ -60,39 +67,39 @@ const Origin = (props) => {
       <div>
         {' '}
         <label htmlFor="accessId">Access Id:</label>
-     
-          <input
-            name="accessId"
-            id="originAccessId"
-            onChange={(e) => {
-              const newState = props.originAccessIdHandler(
-                e,
-                origin,
-                destination
-              );
-              dispatch(updateOriginAccessId(newState));
-            }}
-          ></input>
-           {origin.accessId && 
+
+        <input
+          name="accessId"
+          id="originAccessId"
+          onChange={(e) => {
+            const newState = props.originAccessIdHandler(
+              e,
+              origin,
+              destination
+            );
+            dispatch(updateOriginAccessId(newState));
+          }}
+        ></input>
+        {origin.accessId &&
           <div>{'\u2705'}</div>
-           }
+        }
       </div>
       <div>
         {' '}
         <label htmlFor="secretKey">Secret Key:</label>
-    
-          <input
-            name="secretKey"
-            id="originSecretKey"
-            onChange={(e) => {
-              const newState = props.secretKeyHandler(e, origin);
-              dispatch(updateOriginSecretKey(newState));
-            }}
-          ></input>
-          
-          {origin.secretKey && 
+
+        <input
+          name="secretKey"
+          id="originSecretKey"
+          onChange={(e) => {
+            const newState = props.secretKeyHandler(e, origin);
+            dispatch(updateOriginSecretKey(newState));
+          }}
+        ></input>
+
+        {origin.secretKey &&
           <div>{'\u2705'}</div>
-          }  
+        }
 
       </div>
       {props.name === 'Cloudflare' && (
