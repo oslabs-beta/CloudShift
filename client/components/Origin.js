@@ -51,17 +51,22 @@ const Origin = (props) => {
 
   return (
     <>
-      <h1>Origin</h1>
-      {props.name && (
-        <h2>
-          {props.name} {props.service}
-        </h2>
-      )}
       <div>
-        {' '}
-        <label htmlFor="accessId">Access Id:</label>
-     
+        <div class="relative z-0 w-4/5 mb-6 group text-center text-lg">
+          Origin
+          {props.name && (
+            <>
+              : {props.name} {props.service}
+            </>
+          )}
+        </div>
+
+        <div class="relative z-0 w-4/5 mb-6 group">
           <input
+            type="key"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            required
             name="accessId"
             id="originAccessId"
             onChange={(e) => {
@@ -73,15 +78,21 @@ const Origin = (props) => {
               dispatch(updateOriginAccessId(newState));
             }}
           ></input>
-           {origin.accessId && 
-          <div>{'\u2705'}</div>
-           }
-      </div>
-      <div>
-        {' '}
-        <label htmlFor="secretKey">Secret Key:</label>
-    
+          <label
+            htmlFor="accessId"
+            for="originAccessId"
+            class="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Access ID{origin.accessId ? <>{' \u2705'}</> : <></>}
+          </label>
+        </div>
+
+        <div class="block relative z-0 w-4/5 mb-6 group">
           <input
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            required
+            type="key"
             name="secretKey"
             id="originSecretKey"
             onChange={(e) => {
@@ -89,32 +100,45 @@ const Origin = (props) => {
               dispatch(updateOriginSecretKey(newState));
             }}
           ></input>
-          
-          {origin.secretKey && 
-          <div>{'\u2705'}</div>
-          }  
 
-      </div>
-      {props.name === 'Cloudflare' && (
-        <div>
-          {' '}
-          <label htmlFor="accountId">Account Id:</label>
-          <input
-            name="accountId"
-            onChange={(e) => {
-              const newState = props.accountIdHandler(
-                e,
-                origin,
-                destination,
-                props.remoteType
-              );
-              dispatch(updateAccountId(newState));
-            }}
-          ></input>
-          {origin.accountId.length > 1 && <div>{'\u2705'}</div>}
+          <label
+            htmlFor="secretKey"
+            for="secretKey"
+            class="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Secret Key{origin.secretKey ? <>{' \u2705'}</> : <></>}
+          </label>
         </div>
-      )}
-      {bucketSelect}
+
+        {props.name === 'Cloudflare' && (
+          <div class="relative z-0 w-4/5 mb-6 group">
+            <input
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+              type="id"
+              id="accountId"
+              name="accountId"
+              onChange={(e) => {
+                const newState = props.accountIdHandler(
+                  e,
+                  origin,
+                  destination,
+                  props.remoteType
+                );
+                dispatch(updateAccountId(newState));
+              }}
+            ></input>
+            <label
+              for="accountId"
+              class="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Account ID {origin.accountId.length > 1 && <>{'\u2705'}</>}
+            </label>
+          </div>
+        )}
+        <div class="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
+      </div>
     </>
   );
 };
