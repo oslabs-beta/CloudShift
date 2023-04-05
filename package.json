@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/server.js",
     "build": "NODE_ENV=production webpack",
-    "devWithServer": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve & npx tailwindcss -i ./client/input.css -o ./client/public/output.css --watch --watch",
+    "devWithServer": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve",
     "dev": " NODE_ENV=development webpack serve"
   },
   "repository": {
