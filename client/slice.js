@@ -14,6 +14,7 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
+      bucketLoading: false,
     },
     destination: {
       name: '',
@@ -23,6 +24,7 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
+      bucketLoading: false,
     },
   },
   reducers: {
@@ -65,7 +67,13 @@ const slice = createSlice({
     },
     updateErrorState: (state, action) => {
       state.errState = action.payload;
-    }
+    },
+    updateOriginBucketLoading: (state,action) => {
+      state.origin.bucketLoading = action.payload
+    },
+    updateDestinationBucketLoading: (state,action) => {
+      state.destination.bucketLoading = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserBuckets.fulfilled),
@@ -91,5 +99,7 @@ export const {
   updateOriginBuckets,
   updateDestinationBuckets,
   updateSelectedBucket,
-  updateErrorState
+  updateErrorState,
+  updateOriginBucketLoading,
+  updateDestinationBucketLoading
 } = slice.actions;

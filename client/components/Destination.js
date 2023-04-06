@@ -3,7 +3,8 @@ import {
   updateDestinationAccessId,
   updateDestinationSecretKey,
   updateAccountId,
-  updateDestinationBuckets
+  updateDestinationBuckets,
+  updateDestinationBucketLoading
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import BucketSelect from './BucketSelect';
@@ -33,6 +34,7 @@ const Destination = (props) => {
 
   useEffect(() => {
     if (destination.accessId && destination.secretKey) {
+      dispatch(updateDestinationBucketLoading(true))
       if (destination.name === 'Cloudflare' && !destination.accountId) return;
       (async () => {
         const res = await fetch('/listBuckets', {
@@ -48,7 +50,9 @@ const Destination = (props) => {
           })
         });
         const data = await res.json();
-        dispatch(updateDestinationBuckets(data));
+        console.log(data)
+        dispatch(updateDestinationBuckets(data))
+        dispatch(updateDestinationBucketLoading(false));
       })();
     }
   }, [
