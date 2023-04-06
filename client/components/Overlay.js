@@ -12,7 +12,7 @@ const Overlay = (props) => {
   const destinationSrc = destination.name === 'AWS' ? aws_edited : cloudflare_edited;
   return ReactDOM.createPortal(
     <>
-{/* <div className='flex justify-center item-center fixed z-10 h-screen w-screen bg-transparent left-0 top-0 py-52 '>
+      {/* <div className='flex justify-center item-center fixed z-10 h-screen w-screen bg-transparent left-0 top-0 py-52 '>
       <div className='flex'>
         <section>
           <h2>{origin.name}</h2>
@@ -25,12 +25,14 @@ const Overlay = (props) => {
         </section>
       </div>   
 </div> */}
-    <div className='flex fixed z-10 h-screen w-screen bg-transparent'>
+      <div className='flex left-0 top-0 justify-center item-center fixed z-9999 h-screen w-screen backdrop-blur-xl'>
+        <div className=' w-screen h-screen flex justify-center item-center py-72'>
 
-    <ProgressBar></ProgressBar>
-    </div>
-    </>
-    ,
+          <ProgressBar></ProgressBar>
+
+        </div>
+      </div>
+    </>,
     document.querySelector('#portal')
   );
 };
