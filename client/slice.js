@@ -4,7 +4,7 @@ import { getUserBuckets } from './services/getBuckets';
 const slice = createSlice({
   name: 'GUI',
   initialState: {
-    isMigrating: false,
+    isMigrating: true,
     errState: '',
     origin: {
       name: '',
@@ -13,7 +13,8 @@ const slice = createSlice({
       accountId: '',
       selectedBucket: '',
       service: '',
-      bucketOptions: []
+      bucketOptions: [],
+      bucketLoading: false
     },
     destination: {
       name: '',
@@ -22,7 +23,8 @@ const slice = createSlice({
       accountId: '',
       selectedBucket: '',
       service: '',
-      bucketOptions: []
+      bucketOptions: [],
+      bucketLoading: false
     },
     socket: {
       isConnected: false,
@@ -74,6 +76,12 @@ const slice = createSlice({
     },
     updateDataTransferProgressPercent: (state, action) => {
       state.socket.dataTransferProgressPercent = action.payload;
+    },
+    updateOriginBucketLoading: (state, action) => {
+      state.origin.bucketLoading = action.payload;
+    },
+    updateDestinationBucketLoading: (state, action) => {
+      state.destination.bucketLoading = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -102,5 +110,7 @@ export const {
   updateSelectedBucket,
   updateErrorState,
   updateSocketConnectivity,
-  updateDataTransferProgressPercent
+  updateDataTransferProgressPercent,
+  updateOriginBucketLoading,
+  updateDestinationBucketLoading
 } = slice.actions;
