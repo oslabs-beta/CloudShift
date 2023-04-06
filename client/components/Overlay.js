@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
 import ReactDOM from "react-dom"
+import ProgressBar from './ProgressBar'
 
 
 const Overlay = (props) => {
@@ -10,19 +11,26 @@ const Overlay = (props) => {
   const originSrc = origin.name === 'AWS' ? aws_edited : cloudflare_edited;
   const destinationSrc = destination.name === 'AWS' ? aws_edited : cloudflare_edited;
   return ReactDOM.createPortal(
-    <div className='flex column justify-center item-center fixed z-10 h-screen w-screen bg-transparent left-0 top-0 py-52 '>
+    <>
+{/* <div className='flex justify-center item-center fixed z-10 h-screen w-screen bg-transparent left-0 top-0 py-52 '>
       <div className='flex'>
         <section>
           <h2>{origin.name}</h2>
           <img src={originSrc} alt="origin logo"></img>
         </section>
+          <h1>TO>>>>>></h1>
         <section>
           <h2>{destination.name}</h2>
           <img src={destinationSrc} alt='destination logo'></img>
         </section>
-      </div>
-        <p>placeholder for progress bar</p>
-    </div>,
+      </div>   
+</div> */}
+    <div className='flex fixed z-10 h-screen w-screen bg-transparent'>
+
+    <ProgressBar></ProgressBar>
+    </div>
+    </>
+    ,
     document.querySelector('#portal')
   );
 };

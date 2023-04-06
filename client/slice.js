@@ -4,7 +4,7 @@ import { getUserBuckets } from './services/getBuckets';
 const slice = createSlice({
   name: 'GUI',
   initialState: {
-    isMigrating: false,
+    isMigrating: true,
     errState: '',
     origin: {
       name: '',
