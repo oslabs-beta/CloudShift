@@ -13,7 +13,7 @@ const slice = createSlice({
       accountId: '',
       selectedBucket: '',
       service: '',
-      bucketOptions: [],
+      bucketOptions: []
     },
     destination: {
       name: '',
@@ -22,8 +22,12 @@ const slice = createSlice({
       accountId: '',
       selectedBucket: '',
       service: '',
-      bucketOptions: [],
+      bucketOptions: []
     },
+    socket: {
+      isConnected: false,
+      dataTransferProgressPercent: ''
+    }
   },
   reducers: {
     migrationStatusChange: (state, action) => {
@@ -46,7 +50,6 @@ const slice = createSlice({
       state.destination = action.payload.destination;
     },
     updateDestinationSecretKey: (state, action) => {
-
       state.destination = action.payload.destination;
     },
     updateAccountId: (state, action) => {
@@ -65,6 +68,12 @@ const slice = createSlice({
     },
     updateErrorState: (state, action) => {
       state.errState = action.payload;
+    },
+    updateSocketConnectivity: (state, action) => {
+      state.socket.isConnected = action.payload;
+    },
+    updateDataTransferProgressPercent: (state, action) => {
+      state.socket.dataTransferProgressPercent = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -91,5 +100,7 @@ export const {
   updateOriginBuckets,
   updateDestinationBuckets,
   updateSelectedBucket,
-  updateErrorState
+  updateErrorState,
+  updateSocketConnectivity,
+  updateDataTransferProgressPercent
 } = slice.actions;

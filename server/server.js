@@ -23,6 +23,7 @@ const io = new Server(server, {
 });
 
 //PUT ALL THE WEBSOCKET LOGIC HERE FOR NOW.
+//CURRENT PROBLEM: I DON'T KNOW HOW TO EXPORT THIS STUFF.
 io.on('connection', (socket) => {
   console.log('a user connected');
 });

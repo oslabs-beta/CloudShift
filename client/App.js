@@ -4,39 +4,42 @@ import { RemoteContainer } from './components/RemoteContainer';
 import MigrationButton from './components/MigrationButton';
 import Overlay from './components/Overlay';
 import { socket } from './socket';
+import {
+  updateDataTransferProgressPercent,
+  updateSocketConnectivity
+} from './slice';
 //import styles if necessary
 //may need to import functions from slices here
 
 const App = (props) => {
+  const dispatch = useDispatch();
   const { isMigrating, origin, destination } = useSelector(
     (state) => state.GUI
   );
 
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [fooEvents, setFooEvents] = useState([]);
-
   //Basic client socket.io connection.
+  //MAY NEED TO SHIFT THIS LOGIC INTO THE COMPONENT WE NEED.
   useEffect(() => {
     function onConnect() {
-      setIsConnected(true);
+      dispatch(updateSocketConnectivity(true));
     }
 
     function onDisconnect() {
-      setIsConnected(false);
+      dispatch(updateSocketConnectivity(false));
     }
 
-    function onFooEvent(value) {
-      setFooEvents((previous) => [...previous, value]);
+    function onDataTransfer(value) {
+      dispatch(updateDataTransferProgressPercent(value));
     }
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-    socket.on('foo', onFooEvent);
+    socket.on('data transfer', onDataTransfer);
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
-      socket.off('foo', onFooEvent);
+      socket.off('data transfer', onDataTransfer);
     };
   }, []);
 
