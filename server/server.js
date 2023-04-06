@@ -1,6 +1,5 @@
 const path = require('path');
 const express = require('express');
-const cors = require('cors');
 const fsController = require('./controllers/fsController.js');
 const {
   rCloneCopyController,
@@ -11,7 +10,7 @@ const {
   getBucketLoc
 } = require('./controllers/assignController.js');
 const resetAWSConfig = require('./controllers/resetAWSController.js');
-
+const { rcloneCopyString } = require('./services/rcloneCopyString.js');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
@@ -20,12 +19,6 @@ const io = new Server(server, {
   cors: {
     origin: '*'
   }
-});
-
-//PUT ALL THE WEBSOCKET LOGIC HERE FOR NOW.
-//CURRENT PROBLEM: I DON'T KNOW HOW TO EXPORT THIS STUFF.
-io.on('connection', (socket) => {
-  console.log('a user connected');
 });
 
 app.use(express.json());
@@ -43,6 +36,14 @@ app.post(
   fsController.config,
   rCloneCopyController,
   (req, res) => {
+    res.locals.rcloneCopy.stdout.on('data', (data) => {
+      const relevantString = rcloneCopyString(data.toString());
+      io.emit('data transfer', relevantString);
+    });
+    //WILL WANT TO DO SOME ERROR HANDLING DURING THE TRANSFER PROCESS AT SOME POINT.
+    res.locals.rcloneCopy.stderr.on('data', (data) => {
+      console.error(data.toString());
+    });
     res.sendStatus(200);
   }
 );
@@ -68,3 +69,5 @@ app.use((err, req, res, next) => {
 });
 
 server.listen(3000, () => console.log('Serving listening on port 3000...'));
+
+module.exports = { io };

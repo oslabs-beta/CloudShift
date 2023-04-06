@@ -10,7 +10,6 @@ const StartMigrationButton = () => {
   );
 
   //Run migration logic.
-  //SHOULD HAVE LOGIC FOR MAKING SURE ALL STATE IS HERE BEFORE YOU ACTUALLY RUN THE MIGRATION.
   useEffect(() => {
     if (!isMigrating) return;
     //Create the request body.

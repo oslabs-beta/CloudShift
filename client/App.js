@@ -29,6 +29,8 @@ const App = (props) => {
     }
 
     function onDataTransfer(value) {
+      //Don't update value if it isn't a valid increase.
+      if (value === '') return;
       dispatch(updateDataTransferProgressPercent(value));
     }
 
