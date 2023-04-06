@@ -3,12 +3,15 @@ import {
   updateDestinationAccessId,
   updateDestinationSecretKey,
   updateAccountId,
-  updateDestinationBuckets
+  updateDestinationBuckets,
+  updateDestinationBucketLoading
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import BucketSelect from './BucketSelect';
 import aws_edited from '../public/aws_edited.png'
 import cloudflare_edited from '../public/cloudflare_edited.png'
+import MigrationButton from './MigrationButton';
+
 
 
 const Destination = (props) => {
@@ -33,6 +36,7 @@ const Destination = (props) => {
 
   useEffect(() => {
     if (destination.accessId && destination.secretKey) {
+      dispatch(updateDestinationBucketLoading(true))
       if (destination.name === 'Cloudflare' && !destination.accountId) return;
       (async () => {
         const res = await fetch('/listBuckets', {
@@ -48,7 +52,9 @@ const Destination = (props) => {
           })
         });
         const data = await res.json();
-        dispatch(updateDestinationBuckets(data));
+        console.log(data)
+        dispatch(updateDestinationBuckets(data))
+        dispatch(updateDestinationBucketLoading(false));
       })();
     }
   }, [
@@ -150,9 +156,23 @@ const Destination = (props) => {
           </div>
         )}
         <div class="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
+<div class="relative z-0 w-4/5 mb-6 group">
+
+{origin.selectedBucket && destination.selectedBucket && (
+<MigrationButton></MigrationButton>
+)}
+</div>
       </div>
     </>
   );
 };
 
 export default Destination;
+
+
+{/* <div class="relative z-0 w-4/5 mb-6 group">
+
+{origin.selectedBucket && destination.selectedBucket && (
+<MigrationButton></MigrationButton>
+)}
+</div> */}

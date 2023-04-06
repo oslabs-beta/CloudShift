@@ -1,10 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateSelectedBucket } from '../slice';
+import LoadingButton from './LoadingButton'
 
 const BucketSelect = (props) => {
   const dispatch = useDispatch();
-  const { bucketOptions } = useSelector((state) => state.GUI[props.remote]);
+  const { bucketLoading, bucketOptions } = useSelector((state) => state.GUI[props.remote]);
   const options = [];
   options.push(<option value="">Select Bucket</option>);
   bucketOptions.forEach((bucket) => {
@@ -16,7 +17,10 @@ const BucketSelect = (props) => {
   });
   return (
     <>
-      <label htmlFor="buckets" for="buckets" class="text-xs scale-75">
+    {bucketLoading ? 
+    <LoadingButton></LoadingButton> :
+    <div>
+    <label htmlFor="buckets" for="buckets" class="text-xs scale-75">
         Choose a bucket:
       </label>
       <select
@@ -32,6 +36,9 @@ const BucketSelect = (props) => {
       >
         {options}
       </select>
+    </div>
+ }
+      
     </>
   );
 };
