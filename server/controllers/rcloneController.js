@@ -3,6 +3,7 @@ const { resolve } = require('path');
 const AWS = require('aws-sdk');
 const errorGenerator = require('../services/errorGenerator');
 
+//NEED LOTS OF ERROR HANDLING LOGIC HERE.
 const rCloneCopyController = (req, res, next) => {
   // Build the strings for rClone to do the copying.
   const {
