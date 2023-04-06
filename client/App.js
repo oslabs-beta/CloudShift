@@ -21,9 +21,6 @@ const App = (props) => {
         </div>
       </div>
       <RemoteContainer></RemoteContainer>
-      {origin.selectedBucket && destination.selectedBucket && (
-        <MigrationButton></MigrationButton>
-      )}
       {isMigrating && <Overlay></Overlay>}
 
     </>
