@@ -1,11 +1,4 @@
-
-
-
-
-
-
-
-
+import React from 'react';
 
 
 
