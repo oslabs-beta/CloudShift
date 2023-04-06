@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const fsController = require('./controllers/fsController.js');
 const {
   rCloneCopyController,
@@ -12,8 +13,19 @@ const {
 const resetAWSConfig = require('./controllers/resetAWSController.js');
 
 const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+});
 
 //PUT ALL THE WEBSOCKET LOGIC HERE FOR NOW.
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
 
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '../client/public')));
@@ -54,4 +66,4 @@ app.use((err, req, res, next) => {
     .json({ message: errorObj.message, field: errorObj.field });
 });
 
-app.listen(3000, () => console.log('Serving listening on port 3000...'));
+server.listen(3000, () => console.log('Serving listening on port 3000...'));
