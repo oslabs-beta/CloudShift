@@ -12,7 +12,7 @@ const slice = createSlice({
       accountId: '',
       selectedBucket: '',
       service: '',
-      bucketOptions: ['one', 'two'],
+      bucketOptions: [],
     },
     destination: {
       name: '',
@@ -21,7 +21,7 @@ const slice = createSlice({
       accountId: '',
       selectedBucket: '',
       service: '',
-      bucketOptions: ['one', 'two'],
+      bucketOptions: [],
     },
   },
   reducers: {
