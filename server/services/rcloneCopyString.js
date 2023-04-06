@@ -9,7 +9,6 @@ const rcloneCopyString = (fullString) => {
     let first = fullString.indexOf('Transferred:');
     let second = fullString.indexOf('Transferred:', first + 1);
     const slicedStr = fullString.slice(first, second);
-    console.log(slicedStr);
     //Now get the overall percentage as the number.
     first = slicedStr.indexOf(',');
     second = slicedStr.indexOf('%');

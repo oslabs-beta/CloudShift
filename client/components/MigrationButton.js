@@ -35,7 +35,6 @@ const StartMigrationButton = () => {
         },
         body: JSON.stringify(body)
       });
-      dispatch(migrationStatusChange(false));
     })();
   }, [isMigrating]);
 

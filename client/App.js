@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RemoteContainer } from './components/RemoteContainer';
-import MigrationButton from './components/MigrationButton';
 import Overlay from './components/Overlay';
 import { socket } from './socket';
 import {
@@ -11,14 +10,12 @@ import {
 //import styles if necessary
 //may need to import functions from slices here
 
-const App = (props) => {
+const App = () => {
   const dispatch = useDispatch();
-  const { isMigrating, origin, destination } = useSelector(
-    (state) => state.GUI
-  );
+  const { isMigrating } = useSelector((state) => state.GUI);
 
   //Basic client socket.io connection.
-  //MAY NEED TO SHIFT THIS LOGIC INTO THE COMPONENT WE NEED.
+  //MAY NEED TO SHIFT THIS LOGIC INTO THE COMPONENT WE NEED?
   useEffect(() => {
     function onConnect() {
       dispatch(updateSocketConnectivity(true));
