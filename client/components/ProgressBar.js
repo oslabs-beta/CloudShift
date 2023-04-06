@@ -16,11 +16,11 @@ const ProgressBar = () => {
   }, [socket.dataTransferProgressPercent]);
 
   return (
-    <div className="relative pt-1 w-2/5 ">
+    <div className="relative pt-1 w-2/5 h-screen">
       <div className="flex mb-2 items-center justify-between">
         <div>
           <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-stone-100 bg-emerald-300">
-            Task in progress
+            Migration in progress
           </span>
         </div>
         <div className="text-right">
