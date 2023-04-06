@@ -1,10 +1,11 @@
 const rclone = require('rclone.js');
 const { resolve } = require('path');
 const AWS = require('aws-sdk');
-const errorGenerator = require('./errorGenerator');
+const errorGenerator = require('../services/errorGenerator');
 
+//NEED LOTS OF ERROR HANDLING LOGIC HERE.
 const rCloneCopyController = (req, res, next) => {
-  //Build the strings for rClone to do the copying.
+  // Build the strings for rClone to do the copying.
   const {
     originProvider,
     destinationProvider,
@@ -16,19 +17,11 @@ const rCloneCopyController = (req, res, next) => {
   const destinationString = `${destinationProvider.toLowerCase()}:${destinationBucket.toLowerCase()}`;
 
   try {
-    const rcloneCopy = rclone('copy', originString, destinationString, {
+    res.locals.rcloneCopy = rclone('copy', originString, destinationString, {
       env: {
         RCLONE_CONFIG: resolve(__dirname, '../../rclone.conf')
       },
       progress: true
-    });
-
-    rcloneCopy.stdout.on('data', (data) => {
-      console.log(data.toString());
-    });
-
-    rcloneCopy.stderr.on('data', (data) => {
-      console.error(data.toString());
     });
 
     return next();

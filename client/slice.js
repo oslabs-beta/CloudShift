@@ -4,7 +4,7 @@ import { getUserBuckets } from './services/getBuckets';
 const slice = createSlice({
   name: 'GUI',
   initialState: {
-    isMigrating: true,
+    isMigrating: false,
     errState: '',
     origin: {
       name: '',
@@ -14,7 +14,7 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
-      bucketLoading: false,
+      bucketLoading: false
     },
     destination: {
       name: '',
@@ -24,8 +24,12 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
-      bucketLoading: false,
+      bucketLoading: false
     },
+    socket: {
+      isConnected: false,
+      dataTransferProgressPercent: ''
+    }
   },
   reducers: {
     migrationStatusChange: (state, action) => {
@@ -48,7 +52,6 @@ const slice = createSlice({
       state.destination = action.payload.destination;
     },
     updateDestinationSecretKey: (state, action) => {
-
       state.destination = action.payload.destination;
     },
     updateAccountId: (state, action) => {
@@ -68,12 +71,18 @@ const slice = createSlice({
     updateErrorState: (state, action) => {
       state.errState = action.payload;
     },
-    updateOriginBucketLoading: (state,action) => {
-      state.origin.bucketLoading = action.payload
+    updateSocketConnectivity: (state, action) => {
+      state.socket.isConnected = action.payload;
     },
-    updateDestinationBucketLoading: (state,action) => {
-      state.destination.bucketLoading = action.payload
+    updateDataTransferProgressPercent: (state, action) => {
+      state.socket.dataTransferProgressPercent = action.payload;
     },
+    updateOriginBucketLoading: (state, action) => {
+      state.origin.bucketLoading = action.payload;
+    },
+    updateDestinationBucketLoading: (state, action) => {
+      state.destination.bucketLoading = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getUserBuckets.fulfilled),
@@ -100,6 +109,8 @@ export const {
   updateDestinationBuckets,
   updateSelectedBucket,
   updateErrorState,
+  updateSocketConnectivity,
+  updateDataTransferProgressPercent,
   updateOriginBucketLoading,
   updateDestinationBucketLoading
 } = slice.actions;
