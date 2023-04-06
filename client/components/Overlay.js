@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
-import ReactDOM from "react-dom" 
+import ReactDOM from "react-dom"
 
 
 const Overlay = (props) => {
