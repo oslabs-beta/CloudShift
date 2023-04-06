@@ -5,7 +5,7 @@ import LoadingButton from './LoadingButton';
 
 const BucketSelect = (props) => {
   const dispatch = useDispatch();
-  const { bucketLoading, bucketOptions } = useSelector(
+  const { bucketLoading, bucketOptions, selectedBucket } = useSelector(
     (state) => state.GUI[props.remote]
   );
   const options = [];
@@ -15,11 +15,7 @@ const BucketSelect = (props) => {
     </option>
   );
   bucketOptions.forEach((bucket) => {
-    options.push(
-      <option key={Date.now() + Math.random()} value={bucket}>
-        {bucket}
-      </option>
-    );
+    options.push(<option key={Date.now() + Math.random()}>{bucket}</option>);
   });
   return (
     <>
@@ -40,6 +36,7 @@ const BucketSelect = (props) => {
               };
               dispatch(updateSelectedBucket(payload));
             }}
+            value={selectedBucket}
           >
             {options}
           </select>
