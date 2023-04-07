@@ -52,7 +52,7 @@ const originAccessIdHandler = (e, origin, destination) => {
       origin: {
         ...origin,
         name: provider,
-        accessId: accessId,
+        accessId: accessId.trim(),
         service: providerService
       },
       destination: {
@@ -84,7 +84,7 @@ const originsecretKeyHandler = (e, origin) => {
       origin: {
         ...origin,
         name: provider,
-        secretKey: secretKey
+        secretKey: secretKey.trim()
       }
     };
   } else {
@@ -110,7 +110,7 @@ const destinationAccessIdHandler = (e, origin, destination) => {
       destination: {
         ...destination,
         name: provider,
-        accessId: accessId
+        accessId: accessId.trim(),
       }
     };
   } else {
@@ -133,7 +133,7 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
       destination: {
         ...destination,
         name: provider,
-        secretKey: secretKey
+        secretKey: secretKey.trim(),
       }
     };
   } else {
@@ -150,12 +150,12 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
 const accountIdHandler = (e, origin, destination, parentComponent) => {
   if (parentComponent === 'origin') {
     return {
-      origin: { ...origin, accountId: e.target.value },
+      origin: { ...origin, accountId: e.target.value.trim() },
       destination: { ...destination }
     };
   } else {
     return {
-      destination: { ...destination, accountId: e.target.value },
+      destination: { ...destination, accountId: e.target.value.trim() },
       origin: { ...origin }
     };
   }
