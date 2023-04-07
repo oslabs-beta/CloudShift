@@ -8,7 +8,8 @@ const ErrorComponent = () => {
     
     return (
         <div>
-            <p3>{firstSentence}</p3>
+            <p>{firstSentence}</p>
+            
         </div>
     )
 }
