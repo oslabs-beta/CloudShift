@@ -5,7 +5,7 @@ const slice = createSlice({
   name: 'GUI',
   initialState: {
     isMigrating: false,
-    errState: '',
+    errorMessage: '',
     origin: {
       name: '',
       accessId: '',
@@ -69,7 +69,7 @@ const slice = createSlice({
       state[action.payload.remote].selectedBucket = action.payload.bucket;
     },
     updateErrorState: (state, action) => {
-      state.errState = action.payload;
+      state.errorMessage = action.payload.message;
     },
     updateSocketConnectivity: (state, action) => {
       state.socket.isConnected = action.payload;
@@ -82,6 +82,9 @@ const slice = createSlice({
     },
     updateDestinationBucketLoading: (state, action) => {
       state.destination.bucketLoading = action.payload;
+    },
+    clearErrorMessage: (state,action) => {
+      state.errorMessage = ''
     }
   },
   extraReducers: (builder) => {
@@ -112,5 +115,6 @@ export const {
   updateSocketConnectivity,
   updateDataTransferProgressPercent,
   updateOriginBucketLoading,
-  updateDestinationBucketLoading
+  updateDestinationBucketLoading,
+  clearErrorMessage,
 } = slice.actions;
