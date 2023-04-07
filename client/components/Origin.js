@@ -5,17 +5,19 @@ import {
   updateAccountId,
   updateOriginBuckets,
   updateErrorState,
-  updateOriginBucketLoading
+  updateOriginBucketLoading,
+  clearErrorMessage
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
 import BucketSelect from './BucketSelect';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
+import ErrorComponent from './ErrorComponent'
 
 const Origin = (props) => {
   const dispatch = useDispatch();
-  const { origin, destination } = useSelector((state) => state.GUI);
+  const { origin, destination,errorMessage } = useSelector((state) => state.GUI);
 
   let bucketSelect;
   const requireAccountId = props.name === 'Cloudflare' ? true : false;
@@ -32,6 +34,8 @@ const Origin = (props) => {
   //REFACTOR TO RTK QUERY.
   //THIS GETS THE BUCKETS.
   useEffect(() => {
+    dispatch(clearErrorMessage())
+
     if (origin.accessId && origin.secretKey) {
       dispatch(updateOriginBucketLoading(true));
       if (origin.name === 'Cloudflare' && !origin.accountId) return;
@@ -50,6 +54,7 @@ const Origin = (props) => {
           })
         });
         const data = await res.json();
+        console.log(data)
         if (!Array.isArray(data)) {
           dispatch(updateErrorState(data));
         } else {
@@ -60,8 +65,13 @@ const Origin = (props) => {
     }
   }, [origin.accessId, origin.secretKey, origin.name, origin.accountId]);
 
+
+
+ 
+
   return (
     <div>
+      
       <div className="flex flex-col justify-items-center items-center relative z-0 w-4/5 mb-6 group text-center text-lg">
         {!origin.name ? null : (
           <img
@@ -150,7 +160,12 @@ const Origin = (props) => {
           </label>
         </div>
       )}
+
+      {errorMessage ? 
+      <ErrorComponent></ErrorComponent> :
       <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
+      }
+
     </div>
   );
 };
