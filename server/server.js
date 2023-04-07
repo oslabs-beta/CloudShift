@@ -40,10 +40,6 @@ app.post(
       const relevantString = rcloneCopyString(data.toString());
       io.emit('data transfer', relevantString);
     });
-    //WILL WANT TO DO SOME ERROR HANDLING DURING THE TRANSFER PROCESS AT SOME POINT.
-    res.locals.rcloneCopy.stderr.on('data', (data) => {
-      console.error(data.toString());
-    });
     res.sendStatus(200);
   }
 );
