@@ -5,7 +5,6 @@ const slice = createSlice({
   name: 'GUI',
   initialState: {
     isMigrating: false,
-    errorMessage: '',
     origin: {
       name: '',
       accessId: '',
@@ -14,7 +13,8 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
-      bucketLoading: false
+      bucketLoading: false,
+      errorMessage: ''
     },
     destination: {
       name: '',
@@ -24,7 +24,8 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
-      bucketLoading: false
+      bucketLoading: false,
+      errorMessage: ''
     },
     socket: {
       isConnected: false,
@@ -68,8 +69,12 @@ const slice = createSlice({
     updateSelectedBucket: (state, action) => {
       state[action.payload.remote].selectedBucket = action.payload.bucket;
     },
-    updateErrorState: (state, action) => {
-      state.errorMessage = action.payload.message;
+    updateOriginErrorMessage: (state, action) => {
+
+      state.origin.errorMessage = action.payload.message;
+    },
+    updateDestinationErrorMessage: (state, action) => {
+      state.destination.errorMessage = action.payload.message
     },
     updateSocketConnectivity: (state, action) => {
       state.socket.isConnected = action.payload;
@@ -83,9 +88,12 @@ const slice = createSlice({
     updateDestinationBucketLoading: (state, action) => {
       state.destination.bucketLoading = action.payload;
     },
-    clearErrorMessage: (state,action) => {
-      state.errorMessage = ''
-    }
+    clearOriginErrorMessage: (state, action) => {
+      state.origin.errorMessage = ''
+    },
+    clearDestinationErrorMessage: (state, action) => {
+      state.destination.errorMessage = ''
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserBuckets.fulfilled),
@@ -111,10 +119,12 @@ export const {
   updateOriginBuckets,
   updateDestinationBuckets,
   updateSelectedBucket,
-  updateErrorState,
+  updateOriginErrorMessage,
+  updateDestinationErrorMessage,
   updateSocketConnectivity,
   updateDataTransferProgressPercent,
   updateOriginBucketLoading,
   updateDestinationBucketLoading,
-  clearErrorMessage,
+  clearOriginErrorMessage,
+  clearDestinationErrorMessage
 } = slice.actions;

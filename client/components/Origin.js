@@ -4,9 +4,9 @@ import {
   updateOriginAccessId,
   updateAccountId,
   updateOriginBuckets,
-  updateErrorState,
+  updateOriginErrorMessage,
   updateOriginBucketLoading,
-  clearErrorMessage
+  clearOriginErrorMessage
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
@@ -17,7 +17,7 @@ import ErrorComponent from './ErrorComponent'
 
 const Origin = (props) => {
   const dispatch = useDispatch();
-  const { origin, destination,errorMessage } = useSelector((state) => state.GUI);
+  const { origin, destination } = useSelector((state) => state.GUI);
 
   let bucketSelect;
   const requireAccountId = props.name === 'Cloudflare' ? true : false;
@@ -34,7 +34,7 @@ const Origin = (props) => {
   //REFACTOR TO RTK QUERY.
   //THIS GETS THE BUCKETS.
   useEffect(() => {
-    dispatch(clearErrorMessage())
+    dispatch(clearOriginErrorMessage())
 
     if (origin.accessId && origin.secretKey) {
       dispatch(updateOriginBucketLoading(true));
@@ -56,7 +56,7 @@ const Origin = (props) => {
         const data = await res.json();
         console.log(data)
         if (!Array.isArray(data)) {
-          dispatch(updateErrorState(data));
+          dispatch(updateOriginErrorMessage(data));
         } else {
           dispatch(updateOriginBuckets(data));
           dispatch(updateOriginBucketLoading(false));
@@ -67,11 +67,11 @@ const Origin = (props) => {
 
 
 
- 
+
 
   return (
     <div>
-      
+
       <div className="flex flex-col justify-items-center items-center relative z-0 w-4/5 mb-6 group text-center text-lg">
         {!origin.name ? null : (
           <img
@@ -161,9 +161,9 @@ const Origin = (props) => {
         </div>
       )}
 
-      {errorMessage ? 
-      <ErrorComponent></ErrorComponent> :
-      <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
+      {origin.errorMessage ?
+        <ErrorComponent></ErrorComponent> :
+        <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
       }
 
     </div>

@@ -5,8 +5,8 @@ import {
   updateAccountId,
   updateDestinationBuckets,
   updateDestinationBucketLoading,
-  updateErrorState,
-  clearErrorMessage
+  updateDestinationErrorMessage,
+  clearDestinationErrorMessage
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import BucketSelect from './BucketSelect';
@@ -17,7 +17,7 @@ import ErrorComponent from './ErrorComponent'
 
 const Destination = (props) => {
   const dispatch = useDispatch();
-  const { origin, destination,errorMessage } = useSelector((state) => state.GUI);
+  const { origin, destination } = useSelector((state) => state.GUI);
 
   let bucketSelect;
 
@@ -36,7 +36,7 @@ const Destination = (props) => {
   }
 
   useEffect(() => {
-    dispatch(clearErrorMessage())
+    dispatch(clearDestinationErrorMessage())
 
     if (destination.accessId && destination.secretKey) {
       dispatch(updateDestinationBucketLoading(true));
@@ -57,10 +57,10 @@ const Destination = (props) => {
         const data = await res.json();
         console.log(data)
         if (!Array.isArray(data)) {
-          dispatch(updateErrorState(data));
+          dispatch(updateDestinationErrorMessage(data));
         } else {
-        dispatch(updateDestinationBuckets(data));
-        dispatch(updateDestinationBucketLoading(false))
+          dispatch(updateDestinationBuckets(data));
+          dispatch(updateDestinationBucketLoading(false))
         }
       })();
     }
@@ -158,14 +158,14 @@ const Destination = (props) => {
         </div>
       )}
 
-      {errorMessage ? 
-      <ErrorComponent></ErrorComponent> :
-      <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
+      {destination.errorMessage ?
+        <ErrorComponent></ErrorComponent> :
+        <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
       }
-     
+
       <div className="relative z-0 w-4/5 mb-6 group">
-        {origin.selectedBucket && destination.selectedBucket && 
-        (<MigrationButton></MigrationButton>)
+        {origin.selectedBucket && destination.selectedBucket &&
+          (<MigrationButton></MigrationButton>)
         }
       </div>
     </div>
