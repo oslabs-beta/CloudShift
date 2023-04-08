@@ -31,7 +31,7 @@ const ProgressBar = () => {
       </div>
       <div className="overflow-hidden h-6 mb-4 text-xs flex rounded-2xl bg-cyan-200 w-full">
         <div
-          style={{ width: transferVal}}
+          style={{ width: transferVal }}
           className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-cyan-800`}
         ></div>
       </div>

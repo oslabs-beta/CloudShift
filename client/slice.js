@@ -5,7 +5,6 @@ const slice = createSlice({
   name: 'GUI',
   initialState: {
     isMigrating: false,
-    errorMessage: '',
     origin: {
       name: '',
       accessId: '',
@@ -14,7 +13,8 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
-      bucketLoading: false
+      bucketLoading: false,
+      errorMessage: ''
     },
     destination: {
       name: '',
@@ -24,7 +24,8 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
-      bucketLoading: false
+      bucketLoading: false,
+      errorMessage: ''
     },
     socket: {
       isConnected: false,
@@ -68,8 +69,11 @@ const slice = createSlice({
     updateSelectedBucket: (state, action) => {
       state[action.payload.remote].selectedBucket = action.payload.bucket;
     },
-    updateErrorState: (state, action) => {
-      state.errorMessage = action.payload.message;
+    updateOriginErrorMessage: (state, action) => {
+      state.origin.errorMessage = action.payload.message;
+    },
+    updateDestinationErrorMessage: (state, action) => {
+      state.destination.errorMessage = action.payload.message;
     },
     updateSocketConnectivity: (state, action) => {
       state.socket.isConnected = action.payload;
@@ -83,27 +87,34 @@ const slice = createSlice({
     updateDestinationBucketLoading: (state, action) => {
       state.destination.bucketLoading = action.payload;
     },
-    clearErrorMessage: (state, action) => {
-      state.errorMessage = '';
+    clearOriginErrorMessage: (state, action) => {
+      state.origin.errorMessage = '';
+    },
+    clearDestinationErrorMessage: (state, action) => {
+      state.destination.errorMessage = '';
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(getUserBuckets.pending, (state, action) => {
-        //Clear the error message.
-        state.errorMessage = '';
-
         const { originOrDestination } = action.meta.arg;
-        //Load the drop down.
-        if (originOrDestination === 'origin') state.origin.bucketLoading = true;
-        else state.destination.bucketLoading = true;
+        //Load the drop down and clear error message.
+        if (originOrDestination === 'origin') {
+          state.origin.errorMessage = '';
+          state.origin.bucketLoading = true;
+        } else {
+          state.destination.errorMessage = '';
+          state.destination.bucketLoading = true;
+        }
       })
       .addCase(getUserBuckets.fulfilled, (state, action) => {
         const { data } = action.payload;
         const { originOrDestination } = action.meta.arg;
         //If server returned an error...
         if (!Array.isArray(data)) {
-          state.errorMessage = data;
+          if (originOrDestination === 'origin')
+            state.origin.errorMessage = data;
+          else state.destination.errorMessage = data;
         }
         //Update appropriate data.
         else {
@@ -145,10 +156,12 @@ export const {
   updateOriginBuckets,
   updateDestinationBuckets,
   updateSelectedBucket,
-  updateErrorState,
+  updateOriginErrorMessage,
+  updateDestinationErrorMessage,
   updateSocketConnectivity,
   updateDataTransferProgressPercent,
   updateOriginBucketLoading,
   updateDestinationBucketLoading,
-  clearErrorMessage
+  clearOriginErrorMessage,
+  clearDestinationErrorMessage
 } = slice.actions;

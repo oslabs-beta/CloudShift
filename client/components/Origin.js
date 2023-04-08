@@ -13,9 +13,7 @@ import ErrorComponent from './ErrorComponent';
 
 const Origin = (props) => {
   const dispatch = useDispatch();
-  const { origin, destination, errorMessage } = useSelector(
-    (state) => state.GUI
-  );
+  const { origin, destination } = useSelector((state) => state.GUI);
 
   let bucketSelect;
   const requireAccountId = props.name === 'Cloudflare' ? true : false;
@@ -127,7 +125,7 @@ const Origin = (props) => {
         </div>
       )}
 
-      {errorMessage ? (
+      {origin.errorMessage ? (
         <ErrorComponent></ErrorComponent>
       ) : (
         <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>

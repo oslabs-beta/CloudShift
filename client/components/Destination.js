@@ -14,9 +14,7 @@ import ErrorComponent from './ErrorComponent';
 
 const Destination = (props) => {
   const dispatch = useDispatch();
-  const { origin, destination, errorMessage } = useSelector(
-    (state) => state.GUI
-  );
+  const { origin, destination } = useSelector((state) => state.GUI);
 
   let bucketSelect;
 
@@ -134,7 +132,7 @@ const Destination = (props) => {
         </div>
       )}
 
-      {errorMessage ? (
+      {destination.errorMessage ? (
         <ErrorComponent></ErrorComponent>
       ) : (
         <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
