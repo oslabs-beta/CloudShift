@@ -1,37 +1,72 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserBuckets } from './services/getBuckets';
 
+
+const startingState = {
+  isMigrating: false,
+  origin: {
+    name: '',
+    accessId: '',
+    secretKey: '',
+    accountId: '',
+    selectedBucket: '',
+    service: '',
+    bucketOptions: [],
+    bucketLoading: false,
+    errorMessage: ''
+  },
+  destination: {
+    name: '',
+    secretKey: '',
+    accessId: '',
+    accountId: '',
+    selectedBucket: '',
+    service: '',
+    bucketOptions: [],
+    bucketLoading: false,
+    errorMessage: ''
+  },
+  socket: {
+    isConnected: false,
+    dataTransferProgressPercent: ''
+  }
+}
+
+
+
+
 const slice = createSlice({
   name: 'GUI',
-  initialState: {
-    isMigrating: false,
-    origin: {
-      name: '',
-      accessId: '',
-      secretKey: '',
-      accountId: '',
-      selectedBucket: '',
-      service: '',
-      bucketOptions: [],
-      bucketLoading: false,
-      errorMessage: ''
-    },
-    destination: {
-      name: '',
-      secretKey: '',
-      accessId: '',
-      accountId: '',
-      selectedBucket: '',
-      service: '',
-      bucketOptions: [],
-      bucketLoading: false,
-      errorMessage: ''
-    },
-    socket: {
-      isConnected: false,
-      dataTransferProgressPercent: ''
-    }
-  },
+  // initialState: {
+  //   isMigrating: false,
+  //   origin: {
+  //     name: '',
+  //     accessId: '',
+  //     secretKey: '',
+  //     accountId: '',
+  //     selectedBucket: '',
+  //     service: '',
+  //     bucketOptions: [],
+  //     bucketLoading: false,
+  //     errorMessage: ''
+  //   },
+  //   destination: {
+  //     name: '',
+  //     secretKey: '',
+  //     accessId: '',
+  //     accountId: '',
+  //     selectedBucket: '',
+  //     service: '',
+  //     bucketOptions: [],
+  //     bucketLoading: false,
+  //     errorMessage: ''
+  //   },
+  //   socket: {
+  //     isConnected: false,
+  //     dataTransferProgressPercent: ''
+  //   }
+  // },
+  initialState: {...startingState},
   reducers: {
     migrationStatusChange: (state, action) => {
       state.isMigrating = action.payload;
@@ -94,6 +129,37 @@ const slice = createSlice({
     clearDestinationErrorMessage: (state, action) => {
       state.destination.errorMessage = ''
     },
+    resetState: (state,action) => {
+      // state.origin =  {
+      //   name: '',
+      //   accessId: '',
+      //   secretKey: '',
+      //   accountId: '',
+      //   selectedBucket: '',
+      //   service: '',
+      //   bucketOptions: [],
+      //   bucketLoading: false,
+      //   errorMessage: ''
+      // }
+      // state.destination = {
+      //   name: '',
+      //   accessId: '',
+      //   secretKey: '',
+      //   accountId: '',
+      //   selectedBucket: '',
+      //   service: '',
+      //   bucketOptions: [],
+      //   bucketLoading: false,
+      //   errorMessage: ''
+      // }
+      // state.socket = {
+      //   isConnected: false,
+      //   dataTransferProgressPercent: ''
+      // }
+      console.log(startingState)
+      //state = {...startingState}
+      return startingState
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserBuckets.fulfilled),
@@ -126,5 +192,6 @@ export const {
   updateOriginBucketLoading,
   updateDestinationBucketLoading,
   clearOriginErrorMessage,
-  clearDestinationErrorMessage
+  clearDestinationErrorMessage,
+  resetState
 } = slice.actions;
