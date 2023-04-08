@@ -90,7 +90,10 @@ const slice = createSlice({
     },
     clearOriginErrorMessage: (state, action) => {
       state.origin.errorMessage = ''
-    }
+    },
+    clearDestinationErrorMessage: (state, action) => {
+      state.destination.errorMessage = ''
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserBuckets.fulfilled),
@@ -123,4 +126,5 @@ export const {
   updateOriginBucketLoading,
   updateDestinationBucketLoading,
   clearOriginErrorMessage,
+  clearDestinationErrorMessage
 } = slice.actions;

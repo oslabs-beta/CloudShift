@@ -6,7 +6,7 @@ import {
   updateOriginBuckets,
   updateOriginErrorMessage,
   updateOriginBucketLoading,
-  clearErrorMessage
+  clearOriginErrorMessage
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
@@ -34,7 +34,7 @@ const Origin = (props) => {
   //REFACTOR TO RTK QUERY.
   //THIS GETS THE BUCKETS.
   useEffect(() => {
-    dispatch(clearErrorMessage())
+    dispatch(clearOriginErrorMessage())
 
     if (origin.accessId && origin.secretKey) {
       dispatch(updateOriginBucketLoading(true));

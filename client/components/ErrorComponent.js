@@ -11,7 +11,6 @@ const ErrorComponent = () => {
     return (
         <div>
             <p>{firstSentence}</p>
-            <p>Hello</p>
 
         </div>
     )
