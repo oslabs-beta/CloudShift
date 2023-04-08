@@ -17,7 +17,10 @@ const getBucketLoc = async (req, res, next) => {
       //NEED TO RETURN US-EAST-1 IF STRING IS ''.
       if (res.locals.awsRegion === '') res.locals.awsRegion = 'us-east-1';
     } catch (err) {
-      // console.log('Error:', err);
+      return next({
+        log: `Unkown error:, ${err}`,
+        message: 'Unknown error when getting bucket location.'
+      });
     }
   }
   if (req.body.destinationProvider === 'AWS') {
@@ -34,7 +37,10 @@ const getBucketLoc = async (req, res, next) => {
       //NEED TO RETURN US-EAST-1 IF STRING IS ''.
       if (res.locals.awsRegion === '') res.locals.awsRegion = 'us-east-1';
     } catch (err) {
-      console.log('Error:', err);
+      return next({
+        log: `Unkown error:, ${err}`,
+        message: 'Unknown error when getting bucket location.'
+      });
     }
   }
   //DO A CHECK THERE TO SEE IF AWS REGION IS BLANK, IF SO, THROW AN ERROR TO THE CLIENT.

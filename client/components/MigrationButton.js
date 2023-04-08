@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { migrationStatusChange } from '../slice.js';
+import { migrateData } from '../services/migrate.js';
 
 const StartMigrationButton = () => {
   const dispatch = useDispatch();
@@ -12,30 +13,7 @@ const StartMigrationButton = () => {
   //Run migration logic.
   useEffect(() => {
     if (!isMigrating) return;
-    //Create the request body.
-    const body = {
-      originProvider: origin.name === 'AWS' ? 'AWS' : origin.name,
-      originAccessId: origin.accessId,
-      originSecretKey: origin.secretKey,
-      originAccountId: origin.accountId,
-      originBucket: origin.selectedBucket,
-      destinationProvider:
-        destination.name === 'AWS' ? 'AWS' : destination.name,
-      destAccessId: destination.accessId,
-      destSecretKey: destination.secretKey,
-      destAccountId: destination.accountId,
-      destinationBucket: destination.selectedBucket
-    };
-    //Do the migration.
-    (async () => {
-      await fetch('/transfer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
-    })();
+    dispatch(migrateData({ origin, destination }));
   }, [isMigrating]);
 
   return (

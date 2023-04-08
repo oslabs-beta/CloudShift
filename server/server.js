@@ -37,6 +37,7 @@ app.post(
   rCloneCopyController,
   (req, res) => {
     res.locals.rcloneCopy.stdout.on('data', (data) => {
+      console.log(data.toString());
       const relevantString = rcloneCopyString(data.toString());
       io.emit('data transfer', relevantString);
     });
