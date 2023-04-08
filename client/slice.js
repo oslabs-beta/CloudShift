@@ -37,35 +37,6 @@ const startingState = {
 
 const slice = createSlice({
   name: 'GUI',
-  // initialState: {
-  //   isMigrating: false,
-  //   origin: {
-  //     name: '',
-  //     accessId: '',
-  //     secretKey: '',
-  //     accountId: '',
-  //     selectedBucket: '',
-  //     service: '',
-  //     bucketOptions: [],
-  //     bucketLoading: false,
-  //     errorMessage: ''
-  //   },
-  //   destination: {
-  //     name: '',
-  //     secretKey: '',
-  //     accessId: '',
-  //     accountId: '',
-  //     selectedBucket: '',
-  //     service: '',
-  //     bucketOptions: [],
-  //     bucketLoading: false,
-  //     errorMessage: ''
-  //   },
-  //   socket: {
-  //     isConnected: false,
-  //     dataTransferProgressPercent: ''
-  //   }
-  // },
   initialState: {...startingState},
   reducers: {
     migrationStatusChange: (state, action) => {
