@@ -6,18 +6,14 @@ const ProgressBar = () => {
   
   const dispatch = useDispatch();
   const { socket } = useSelector((state) => state.GUI);
-  // const transferVal = socket.dataTransferProgressPercent.length
-  //   ? `${socket.dataTransferProgressPercent}%`
-  //   : '0%';
 
-    const transferVal = '100%'
+  //percentage for loading bar
+  const transferVal = socket.dataTransferProgressPercent.length
+    ? `${socket.dataTransferProgressPercent}%`
+    : '0%';
 
-  //Flip migrating back to false if download complete.
-  // useEffect(() => {
-  //   if (socket.dataTransferProgressPercent === '100')
-  //     dispatch(migrationStatusChange(false));
-  // }, [socket.dataTransferProgressPercent]);
-
+  
+//reset state and bring back to main page
   const reset = () => {
     dispatch(migrationStatusChange(false))
     dispatch(resetState())
@@ -49,12 +45,13 @@ const ProgressBar = () => {
       ></div>
     </div>
     <div className ='flex justify-end '>
-
+    {transferVal === '100%' &&
       <button className=' w-28 h-10 text-stone-100 bg-cyan-400 hover:bg-cyan-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
       onClick={reset}
       >
       OK
       </button>
+    }
     </div>
   </div>
 
