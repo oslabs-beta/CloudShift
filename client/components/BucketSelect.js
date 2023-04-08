@@ -14,9 +14,10 @@ const BucketSelect = (props) => {
       Select Bucket
     </option>
   );
-  bucketOptions.forEach((bucket) => {
-    options.push(<option key={Date.now() + Math.random()}>{bucket}</option>);
-  });
+  if (Array.isArray(bucketOptions))
+    bucketOptions.forEach((bucket) => {
+      options.push(<option key={Date.now() + Math.random()}>{bucket}</option>);
+    });
   return (
     <>
       {bucketLoading ? (
