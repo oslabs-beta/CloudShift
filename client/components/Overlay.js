@@ -29,7 +29,7 @@ const Overlay = (props) => {
         <div className=' w-screen h-screen flex justify-center item-center py-72'>
 
           <ProgressBar></ProgressBar>
-
+          
         </div>
       </div>
     </>,

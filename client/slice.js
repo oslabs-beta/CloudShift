@@ -1,37 +1,43 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserBuckets } from './services/getBuckets';
 
+
+const startingState = {
+  isMigrating: false,
+  origin: {
+    name: '',
+    accessId: '',
+    secretKey: '',
+    accountId: '',
+    selectedBucket: '',
+    service: '',
+    bucketOptions: [],
+    bucketLoading: false,
+    errorMessage: ''
+  },
+  destination: {
+    name: '',
+    secretKey: '',
+    accessId: '',
+    accountId: '',
+    selectedBucket: '',
+    service: '',
+    bucketOptions: [],
+    bucketLoading: false,
+    errorMessage: ''
+  },
+  socket: {
+    isConnected: false,
+    dataTransferProgressPercent: ''
+  }
+}
+
+
+
+
 const slice = createSlice({
   name: 'GUI',
-  initialState: {
-    isMigrating: false,
-    origin: {
-      name: '',
-      accessId: '',
-      secretKey: '',
-      accountId: '',
-      selectedBucket: '',
-      service: '',
-      bucketOptions: [],
-      bucketLoading: false,
-      errorMessage: ''
-    },
-    destination: {
-      name: '',
-      secretKey: '',
-      accessId: '',
-      accountId: '',
-      selectedBucket: '',
-      service: '',
-      bucketOptions: [],
-      bucketLoading: false,
-      errorMessage: ''
-    },
-    socket: {
-      isConnected: false,
-      dataTransferProgressPercent: ''
-    }
-  },
+  initialState: {...startingState},
   reducers: {
     migrationStatusChange: (state, action) => {
       state.isMigrating = action.payload;
@@ -91,8 +97,11 @@ const slice = createSlice({
       state.origin.errorMessage = '';
     },
     clearDestinationErrorMessage: (state, action) => {
-      state.destination.errorMessage = '';
-    }
+      state.destination.errorMessage = ''
+    },
+    resetState: (state,action) => {
+      return startingState
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -163,5 +172,6 @@ export const {
   updateOriginBucketLoading,
   updateDestinationBucketLoading,
   clearOriginErrorMessage,
-  clearDestinationErrorMessage
+  clearDestinationErrorMessage,
+  resetState
 } = slice.actions;
