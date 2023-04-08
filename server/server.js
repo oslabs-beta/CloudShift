@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '../client/public')));
 
 app.post('/listBuckets', resetAWSConfig, rcloneListBuckets, (req, res) => {
-  res.status(200).json(res.locals.buckets);
+  return res.status(200).json(res.locals.buckets);
 });
 
 app.post(
@@ -40,13 +40,13 @@ app.post(
       const relevantString = rcloneCopyString(data.toString());
       io.emit('data transfer', relevantString);
     });
-    res.sendStatus(200);
+    return res.sendStatus(200);
   }
 );
 
 //Redirect if there's any request to a page that doesn't exist.
 app.get('*', (req, res) => {
-  res.redirect('/');
+  return res.redirect('/');
 });
 
 //GLOBAL ERROR HANDLER NEEDED.
