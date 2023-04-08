@@ -70,11 +70,10 @@ const slice = createSlice({
       state[action.payload.remote].selectedBucket = action.payload.bucket;
     },
     updateOriginErrorMessage: (state, action) => {
-
       state.origin.errorMessage = action.payload.message;
     },
     updateDestinationErrorMessage: (state, action) => {
-      state.destination.errorMessage = action.payload.message
+      state.destination.errorMessage = action.payload.message;
     },
     updateSocketConnectivity: (state, action) => {
       state.socket.isConnected = action.payload;
@@ -89,20 +88,58 @@ const slice = createSlice({
       state.destination.bucketLoading = action.payload;
     },
     clearOriginErrorMessage: (state, action) => {
-      state.origin.errorMessage = ''
+      state.origin.errorMessage = '';
     },
     clearDestinationErrorMessage: (state, action) => {
-      state.destination.errorMessage = ''
-    },
+      state.destination.errorMessage = '';
+    }
   },
   extraReducers: (builder) => {
-    builder.addCase(getUserBuckets.fulfilled),
-      (state, action) => {
-        const { buckets, originOrDestination } = action.payload;
-        if (originOrDestination === 'origin') state.origin.buckets = buckets;
+    builder
+      .addCase(getUserBuckets.pending, (state, action) => {
+        const { originOrDestination } = action.meta.arg;
+        //Load the drop down and clear error message.
+        if (originOrDestination === 'origin') {
+          state.origin.errorMessage = '';
+          state.origin.bucketLoading = true;
+        } else {
+          state.destination.errorMessage = '';
+          state.destination.bucketLoading = true;
+        }
+      })
+      .addCase(getUserBuckets.fulfilled, (state, action) => {
+        const { data } = action.payload;
+        const { originOrDestination } = action.meta.arg;
+        //If server returned an error...
+        if (!Array.isArray(data)) {
+          if (originOrDestination === 'origin')
+            state.origin.errorMessage = data;
+          else state.destination.errorMessage = data;
+        }
+        //Update appropriate data.
+        else {
+          if (originOrDestination === 'origin') {
+            state.origin.bucketOptions = data;
+            state.origin.bucketLoading = false;
+          } else {
+            state.destination.bucketOptions = data;
+            state.destination.bucketLoading = false;
+          }
+        }
+        if (originOrDestination === 'origin') state.origin.bucketOptions = data;
         else if (originOrDestination === 'destination')
-          state.destination.buckets = buckets;
-      };
+          state.destination.bucketOptions = data;
+      })
+      .addCase(getUserBuckets.rejected, (state, action) => {
+        //Reset loading state.
+        const { originOrDestination } = action.meta.arg;
+        if (originOrDestination === 'origin')
+          state.origin.bucketLoading = false;
+        else state.destination.bucketLoading = false;
+        //Post an error.
+        state.errorMessage =
+          'An unknown error occured. Please refresh and try again.';
+      });
   }
 });
 

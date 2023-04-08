@@ -2,19 +2,15 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 const ErrorComponent = () => {
+  const { origin, destination } = useSelector((state) => state.GUI);
+  const errorMessage = origin.errorMessage || destination.errorMessage;
+  const { message } = errorMessage;
 
-    const { origin, destination } = useSelector(state => state.GUI)
-    const errorMessage = origin.errorMessage || destination.errorMessage
-    console.log('ErrorState', errorMessage)
-    const firstSentence = errorMessage.split('.')[0]
+  return (
+    <div>
+      <p>{message}</p>
+    </div>
+  );
+};
 
-    return (
-        <div>
-            <p>{firstSentence}</p>
-
-        </div>
-    )
-}
-
-export default ErrorComponent
-
+export default ErrorComponent;

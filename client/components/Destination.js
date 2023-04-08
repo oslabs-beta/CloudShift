@@ -2,18 +2,15 @@ import React, { useEffect } from 'react';
 import {
   updateDestinationAccessId,
   updateDestinationSecretKey,
-  updateAccountId,
-  updateDestinationBuckets,
-  updateDestinationBucketLoading,
-  updateDestinationErrorMessage,
-  clearDestinationErrorMessage
+  updateAccountId
 } from '../slice';
+import { getUserBuckets } from '../services/getBuckets';
 import { useDispatch, useSelector } from 'react-redux';
 import BucketSelect from './BucketSelect';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
 import MigrationButton from './MigrationButton';
-import ErrorComponent from './ErrorComponent'
+import ErrorComponent from './ErrorComponent';
 
 const Destination = (props) => {
   const dispatch = useDispatch();
@@ -36,34 +33,11 @@ const Destination = (props) => {
   }
 
   useEffect(() => {
-    dispatch(clearDestinationErrorMessage())
-
-    if (destination.accessId && destination.secretKey) {
-      dispatch(updateDestinationBucketLoading(true));
-      if (destination.name === 'Cloudflare' && !destination.accountId) return;
-      (async () => {
-        const res = await fetch('/listBuckets', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            accessId: destination.accessId,
-            secretKey: destination.secretKey,
-            serviceProvider: destination.name,
-            accountId: destination.accountId
-          })
-        });
-        const data = await res.json();
-        console.log(data)
-        if (!Array.isArray(data)) {
-          dispatch(updateDestinationErrorMessage(data));
-        } else {
-          dispatch(updateDestinationBuckets(data));
-          dispatch(updateDestinationBucketLoading(false))
-        }
-      })();
-    }
+    if (!destination.accessId || !destination.secretKey) return;
+    if (destination.name === 'Cloudflare' && !destination.accountId) return;
+    dispatch(
+      getUserBuckets({ ...destination, originOrDestination: 'destination' })
+    );
   }, [
     destination.accessId,
     destination.secretKey,
@@ -158,15 +132,16 @@ const Destination = (props) => {
         </div>
       )}
 
-      {destination.errorMessage ?
-        <ErrorComponent></ErrorComponent> :
+      {destination.errorMessage ? (
+        <ErrorComponent></ErrorComponent>
+      ) : (
         <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
-      }
+      )}
 
       <div className="relative z-0 w-4/5 mb-6 group">
-        {origin.selectedBucket && destination.selectedBucket &&
-          (<MigrationButton></MigrationButton>)
-        }
+        {origin.selectedBucket && destination.selectedBucket && (
+          <MigrationButton></MigrationButton>
+        )}
       </div>
     </div>
   );

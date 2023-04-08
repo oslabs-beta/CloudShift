@@ -26,8 +26,10 @@ const rCloneCopyController = (req, res, next) => {
 
     return next();
   } catch (e) {
-    console.log(e);
-    return next({ e });
+    return next({
+      log: `Unkown error:, ${err}`,
+      message: 'Unknown error during rcloneCopy process.'
+    });
   }
 };
 

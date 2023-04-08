@@ -2,18 +2,14 @@ import React, { useEffect } from 'react';
 import {
   updateOriginSecretKey,
   updateOriginAccessId,
-  updateAccountId,
-  updateOriginBuckets,
-  updateOriginErrorMessage,
-  updateOriginBucketLoading,
-  clearOriginErrorMessage
+  updateAccountId
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
 import BucketSelect from './BucketSelect';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
-import ErrorComponent from './ErrorComponent'
+import ErrorComponent from './ErrorComponent';
 
 const Origin = (props) => {
   const dispatch = useDispatch();
@@ -31,47 +27,15 @@ const Origin = (props) => {
     );
   }
 
-  //REFACTOR TO RTK QUERY.
-  //THIS GETS THE BUCKETS.
+  //Get the list of buckets if all credentials are present.
   useEffect(() => {
-    dispatch(clearOriginErrorMessage())
-
-    if (origin.accessId && origin.secretKey) {
-      dispatch(updateOriginBucketLoading(true));
-      if (origin.name === 'Cloudflare' && !origin.accountId) return;
-
-      (async () => {
-        const res = await fetch('/listBuckets', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            accessId: origin.accessId,
-            secretKey: origin.secretKey,
-            serviceProvider: origin.name,
-            accountId: origin.accountId
-          })
-        });
-        const data = await res.json();
-        console.log(data)
-        if (!Array.isArray(data)) {
-          dispatch(updateOriginErrorMessage(data));
-        } else {
-          dispatch(updateOriginBuckets(data));
-          dispatch(updateOriginBucketLoading(false));
-        }
-      })();
-    }
+    if (!origin.accessId || !origin.secretKey) return;
+    if (origin.name === 'Cloudflare' && !origin.accountId) return;
+    dispatch(getUserBuckets({ ...origin, originOrDestination: 'origin' }));
   }, [origin.accessId, origin.secretKey, origin.name, origin.accountId]);
-
-
-
-
 
   return (
     <div>
-
       <div className="flex flex-col justify-items-center items-center relative z-0 w-4/5 mb-6 group text-center text-lg">
         {!origin.name ? null : (
           <img
@@ -161,11 +125,11 @@ const Origin = (props) => {
         </div>
       )}
 
-      {origin.errorMessage ?
-        <ErrorComponent></ErrorComponent> :
+      {origin.errorMessage ? (
+        <ErrorComponent></ErrorComponent>
+      ) : (
         <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
-      }
-
+      )}
     </div>
   );
 };

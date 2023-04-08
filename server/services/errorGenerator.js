@@ -4,7 +4,7 @@ cloud providers.
 */
 
 const errorCredentialString = (field) => {
-  return `Your ${field} is possibly incorrect. Please check your credentials and try again. See terminal for full error message.`;
+  return `Your ${field} is possibly incorrect. Please check your credentials and try again.`;
 };
 
 const errorGenerator = (error, serviceProvider) => {
