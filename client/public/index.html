@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  
 
   <head>
     <meta charset="UTF-8" />
@@ -10,6 +11,15 @@
   </head>
 
   <body class="bg-gradient-to-br from-cyan-100 to-stone-200 !h-screen">
+    <style>
+      {/* removes the background color disconnect when you do autocomplete */}
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+          transition: background-color 5000s ease-in-out 0s;
+      }
+     </style>
     <div id="root"></div>
     <div id="portal"></div>
   </body>
