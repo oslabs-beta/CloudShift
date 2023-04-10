@@ -23,20 +23,27 @@ const ProgressBar = () => {
     document.querySelectorAll('input').forEach((input) => (input.value = ''));
   };
 
+  //The text that displays above the progress bar on the right side.
+  let rightSideText = '';
+  if (!isNaN(transferVal.slice(0, transferVal.indexOf('%')))) {
+    if (transferVal === '100%') rightSideText = 'Transfer Complete';
+    else rightSideText = 'Migration in Progress';
+  }
+
   return (
     <>
       <div className="relative pt-1 w-2/5 h-screen">
         <div className="flex mb-2 items-center justify-between">
           <div>
             <span className="text-l font-semibold inline-block py-1 px-2 uppercase rounded-full text-stone-100 bg-cyan-400">
-              {transferVal === '100%'
-                ? 'Transfer Complete'
-                : 'Migration in progress'}
+              {transferVal === 'accessDenied%' &&
+                'Access Denied. Make sure credentials have correct permissions.'}
+              {rightSideText}
             </span>
           </div>
           <div className="text-right">
             <span className="text-s font-semibold inline-block text-black-600">
-              {transferVal}
+              {transferVal !== 'accessDenied%' ? transferVal : ''}
             </span>
           </div>
         </div>
@@ -47,7 +54,7 @@ const ProgressBar = () => {
           ></div>
         </div>
         <div className="flex justify-end ">
-          {transferVal === '100%' && (
+          {(transferVal === '100%' || transferVal === 'accessDenied%') && (
             <button
               className=" w-28 h-10 text-stone-100 bg-cyan-400 hover:bg-cyan-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               onClick={reset}
