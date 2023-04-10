@@ -22,6 +22,19 @@ endpoint = https://${res.locals.cloudflareAccountId}.r2.cloudflarestorage.com/`;
 
     fs.writeFileSync(path.resolve(__dirname, '../../rclone.conf'), content);
     return next();
+  },
+
+  removeConfig: (req, res, next) => {
+    try {
+      fs.unlinkSync(path.resolve(__dirname, '../../rclone.conf'));
+      return next();
+    } catch {
+      return next({
+        log: error.message,
+        message:
+          'Error removing rclone config file. See server console for details.'
+      });
+    }
   }
 };
 

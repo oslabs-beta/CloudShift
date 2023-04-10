@@ -44,6 +44,10 @@ app.post(
   }
 );
 
+app.get('/removeConfig', fsController.removeConfig, (req, res) => {
+  return res.sendStatus(200);
+});
+
 //Redirect if there's any request to a page that doesn't exist.
 app.get('*', (req, res) => {
   return res.redirect('/');
