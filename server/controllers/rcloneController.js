@@ -75,7 +75,7 @@ const rcloneListBuckets = async (req, res, next) => {
       buckets = data.Buckets.map((bucket) => bucket.Name);
     }
     //Handle the Microsoft Azure case.
-    else if (serviceProvider === 'Microsoft') {
+    else if (serviceProvider === 'azureblob') {
       //Import necessary classes from azure library.
       const {
         BlobServiceClient,
