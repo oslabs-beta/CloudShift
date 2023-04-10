@@ -47,21 +47,34 @@ const Destination = (props) => {
 
   return (
     <div>
-      <div className="flex flex-col justify-items-center items-center relative z-0 w-4/5 mb-6 group text-center text-lg">
-        {!props.name ? null : (
-          <img
-            src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
-          ></img>
-        )}
-        Destination
-        {props.name && (
-          <>
-            : {props.name} {props.service}
-          </>
-        )}
+      <div className="relative z-0 w-full h-full mb-6 group">
+          <div class="grid grid-cols-3 gap-2">
+            <div class="mx-auto text-sm flex items-center font-mono">
+              Destination
+              {props.name && (
+                <>
+                  : {props.name} {props.service}
+                </>
+              )}
+            </div>
+            <div>
+              <img
+                class={`flex items-center mx-auto object-scale-down h-8 w-8 ${props.name === "Cloudflare" ? "" : "grayscale"}`}
+                // src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
+                src={cloudflare_edited}
+              />
+            </div>
+            <div>
+              <img
+                class={`flex items-center mx-auto object-scale-down h-8 w-8 ${props.name === "AWS" ? "" : "grayscale"}`}
+                // src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
+                src={aws_edited}
+              />
+            </div>
+          </div>
       </div>
 
-      <div className="relative z-0 w-4/5 mb-6 group">
+      <div className="relative z-0 w-full h-full mb-6 group">
         <input
           type="key"
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -82,7 +95,7 @@ const Destination = (props) => {
         </label>
       </div>
 
-      <div className="block relative z-0 w-4/5 mb-6 group">
+      <div className="block relative z-0 w-full h-full mb-6 group">
         <input
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
@@ -105,7 +118,7 @@ const Destination = (props) => {
       </div>
 
       {props.name === 'Cloudflare' && (
-        <div className="relative z-0 w-4/5 mb-6 group">
+        <div className="relative z-0 w-full h-full mb-6 group">
           <input
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
@@ -135,10 +148,10 @@ const Destination = (props) => {
       {destination.errorMessage ? (
         <ErrorComponent></ErrorComponent>
       ) : (
-        <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
+        <div className="relative z-0 w-full h-full mb-6 group">{bucketSelect}</div>
       )}
 
-      <div className="relative z-0 w-4/5 mb-6 group">
+      <div className="relative z-0 w-full h-full mb-6 group">
         {origin.selectedBucket && destination.selectedBucket && (
           <MigrationButton></MigrationButton>
         )}
