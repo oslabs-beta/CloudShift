@@ -5,6 +5,7 @@ const slice = createSlice({
   name: 'GUI',
   initialState: {
     isMigrating: false,
+    errState: '',
     origin: {
       name: '',
       accessId: '',
@@ -13,6 +14,7 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
+      bucketLoading: false
     },
     destination: {
       name: '',
@@ -22,7 +24,12 @@ const slice = createSlice({
       selectedBucket: '',
       service: '',
       bucketOptions: [],
+      bucketLoading: false
     },
+    socket: {
+      isConnected: false,
+      dataTransferProgressPercent: ''
+    }
   },
   reducers: {
     migrationStatusChange: (state, action) => {
@@ -53,11 +60,29 @@ const slice = createSlice({
       state.destination = destination;
     },
     updateOriginBuckets: (state, action) => {
-      state.origin.buckets = action.payload;
+      state.origin.bucketOptions = action.payload;
+    },
+    updateDestinationBuckets: (state, action) => {
+      state.destination.bucketOptions = action.payload;
     },
     updateSelectedBucket: (state, action) => {
       state[action.payload.remote].selectedBucket = action.payload.bucket;
     },
+    updateErrorState: (state, action) => {
+      state.errState = action.payload;
+    },
+    updateSocketConnectivity: (state, action) => {
+      state.socket.isConnected = action.payload;
+    },
+    updateDataTransferProgressPercent: (state, action) => {
+      state.socket.dataTransferProgressPercent = action.payload;
+    },
+    updateOriginBucketLoading: (state, action) => {
+      state.origin.bucketLoading = action.payload;
+    },
+    updateDestinationBucketLoading: (state, action) => {
+      state.destination.bucketLoading = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getUserBuckets.fulfilled),
@@ -81,5 +106,11 @@ export const {
   updateDestinationAccessId,
   updateAccountId,
   updateOriginBuckets,
+  updateDestinationBuckets,
   updateSelectedBucket,
+  updateErrorState,
+  updateSocketConnectivity,
+  updateDataTransferProgressPercent,
+  updateOriginBucketLoading,
+  updateDestinationBucketLoading
 } = slice.actions;

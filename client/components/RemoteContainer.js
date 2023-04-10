@@ -8,26 +8,30 @@ export const RemoteContainer = (props) => {
 
   return (
     <>
-      {' '}
-      <Origin
-        remoteType={'origin'}
-        originAccessIdHandler={originAccessIdHandler}
-        secretKeyHandler={originsecretKeyHandler}
-        accountIdHandler={accountIdHandler}
-        name={origin.name}
-        service={origin.service}
-      ></Origin>
-      <div>
-        {origin.accessId && origin.secretKey && (
-          <Destination
-            remoteType={'destination'}
-            accessIdHandler={destinationAccessIdHandler}
-            secretKeyHandler={destinationSecretKeyHandler}
+      <div className="grid grid-rows-1 grid-flow-col gap-40 mx-32 my-16 p-6">
+        <div>
+          <Origin
+            remoteType={'origin'}
+            originAccessIdHandler={originAccessIdHandler}
+            secretKeyHandler={originsecretKeyHandler}
             accountIdHandler={accountIdHandler}
-            name={destination.name}
-            service={destination.service}
-          ></Destination>
-        )}
+            name={origin.name}
+            service={origin.service}
+          />
+        </div>
+
+        <div>
+          {origin.accessId && origin.secretKey && origin.selectedBucket && (
+            <Destination
+              remoteType={'destination'}
+              accessIdHandler={destinationAccessIdHandler}
+              secretKeyHandler={destinationSecretKeyHandler}
+              accountIdHandler={accountIdHandler}
+              name={destination.name}
+              service={destination.service}
+            />
+          )}
+        </div>
       </div>
     </>
   );
@@ -40,27 +44,32 @@ const originAccessIdHandler = (e, origin, destination) => {
   );
   const isCloudflareAccessId = /^[a-z0-9]{32}$/.test(accessId);
   if (isAmazonAccessId || isCloudflareAccessId) {
-    const provider = isAmazonAccessId ? 'Amazon' : 'CloudFlare';
+    const provider = isAmazonAccessId ? 'AWS' : 'Cloudflare';
     const providerService = isAmazonAccessId ? 'S3' : 'R2';
-    const destinationProvider = provider === 'Amazon' ? 'CloudFlare' : 'Amazon';
-    const destinationService = provider === 'Amazon' ? 'R2' : 'S3';
+    const destinationProvider = provider === 'AWS' ? 'Cloudflare' : 'AWS';
+    const destinationService = provider === 'AWS' ? 'R2' : 'S3';
     return {
       origin: {
         ...origin,
         name: provider,
         accessId: accessId,
-        service: providerService,
+        service: providerService
       },
       destination: {
         ...destination,
         name: destinationProvider,
-        service: destinationService,
-      },
+        service: destinationService
+      }
     };
   } else {
     //this should probably just return a red check mark
-    console.log('Credentials appear to be incorrect');
-    return { origin: { ...origin } };
+    return {
+      origin: {
+        ...origin,
+        accessId: '',
+        name: ''
+      }
+    };
   }
 };
 
@@ -70,21 +79,21 @@ const originsecretKeyHandler = (e, origin) => {
     /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/.test(secretKey);
   const isCloudflareSecretKey = /^[a-z0-9]{64}$/.test(secretKey);
   if (isAmazonSecretKey || isCloudflareSecretKey) {
-    const provider = isAmazonSecretKey ? 'Amazon' : 'CloudFlare';
+    const provider = isAmazonSecretKey ? 'AWS' : 'Cloudflare';
     return {
       origin: {
         ...origin,
         name: provider,
-        secretKey: secretKey,
-      },
+        secretKey: secretKey
+      }
     };
   } else {
     //this should probably just return a red check mark
-    console.log('Credentials appear to be incorrect');
     return {
       origin: {
         ...origin,
-      },
+        secretKey: ''
+      }
     };
   }
 };
@@ -95,64 +104,62 @@ const originsecretKeyHandler = (e, origin) => {
 const destinationAccessIdHandler = (e, origin, destination) => {
   const accessId = e.target.value;
   const isValidAccessId =
-    origin.name === 'Amazon'
+    origin.name === 'AWS'
       ? /^[a-z0-9]{32}$/.test(accessId)
       : /(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])/.test(accessId);
   if (isValidAccessId) {
-    const provider = origin.name === 'CloudFlare' ? 'Amazon' : 'CloudFlare';
+    const provider = origin.name === 'Cloudflare' ? 'AWS' : 'Cloudflare';
     return {
       destination: {
         ...destination,
         name: provider,
-        accessId: accessId,
-      },
+        accessId: accessId
+      }
     };
   } else {
     //this should probably just return a red check mark
-    console.log('Credentials appear to be incorrect');
-    return { destination: { ...destination } };
+    return { destination: { ...destination, accessId: '' } };
   }
 };
 
 const destinationSecretKeyHandler = (e, origin, destination) => {
   const secretKey = e.target.value;
   const isValidAccessId =
-    origin.name === 'Amazon'
+    origin.name === 'AWS'
       ? /^[a-z0-9]{64}$/.test(secretKey)
       : /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/.test(
           secretKey
         );
   if (isValidAccessId) {
-    const provider = origin.name === 'CloudFlare' ? 'Amazon' : 'CloudFlare';
+    const provider = origin.name === 'Cloudflare' ? 'AWS' : 'Cloudflare';
     return {
       destination: {
         ...destination,
         name: provider,
-        secretKey: secretKey,
-      },
+        secretKey: secretKey
+      }
     };
   } else {
     //this should probably just return a red check mark
-    console.log('Credentials appear to be incorrect');
     return {
       destination: {
         ...destination,
-      },
+        secretKey: ''
+      }
     };
   }
 };
 
 const accountIdHandler = (e, origin, destination, parentComponent) => {
-  console.log(e.target, parentComponent);
   if (parentComponent === 'origin') {
     return {
       origin: { ...origin, accountId: e.target.value },
-      destination: { ...destination },
+      destination: { ...destination }
     };
   } else {
     return {
       destination: { ...destination, accountId: e.target.value },
-      origin: { ...origin },
+      origin: { ...origin }
     };
   }
 };
