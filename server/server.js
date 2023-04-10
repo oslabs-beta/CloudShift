@@ -36,8 +36,12 @@ app.post(
   fsController.config,
   rCloneCopyController,
   (req, res) => {
+    //If a string ever returns 'access denied', pass that to the client.
+    let isAccessDenied = false;
     res.locals.rcloneCopy.stdout.on('data', (data) => {
+      if (isAccessDenied) return;
       const relevantString = rcloneCopyString(data.toString());
+      if (relevantString === 'accessDenied') isAccessDenied = true;
       io.emit('data transfer', relevantString);
     });
     return res.sendStatus(200);
