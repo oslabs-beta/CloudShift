@@ -2,25 +2,35 @@ import React from 'react';
 import Origin from './Origin';
 import Destination from './Destination';
 import { useDispatch, useSelector } from 'react-redux';
+import RemoteSelection from './RemoteSelection'
 
 export const RemoteContainer = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
 
   return (
     <>
+      
       <div className="grid grid-rows-1 grid-cols-2 mx-32 my-16 p-6">
-        <div class="mx-20 my-8">
-          <Origin
-            remoteType={'origin'}
-            originAccessIdHandler={originAccessIdHandler}
-            secretKeyHandler={originsecretKeyHandler}
-            accountIdHandler={accountIdHandler}
-            name={origin.name}
-            service={origin.service}
-          />
-        </div>
+       
+      {!origin.name ? 
+      <RemoteSelection source={'Origin'}></RemoteSelection> :
+        // <div className="mx-20 my-8">
+        //   <Origin
+        //     remoteType={'origin'}
+        //     originAccessIdHandler={originAccessIdHandler}
+        //     secretKeyHandler={originsecretKeyHandler}
+        //     accountIdHandler={accountIdHandler}
+        //     name={origin.name}
+        //     service={origin.service}
+        //   />
+        // </div>
 
-        <div class="mx-20 my-8">
+          <div className="mx-20 my-8">
+            <Remote remoteType={'origin'}></Remote>
+          </div>
+      }
+
+        <div className="mx-20 my-8">
           {(origin.accessId && origin.secretKey && origin.selectedBucket) ? 
             <Destination
               remoteType={'destination'}

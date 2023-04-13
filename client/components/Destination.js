@@ -10,7 +10,7 @@ import BucketSelect from './BucketSelect';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
 import MigrationButton from './MigrationButton';
-import ErrorComponent from './ErrorComponent';
+import ErrorDisplay from './ErrorDisplay';
 
 const Destination = (props) => {
   const dispatch = useDispatch();
@@ -146,7 +146,7 @@ const Destination = (props) => {
       )}
 
       {destination.errorMessage ? (
-        <ErrorComponent></ErrorComponent>
+        <ErrorDisplay></ErrorDisplay>
       ) : (
         <div className="relative z-0 w-full h-full mb-6 group">{bucketSelect}</div>
       )}

@@ -102,6 +102,10 @@ const slice = createSlice({
     resetState: (state,action) => {
       return startingState
     },
+    updateOriginName: (state,action) => {
+      state.origin.name = action.payload
+    }
+    
   },
   extraReducers: (builder) => {
     builder
@@ -173,5 +177,6 @@ export const {
   updateDestinationBucketLoading,
   clearOriginErrorMessage,
   clearDestinationErrorMessage,
-  resetState
+  resetState,
+  updateOriginName
 } = slice.actions;

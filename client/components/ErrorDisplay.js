@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-const ErrorComponent = () => {
+const ErrorDisplay = () => {
   const { origin, destination } = useSelector((state) => state.GUI);
   const errorMessage = origin.errorMessage || destination.errorMessage;
   const { message } = errorMessage;
@@ -13,4 +13,4 @@ const ErrorComponent = () => {
   );
 };
 
-export default ErrorComponent;
+export default ErrorDisplay;
