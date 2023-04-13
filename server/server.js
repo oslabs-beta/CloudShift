@@ -22,7 +22,11 @@ const io = new Server(server, {
 });
 
 app.use(express.json());
-app.use(express.static(path.resolve(__dirname, "../client/public")));
+
+const servePath =
+  process.env.NODE_ENV === "development" ? "../client/public" : "../build";
+
+app.use(express.static(path.resolve(__dirname, servePath)));
 
 app.post("/listBuckets", resetAWSConfig, rcloneListBuckets, (req, res) => {
   return res.status(200).json(res.locals.buckets);

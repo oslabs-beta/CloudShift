@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "./app.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RemoteContainer } from "./components/RemoteContainer";
 import Overlay from "./components/Overlay";
