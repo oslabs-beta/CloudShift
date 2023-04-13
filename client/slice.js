@@ -1,36 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserBuckets } from './services/getBuckets';
 
+const startingState = {
+  isMigrating: false,
+  origin: {
+    name: '',
+    displayName: '',
+    accessId: '',
+    secretKey: '',
+    accountId: '',
+    selectedBucket: '',
+    // service: '',
+    bucketOptions: [],
+    bucketLoading: false,
+    errorMessage: '',
+  },
+  destination: {
+    name: '',
+    displayName: '',
+    secretKey: '',
+    accessId: '',
+    accountId: '',
+    selectedBucket: '',
+    // service: '',
+    bucketOptions: [],
+    bucketLoading: false,
+    errorMessage: '',
+  },
+  socket: {
+    isConnected: false,
+    dataTransferProgressPercent: '',
+  },
+};
+
 const slice = createSlice({
   name: 'GUI',
-  initialState: {
-    isMigrating: false,
-    errState: '',
-    origin: {
-      name: '',
-      accessId: '',
-      secretKey: '',
-      accountId: '',
-      selectedBucket: '',
-      service: '',
-      bucketOptions: [],
-      bucketLoading: false
-    },
-    destination: {
-      name: '',
-      secretKey: '',
-      accessId: '',
-      accountId: '',
-      selectedBucket: '',
-      service: '',
-      bucketOptions: [],
-      bucketLoading: false
-    },
-    socket: {
-      isConnected: false,
-      dataTransferProgressPercent: ''
-    }
-  },
+  initialState: { ...startingState },
   reducers: {
     migrationStatusChange: (state, action) => {
       state.isMigrating = action.payload;
@@ -68,8 +73,11 @@ const slice = createSlice({
     updateSelectedBucket: (state, action) => {
       state[action.payload.remote].selectedBucket = action.payload.bucket;
     },
-    updateErrorState: (state, action) => {
-      state.errState = action.payload;
+    updateOriginErrorMessage: (state, action) => {
+      state.origin.errorMessage = action.payload.message;
+    },
+    updateDestinationErrorMessage: (state, action) => {
+      state.destination.errorMessage = action.payload.message;
     },
     updateSocketConnectivity: (state, action) => {
       state.socket.isConnected = action.payload;
@@ -82,16 +90,72 @@ const slice = createSlice({
     },
     updateDestinationBucketLoading: (state, action) => {
       state.destination.bucketLoading = action.payload;
-    }
+    },
+    clearOriginErrorMessage: (state, action) => {
+      state.origin.errorMessage = '';
+    },
+    clearDestinationErrorMessage: (state, action) => {
+      state.destination.errorMessage = '';
+    },
+    resetState: (state, action) => {
+      return startingState;
+    },
+    updateRemoteName: (state, action) => {
+      const remoteName =
+        action.payload.source === 'Origin' ? 'origin' : 'destination';
+      state[remoteName] = {
+        ...state[remoteName],
+        name: action.payload.name,
+        displayName: action.payload.displayName,
+      };
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(getUserBuckets.fulfilled),
-      (state, action) => {
-        const { buckets, originOrDestination } = action.payload;
-        if (originOrDestination === 'origin') state.origin.buckets = buckets;
+    builder
+      .addCase(getUserBuckets.pending, (state, action) => {
+        const { originOrDestination } = action.meta.arg;
+        //Load the drop down and clear error message.
+        if (originOrDestination === 'origin') {
+          state.origin.errorMessage = '';
+          state.origin.bucketLoading = true;
+        } else {
+          state.destination.errorMessage = '';
+          state.destination.bucketLoading = true;
+        }
+      })
+      .addCase(getUserBuckets.fulfilled, (state, action) => {
+        const { data } = action.payload;
+        const { originOrDestination } = action.meta.arg;
+        //If server returned an error...
+        if (!Array.isArray(data)) {
+          if (originOrDestination === 'origin')
+            state.origin.errorMessage = data;
+          else state.destination.errorMessage = data;
+        }
+        //Update appropriate data.
+        else {
+          if (originOrDestination === 'origin') {
+            state.origin.bucketOptions = data;
+            state.origin.bucketLoading = false;
+          } else {
+            state.destination.bucketOptions = data;
+            state.destination.bucketLoading = false;
+          }
+        }
+        if (originOrDestination === 'origin') state.origin.bucketOptions = data;
         else if (originOrDestination === 'destination')
-          state.destination.buckets = buckets;
-      };
+          state.destination.bucketOptions = data;
+      })
+      .addCase(getUserBuckets.rejected, (state, action) => {
+        //Reset loading state.
+        const { originOrDestination } = action.meta.arg;
+        if (originOrDestination === 'origin')
+          state.origin.bucketLoading = false;
+        else state.destination.bucketLoading = false;
+        //Post an error.
+        state.errorMessage =
+          'An unknown error occured. Please refresh and try again.';
+      });
   },
 });
 
@@ -108,9 +172,14 @@ export const {
   updateOriginBuckets,
   updateDestinationBuckets,
   updateSelectedBucket,
-  updateErrorState,
+  updateOriginErrorMessage,
+  updateDestinationErrorMessage,
   updateSocketConnectivity,
   updateDataTransferProgressPercent,
   updateOriginBucketLoading,
-  updateDestinationBucketLoading
+  updateDestinationBucketLoading,
+  clearOriginErrorMessage,
+  clearDestinationErrorMessage,
+  resetState,
+  updateRemoteName,
 } = slice.actions;

@@ -2,33 +2,50 @@ import React from 'react';
 import Origin from './Origin';
 import Destination from './Destination';
 import { useDispatch, useSelector } from 'react-redux';
+import RemoteSelection from './RemoteSelection';
+import Remote from './Remote';
 
 export const RemoteContainer = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
 
   return (
     <>
-      <div className="grid grid-rows-1 grid-flow-col gap-40 mx-32 my-16 p-6">
-        <div>
-          <Origin
-            remoteType={'origin'}
-            originAccessIdHandler={originAccessIdHandler}
-            secretKeyHandler={originsecretKeyHandler}
-            accountIdHandler={accountIdHandler}
-            name={origin.name}
-            service={origin.service}
-          />
+      <div className="grid grid-rows-1 grid-cols-2 mx-32 my-16 p-6">
+        <div className="mx-20 my-8">
+          {!origin.name ? (
+            <RemoteSelection source={'Origin'}></RemoteSelection>
+          ) : (
+            // <div className="mx-20 my-8">
+            //   <Origin
+            //     remoteType={'origin'}
+            //     originAccessIdHandler={originAccessIdHandler}
+            //     secretKeyHandler={originsecretKeyHandler}
+            //     accountIdHandler={accountIdHandler}
+            //     name={origin.name}
+            //     service={origin.service}
+            //   />
+            // </div>
+
+            <Remote
+              remoteType={'origin'}
+              originAccessIdHandler={originAccessIdHandler}
+              secretKeyHandler={originsecretKeyHandler}
+              accountIdHandler={accountIdHandler}
+              displayName={origin.displayName}
+            ></Remote>
+          )}
         </div>
 
-        <div>
-          {origin.accessId && origin.secretKey && origin.selectedBucket && (
-            <Destination
+        <div className="mx-20 my-8">
+          {!destination.name ? (
+            <RemoteSelection source={'Destinaton'}></RemoteSelection>
+          ) : (
+            <Remote
               remoteType={'destination'}
               accessIdHandler={destinationAccessIdHandler}
               secretKeyHandler={destinationSecretKeyHandler}
               accountIdHandler={accountIdHandler}
-              name={destination.name}
-              service={destination.service}
+              displayName={destination.displayName}
             />
           )}
         </div>
@@ -45,21 +62,17 @@ const originAccessIdHandler = (e, origin, destination) => {
   const isCloudflareAccessId = /^[a-z0-9]{32}$/.test(accessId);
   if (isAmazonAccessId || isCloudflareAccessId) {
     const provider = isAmazonAccessId ? 'AWS' : 'Cloudflare';
-    const providerService = isAmazonAccessId ? 'S3' : 'R2';
     const destinationProvider = provider === 'AWS' ? 'Cloudflare' : 'AWS';
-    const destinationService = provider === 'AWS' ? 'R2' : 'S3';
     return {
       origin: {
         ...origin,
         name: provider,
-        accessId: accessId,
-        service: providerService
+        accessId: accessId.trim(),
       },
       destination: {
         ...destination,
         name: destinationProvider,
-        service: destinationService
-      }
+      },
     };
   } else {
     //this should probably just return a red check mark
@@ -67,8 +80,8 @@ const originAccessIdHandler = (e, origin, destination) => {
       origin: {
         ...origin,
         accessId: '',
-        name: ''
-      }
+        name: '',
+      },
     };
   }
 };
@@ -84,22 +97,21 @@ const originsecretKeyHandler = (e, origin) => {
       origin: {
         ...origin,
         name: provider,
-        secretKey: secretKey
-      }
+        secretKey: secretKey.trim(),
+      },
     };
   } else {
     //this should probably just return a red check mark
     return {
       origin: {
         ...origin,
-        secretKey: ''
-      }
+        secretKey: '',
+      },
     };
   }
 };
 
 //async call using Amazon SDK to retrieve buckets and generate drop down menu
-
 
 const destinationAccessIdHandler = (e, origin, destination) => {
   const accessId = e.target.value;
@@ -113,8 +125,8 @@ const destinationAccessIdHandler = (e, origin, destination) => {
       destination: {
         ...destination,
         name: provider,
-        accessId: accessId
-      }
+        accessId: accessId.trim(),
+      },
     };
   } else {
     //this should probably just return a red check mark
@@ -136,16 +148,16 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
       destination: {
         ...destination,
         name: provider,
-        secretKey: secretKey
-      }
+        secretKey: secretKey.trim(),
+      },
     };
   } else {
     //this should probably just return a red check mark
     return {
       destination: {
         ...destination,
-        secretKey: ''
-      }
+        secretKey: '',
+      },
     };
   }
 };
@@ -153,13 +165,13 @@ const destinationSecretKeyHandler = (e, origin, destination) => {
 const accountIdHandler = (e, origin, destination, parentComponent) => {
   if (parentComponent === 'origin') {
     return {
-      origin: { ...origin, accountId: e.target.value },
-      destination: { ...destination }
+      origin: { ...origin, accountId: e.target.value.trim() },
+      destination: { ...destination },
     };
   } else {
     return {
-      destination: { ...destination, accountId: e.target.value },
-      origin: { ...origin }
+      destination: { ...destination, accountId: e.target.value.trim() },
+      origin: { ...origin },
     };
   }
 };

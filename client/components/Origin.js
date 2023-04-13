@@ -3,15 +3,13 @@ import {
   updateOriginSecretKey,
   updateOriginAccessId,
   updateAccountId,
-  updateOriginBuckets,
-  updateErrorState,
-  updateOriginBucketLoading
 } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserBuckets } from '../services/getBuckets';
 import BucketSelect from './BucketSelect';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
+import ErrorDisplay from './ErrorDisplay';
 
 const Origin = (props) => {
   const dispatch = useDispatch();
@@ -29,54 +27,48 @@ const Origin = (props) => {
     );
   }
 
-  //REFACTOR TO RTK QUERY.
-  //THIS GETS THE BUCKETS.
+  //Get the list of buckets if all credentials are present.
   useEffect(() => {
-    if (origin.accessId && origin.secretKey) {
-      dispatch(updateOriginBucketLoading(true));
-      if (origin.name === 'Cloudflare' && !origin.accountId) return;
-
-      (async () => {
-        const res = await fetch('/listBuckets', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            accessId: origin.accessId,
-            secretKey: origin.secretKey,
-            serviceProvider: origin.name,
-            accountId: origin.accountId
-          })
-        });
-        const data = await res.json();
-        if (!Array.isArray(data)) {
-          dispatch(updateErrorState(data));
-        } else {
-          dispatch(updateOriginBuckets(data));
-          dispatch(updateOriginBucketLoading(false));
-        }
-      })();
-    }
+    if (!origin.accessId || !origin.secretKey) return;
+    if (origin.name === 'Cloudflare' && !origin.accountId) return;
+    dispatch(getUserBuckets({ ...origin, originOrDestination: 'origin' }));
   }, [origin.accessId, origin.secretKey, origin.name, origin.accountId]);
 
   return (
     <div>
-      <div className="flex flex-col justify-items-center items-center relative z-0 w-4/5 mb-6 group text-center text-lg">
-        {!origin.name ? null : (
-          <img
-            src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
-          ></img>
-        )}
-        Origin
-        {props.name && (
-          <>
-            : {props.name} {props.service}
-          </>
-        )}
+      <div className="relative z-0 w-full h-full mb-6 group">
+        <div class="grid grid-cols-3 gap-2">
+          <div class="mx-auto text-sm flex items-center font-mono">
+            Origin
+            {props.name && (
+              <>
+                : {props.name} {props.service}
+              </>
+            )}
+          </div>
+          <div>
+            <img
+              class={`flex items-center mx-auto object-scale-down h-8 w-8 ${
+                props.name === 'Cloudflare' ? '' : 'grayscale'
+              }`}
+              // src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
+              src={cloudflare_edited}
+            />
+          </div>
+
+          <div>
+            <img
+              class={`flex items-center mx-auto object-scale-down h-8 w-8 ${
+                props.name === 'AWS' ? '' : 'grayscale'
+              }`}
+              // src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
+              src={aws_edited}
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="relative z-0 w-4/5 mb-6 group">
+      <div className="relative z-0 w-full h-full mb-6 group">
         <input
           type="key"
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -101,7 +93,7 @@ const Origin = (props) => {
         </label>
       </div>
 
-      <div className="block relative z-0 w-4/5 mb-6 group">
+      <div className="block relative z-0 w-full h-full mb-6 group">
         <input
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
@@ -124,7 +116,7 @@ const Origin = (props) => {
       </div>
 
       {props.name === 'Cloudflare' && (
-        <div className="relative z-0 w-4/5 mb-6 group">
+        <div className="relative z-0 w-full h-full mb-6 group">
           <input
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
@@ -150,7 +142,14 @@ const Origin = (props) => {
           </label>
         </div>
       )}
-      <div className="relative z-0 w-4/5 mb-6 group">{bucketSelect}</div>
+
+      {origin.errorMessage ? (
+        <ErrorDisplay></ErrorDisplay>
+      ) : (
+        <div className="relative z-0 w-full h-full mb-6 group">
+          {bucketSelect}
+        </div>
+      )}
     </div>
   );
 };

@@ -3,19 +3,28 @@ Extract the relevant transfer data from the rclone copy output.
 */
 
 const rcloneCopyString = (fullString) => {
+  //First see if the string contains an access denied error.
+  const accessDenied = fullString.includes('AccessDenied') ? true : false;
+  if (accessDenied) return 'accessDenied';
   //Get the string between the first and second occurence of the word "transferred".
-  //RIGHT NOW, JUST RETURNING AN EMPTY STRING IF THERE'S NO RELEVANT PERCENTAGE.
   try {
     let first = fullString.indexOf('Transferred:');
     let second = fullString.indexOf('Transferred:', first + 1);
-    const slicedStr = fullString.slice(first, second);
+    let slicedStr = fullString.slice(first, second);
     //Now get the overall percentage as the number.
     first = slicedStr.indexOf(',');
     second = slicedStr.indexOf('%');
-    //If finalized string isn't correct for some reason, return an empty string.
-    const finalString = slicedStr.slice(first + 1, second).trim();
-    if (isNaN(finalString)) return '';
-    return finalString;
+    slicedStr = slicedStr.slice(first + 1, second).trim();
+    //If final string is the total transfer percent, return it.
+    if (!isNaN(slicedStr)) return slicedStr;
+    //If the string contains "checks" (buckets likely already in sync) and shows a number, return it.
+    first = slicedStr.indexOf('Checks:');
+    slicedStr = slicedStr.slice(first + 1);
+    second = slicedStr.indexOf(',');
+    slicedStr = slicedStr.slice(second + 1).trim();
+    if (!isNaN(slicedStr)) return slicedStr;
+    //Otherwise, return an empty string.
+    return '';
   } catch {
     return '';
   }

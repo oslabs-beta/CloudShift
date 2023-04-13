@@ -1,6 +1,5 @@
 const rclone = require('rclone.js');
 const { resolve } = require('path');
-const AWS = require('aws-sdk');
 const errorGenerator = require('../services/errorGenerator');
 
 //NEED LOTS OF ERROR HANDLING LOGIC HERE.
@@ -26,8 +25,10 @@ const rCloneCopyController = (req, res, next) => {
 
     return next();
   } catch (e) {
-    console.log(e);
-    return next({ e });
+    return next({
+      log: `Unkown error:, ${err}`,
+      message: 'Unknown error during rcloneCopy process.'
+    });
   }
 };
 
@@ -47,27 +48,57 @@ const rcloneListBuckets = async (req, res, next) => {
       message: 'Must POST an Account ID when using Cloudflare.'
     });
 
-  //Update the AWS config file with correct credentials depending on the service.
   try {
-    if (serviceProvider === 'AWS') {
-      AWS.config.update({
-        accessKeyId: accessId,
-        secretAccessKey: secretKey
-      });
-    } else if (serviceProvider === 'Cloudflare') {
-      AWS.config.update({
-        accessKeyId: accessId,
-        secretAccessKey: secretKey,
-        signatureVersion: 'v4',
-        endpoint: `https://${accountId}.r2.cloudflarestorage.com/`
-      });
+    let data, buckets;
+    //Update the AWS config file with correct credentials depending on the service.
+    if (serviceProvider === 'AWS' || serviceProvider === 'Cloudflare') {
+      const AWS = require('aws-sdk');
+      if (serviceProvider === 'AWS') {
+        AWS.config.update({
+          accessKeyId: accessId,
+          secretAccessKey: secretKey
+        });
+      } else if (serviceProvider === 'Cloudflare') {
+        AWS.config.update({
+          accessKeyId: accessId,
+          secretAccessKey: secretKey,
+          signatureVersion: 'v4',
+          endpoint: `https://${accountId}.r2.cloudflarestorage.com/`
+        });
+      }
+
+      const s3 = new AWS.S3();
+
+      //Return the list of buckets, names only.
+      data = await s3.listBuckets().promise();
+      //Translate the bucket array data into an array of bucket string names.
+      buckets = data.Buckets.map((bucket) => bucket.Name);
+    }
+    //Handle the Microsoft Azure case.
+    else if (serviceProvider === 'azureblob') {
+      //Import necessary classes from azure library.
+      const {
+        BlobServiceClient,
+        StorageSharedKeyCredential
+      } = require('@azure/storage-blob');
+      //Pass credentials to Azure sdk library.
+      const sharedKeyCredential = new StorageSharedKeyCredential(
+        accessId,
+        secretKey
+      );
+      const blobServiceClient = new BlobServiceClient(
+        `https://${accessId}.blob.core.windows.net`,
+        sharedKeyCredential
+      );
+
+      //Return the list of buckets, names only.
+      data = blobServiceClient.listContainers();
+      buckets = [];
+      for await (const container of data) {
+        buckets.push(container.name);
+      }
     }
 
-    const s3 = new AWS.S3();
-
-    //Return the list of buckets, names only.
-    const data = await s3.listBuckets().promise();
-    const buckets = data.Buckets.map((bucket) => bucket.Name);
     //Throw an error if there are no buckets associated with
     if (!buckets.length)
       return next({

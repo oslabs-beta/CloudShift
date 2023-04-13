@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,8 +9,15 @@
   </head>
 
   <body class="bg-gradient-to-br from-cyan-100 to-stone-200 !h-screen">
+    <style>
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+      }
+    </style>
     <div id="root"></div>
     <div id="portal"></div>
   </body>
-
 </html>

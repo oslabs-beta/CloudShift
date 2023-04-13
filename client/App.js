@@ -47,7 +47,7 @@ const App = () => {
       <div className="nav flex items-center justify-between mr-36 ml-20 p-6 text-xl ">
         <div>CloudShift</div>
         <div>
-          <a href="#">Github</a>
+          <a target='_blank' href="https://github.com/oslabs-beta/CloudShift/blob/dev/README.md">ReadMe</a>
         </div>
       </div>
       <RemoteContainer></RemoteContainer>
