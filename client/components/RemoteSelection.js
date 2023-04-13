@@ -1,12 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+
 import awsIcon from '../public/aws_edited.png'
 import cloudflareIcon from '../public/cloudflare_edited.png'
 import {updateRemoteName} from '../slice'
 
 const RemoteSelection = (props) => {
     const dispatch = useDispatch()
-    const{source} = props
+    const {source} = props
 
   const changeSourceHandler = (e) => {
     const displayNames = {
