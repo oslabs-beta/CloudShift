@@ -41,7 +41,8 @@ const Remote = (props) => {
       <div className="relative z-0 w-full h-full mb-6 group">
         <div class="grid grid-cols-3 gap-2">
           <h1 class="mx-auto text-sm flex items-center font-mono">
-            {props.remoteType}: {props.displayName}
+            {props.remoteType.charAt(0).toUpperCase()
+  + props.remoteType.slice(1)}: {props.displayName}
           </h1>
           {/* <div>
             <img
@@ -72,17 +73,18 @@ const Remote = (props) => {
           placeholder=" "
           required
           name="accessId"
-          id="originAccessId"
+          id={`${remoteType}AccessId`}
           onChange={(e) => {
             const newState = props.accessIdHandler(e, remote);
             dispatch(updateAccessId({ newState, remoteType }));
           }}
         ></input>
         <label
-          htmlFor="originAccessId"
+          htmlFor={`${remoteType}AccessId`}
           className="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
         >
-          Access ID{origin.accessId ? <>{' \u2705'}</> : <></>}
+          {remote.name === 'azureblob' ? 'Account ID' : 'Access ID'}
+          {remote.accessId ? <>{' \u2705'}</> : <></>}
         </label>
       </div>
 
@@ -93,10 +95,10 @@ const Remote = (props) => {
           required
           type="key"
           name="secretKey"
-          id="originSecretKey"
+          id={`${remote}SecretKey`}
           onChange={(e) => {
             const newState = props.secretKeyHandler(e, remote);
-            dispatch(updateSecretKey({newState, remoteType}));
+            dispatch(updateSecretKey({ newState, remoteType }));
           }}
         ></input>
 
@@ -104,7 +106,8 @@ const Remote = (props) => {
           htmlFor="secretKey"
           className="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
         >
-          Secret Key{origin.secretKey ? <>{' \u2705'}</> : <></>}
+          {remote.name === 'azureblob' ? 'Access Key' : 'Secret Key'}
+          {remote.secretKey ? <>{' \u2705'}</> : <></>}
         </label>
       </div>
 
@@ -118,14 +121,19 @@ const Remote = (props) => {
             id="accountId"
             name="accountId"
             onChange={(e) => {
-              dispatch(updateAccountId({accountId: e.target.value.trim(), remoteType}));
+              dispatch(
+                updateAccountId({
+                  accountId: e.target.value.trim(),
+                  remoteType,
+                })
+              );
             }}
           ></input>
           <label
             htmlFor="accountId"
             className="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
-            Account ID {origin.accountId.length > 1 && <>{'\u2705'}</>}
+            Account ID {remote.accountId.length > 1 && <>{'\u2705'}</>}
           </label>
         </div>
       )}
