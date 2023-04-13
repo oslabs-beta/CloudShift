@@ -1,7 +1,7 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateSelectedBucket } from '../slice';
-import LoadingButton from './LoadingButton';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateSelectedBucket } from "../slice";
+import LoadingButton from "./LoadingButton";
 
 const BucketSelect = (props) => {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const BucketSelect = (props) => {
             onChange={(e) => {
               const payload = {
                 bucket: e.target.value,
-                remote: props.remote
+                remote: props.remote,
               };
               dispatch(updateSelectedBucket(payload));
             }}

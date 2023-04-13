@@ -9,45 +9,45 @@ const errorCredentialString = (field) => {
 
 const errorGenerator = (error, serviceProvider) => {
   //The client side error message.
-  let message = '';
+  let message = "";
   //The client side error field (when applicable).
-  let field = '';
+  let field = "";
 
   //General errors.
   //System clock error.
-  if (error.code === 'RequestTimeTooSkewed')
+  if (error.code === "RequestTimeTooSkewed")
     message = `Difference between ${serviceProvider} request time & current time is too large. Either resync your system clock or restart your computer to fix.`;
 
   //Cloudflare specific errors.
-  if (serviceProvider === 'Cloudflare') {
+  if (serviceProvider === "Cloudflare") {
     //Invalid Access ID.
-    if (error.code === 'Unauthorized') {
-      message = errorCredentialString('Access ID');
-      field = 'accessId';
+    if (error.code === "Unauthorized") {
+      message = errorCredentialString("Access ID");
+      field = "accessId";
     }
     //Invalid secret key.
-    else if (error.code === 'SignatureDoesNotMatch') {
-      message = errorCredentialString('Secret Key');
-      field = 'secretKey';
+    else if (error.code === "SignatureDoesNotMatch") {
+      message = errorCredentialString("Secret Key");
+      field = "secretKey";
     }
     //Invalid Account ID.
-    else if (error.code === 'UnknownEndpoint') {
-      message = errorCredentialString('Account ID');
-      field = 'accountId';
+    else if (error.code === "UnknownEndpoint") {
+      message = errorCredentialString("Account ID");
+      field = "accountId";
     }
   }
 
   //Amazon specific errors.
-  else if (serviceProvider === 'AWS') {
+  else if (serviceProvider === "AWS") {
     //Invalid Access ID.
-    if (error.code === 'InvalidAccessKeyId') {
-      message = errorCredentialString('Access ID');
-      field = 'accessId';
+    if (error.code === "InvalidAccessKeyId") {
+      message = errorCredentialString("Access ID");
+      field = "accessId";
     }
     //Invalid secret key.
-    else if (error.code === 'SignatureDoesNotMatch') {
-      message = errorCredentialString('Secret Key');
-      field = 'secretKey';
+    else if (error.code === "SignatureDoesNotMatch") {
+      message = errorCredentialString("Secret Key");
+      field = "secretKey";
     }
   }
 
