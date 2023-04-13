@@ -17,7 +17,7 @@ export const RemoteContainer = (props) => {
               remoteType={'origin'}
               accessIdHandler={accessIdHandler}
               secretKeyHandler={secretKeyHandler}
-              accountIdHandler={accountIdHandler}
+             
               displayName={origin.displayName}
             ></Remote>
           )}
@@ -31,7 +31,7 @@ export const RemoteContainer = (props) => {
               remoteType={'destination'}
               accessIdHandler={accessIdHandler}
               secretKeyHandler={secretKeyHandler}
-              accountIdHandler={accountIdHandler}
+              
               displayName={destination.displayName}
             />
           )}
@@ -86,3 +86,4 @@ const secretKeyHandler = (e, remote) => {
 };
 
 //async call using Amazon SDK to retrieve buckets and generate drop down menu
+
