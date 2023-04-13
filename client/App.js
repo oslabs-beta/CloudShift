@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RemoteContainer } from "./components/RemoteContainer";
-import Overlay from "./components/Overlay";
-import { socket } from "./socket";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RemoteContainer } from './components/RemoteContainer';
+import Overlay from './components/Overlay';
+import { socket } from './socket';
 import {
   updateDataTransferProgressPercent,
-  updateSocketConnectivity,
-} from "./slice";
+  updateSocketConnectivity
+} from './slice';
 //import styles if necessary
 //may need to import functions from slices here
 
@@ -27,18 +27,18 @@ const App = () => {
 
     function onDataTransfer(value) {
       //Don't update value if it isn't a valid increase.
-      if (value === "") return;
+      if (value === '') return;
       dispatch(updateDataTransferProgressPercent(value));
     }
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("data transfer", onDataTransfer);
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('data transfer', onDataTransfer);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("data transfer", onDataTransfer);
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('data transfer', onDataTransfer);
     };
   }, []);
 
