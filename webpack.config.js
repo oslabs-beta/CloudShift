@@ -5,7 +5,7 @@ module.exports = {
   entry: './client/index.js',
   mode: 'development',
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, './build'),
     filename: 'index_bundle.js'
   },
   target: 'web',
@@ -44,16 +44,8 @@ module.exports = {
         ]
       },
       {
-        test: /\.scss?/,
-        exclude: /node_modules/,
-        use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
-          'css-loader',
-          // Compiles Sass to CSS
-          'sass-loader'
-        ]
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader', 'postcss-loader']
       }
     ]
   },
