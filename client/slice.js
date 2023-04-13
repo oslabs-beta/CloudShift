@@ -1,43 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserBuckets } from './services/getBuckets';
 
-
 const startingState = {
   isMigrating: false,
   origin: {
     name: '',
+    displayName: '',
     accessId: '',
     secretKey: '',
     accountId: '',
     selectedBucket: '',
-    service: '',
     bucketOptions: [],
     bucketLoading: false,
-    errorMessage: ''
+    errorMessage: '',
   },
   destination: {
     name: '',
+    displayName: '',
     secretKey: '',
     accessId: '',
     accountId: '',
     selectedBucket: '',
-    service: '',
     bucketOptions: [],
     bucketLoading: false,
-    errorMessage: ''
+    errorMessage: '',
   },
   socket: {
     isConnected: false,
-    dataTransferProgressPercent: ''
-  }
-}
-
-
-
+    dataTransferProgressPercent: '',
+  },
+};
 
 const slice = createSlice({
   name: 'GUI',
-  initialState: {...startingState},
+  initialState: { ...startingState },
   reducers: {
     migrationStatusChange: (state, action) => {
       state.isMigrating = action.payload;
@@ -48,23 +44,21 @@ const slice = createSlice({
     updateDestinationCredentials: (state, action) => {
       state.destination = action.payload.destination;
     },
-    updateOriginAccessId: (state, action) => {
-      state.origin = action.payload.origin;
-      state.destination = action.payload.destination;
+    updateAccessId: (state, action) => {
+      const { newState } = action.payload;
+      const remoteName =
+        action.payload.remoteType === 'origin' ? 'origin' : 'destination';
+      state[remoteName] = newState;
     },
-    updateOriginSecretKey: (state, action) => {
-      state.origin = action.payload.origin;
-    },
-    updateDestinationAccessId: (state, action) => {
-      state.destination = action.payload.destination;
-    },
-    updateDestinationSecretKey: (state, action) => {
-      state.destination = action.payload.destination;
+    updateSecretKey: (state, action) => {
+      const { newState } = action.payload;
+      const remoteName =
+        action.payload.remoteType === 'origin' ? 'origin' : 'destination';
+      state[remoteName] = newState;
     },
     updateAccountId: (state, action) => {
-      const { origin, destination } = action.payload;
-      state.origin = origin;
-      state.destination = destination;
+      const { remoteType, accountId } = action.payload;
+      state[remoteType].accountId = accountId;
     },
     updateOriginBuckets: (state, action) => {
       state.origin.bucketOptions = action.payload;
@@ -97,10 +91,19 @@ const slice = createSlice({
       state.origin.errorMessage = '';
     },
     clearDestinationErrorMessage: (state, action) => {
-      state.destination.errorMessage = ''
+      state.destination.errorMessage = '';
     },
-    resetState: (state,action) => {
-      return startingState
+    resetState: (state, action) => {
+      return startingState;
+    },
+    updateRemoteName: (state, action) => {
+      const remoteName =
+        action.payload.source === 'Origin' ? 'origin' : 'destination';
+      state[remoteName] = {
+        ...state[remoteName],
+        name: action.payload.name,
+        displayName: action.payload.displayName,
+      };
     },
   },
   extraReducers: (builder) => {
@@ -149,7 +152,7 @@ const slice = createSlice({
         state.errorMessage =
           'An unknown error occured. Please refresh and try again.';
       });
-  }
+  },
 });
 
 export default slice.reducer;
@@ -157,10 +160,8 @@ export default slice.reducer;
 export const {
   migrationStatusChange,
   updateRemoteCredentials,
-  updateOriginAccessId,
-  updateOriginSecretKey,
-  updateDestinationSecretKey,
-  updateDestinationAccessId,
+  updateAccessId,
+  updateSecretKey,
   updateAccountId,
   updateOriginBuckets,
   updateDestinationBuckets,
@@ -173,5 +174,6 @@ export const {
   updateDestinationBucketLoading,
   clearOriginErrorMessage,
   clearDestinationErrorMessage,
-  resetState
+  resetState,
+  updateRemoteName,
 } = slice.actions;
