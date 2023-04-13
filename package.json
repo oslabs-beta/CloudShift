@@ -4,9 +4,7 @@
   "description": "A cloud-to-cloud migration tool.",
   "main": "index.js",
   "scripts": {
-    "start": "open-cli http://localhost:3000 & NODE_ENV=production node server/server.js",
-    "build": "NODE_ENV=production webpack",
-    "dev": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve"
+    "start": "open-cli http://localhost:3000 & NODE_ENV=production node server/server.js"
   },
   "repository": {
     "type": "git",
@@ -28,39 +26,11 @@
   },
   "homepage": "https://github.com/oslabs-beta/CloudShift#readme",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.301.0",
     "@azure/storage-blob": "^12.13.0",
-    "@reduxjs/toolkit": "^1.9.3",
     "aws-sdk": "^2.1346.0",
     "express": "^4.18.2",
-    "file-loader": "^6.2.0",
     "open-cli": "^7.2.0",
     "rclone.js": "^0.6.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
-    "socket.io": "^4.6.1",
-    "socket.io-client": "^4.6.1",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.21.0",
-    "@babel/core": "^7.21.3",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.18.6",
-    "autoprefixer": "^10.4.14",
-    "babel-loader": "^9.1.2",
-    "css-loader": "^6.7.3",
-    "html-webpack-plugin": "^5.5.0",
-    "nodemon": "^2.0.22",
-    "postcss": "^8.4.21",
-    "postcss-loader": "^7.2.4",
-    "sass": "^1.60.0",
-    "sass-loader": "^13.2.2",
-    "style-loader": "^3.3.2",
-    "tailwindcss": "^3.3.1",
-    "webpack": "^5.76.3",
-    "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.13.1"
+    "socket.io": "^4.6.1"
   }
 }
