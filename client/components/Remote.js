@@ -1,66 +1,49 @@
-//handle conditions if props.source is origin or destination
-
 import React, { useEffect } from 'react';
+import { updateSecretKey, updateAccessId, updateAccountId } from '../slice';
 import { useDispatch, useSelector } from 'react-redux';
 import BucketSelect from './BucketSelect';
 import { getUserBuckets } from '../services/getBuckets';
-import {
-  updateOriginSecretKey,
-  updateOriginAccessId,
-  updateAccountId,
-} from '../slice';
-
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
 import ErrorDisplay from './ErrorDisplay';
 
 const Remote = (props) => {
-
-
   const dispatch = useDispatch();
   const { origin, destination } = useSelector((state) => state.GUI);
 
+  let { remoteType } = props;
+
+  const remote = remoteType === 'origin' ? origin : destination;
+
   let bucketSelect;
-  const requireAccountId = props.name === 'Cloudflare' ? true : false;
+
+  const requireAccountId = remote.name === 'Cloudflare' ? true : false;
+
   if (!requireAccountId) {
-    bucketSelect = origin.accessId && origin.secretKey && (
-      <BucketSelect remote={'origin'}></BucketSelect>
+    bucketSelect = remote.accessId && remote.secretKey && (
+      <BucketSelect remote={remoteType}></BucketSelect>
     );
   } else {
-    bucketSelect = origin.accessId && origin.secretKey && origin.accountId && (
-      <BucketSelect remote={'origin'}></BucketSelect>
+    bucketSelect = remote.accessId && remote.secretKey && remote.accountId && (
+      <BucketSelect remote={remoteType}></BucketSelect>
     );
   }
 
   //Get the list of buckets if all credentials are present.
   useEffect(() => {
-    if (!origin.accessId || !origin.secretKey) return;
-    if (origin.name === 'Cloudflare' && !origin.accountId) return;
-    dispatch(getUserBuckets({ ...origin, originOrDestination: 'origin' }));
-  }, [origin.accessId, origin.secretKey, origin.name, origin.accountId]);
+    if (!remote.accessId || !remote.secretKey) return;
+    if (remote.name === 'Cloudflare' && !remote.accountId) return;
+    dispatch(getUserBuckets({ ...remote, originOrDestination: remoteType }));
+  }, [remote.accessId, remote.secretKey, remote.name, remote.accountId]);
 
-  
-    
-  
   return (
-    <>
-    
-    <div><h1>{props.remoteType}: {props.displayName}</h1></div>
-   
-
-
     <div>
       <div className="relative z-0 w-full h-full mb-6 group">
         <div class="grid grid-cols-3 gap-2">
-          <div class="mx-auto text-sm flex items-center font-mono">
-            Origin
-            {props.name && (
-              <>
-                : {props.name} {props.service}
-              </>
-            )}
-          </div>
-          <div>
+          <h1 class="mx-auto text-sm flex items-center font-mono">
+            {props.remoteType}: {props.displayName}
+          </h1>
+          {/* <div>
             <img
               class={`flex items-center mx-auto object-scale-down h-8 w-8 ${
                 props.name === 'Cloudflare' ? '' : 'grayscale'
@@ -68,9 +51,9 @@ const Remote = (props) => {
               // src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
               src={cloudflare_edited}
             />
-          </div>
+          </div> */}
 
-          <div>
+          {/* <div>
             <img
               class={`flex items-center mx-auto object-scale-down h-8 w-8 ${
                 props.name === 'AWS' ? '' : 'grayscale'
@@ -78,7 +61,7 @@ const Remote = (props) => {
               // src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
               src={aws_edited}
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -91,12 +74,8 @@ const Remote = (props) => {
           name="accessId"
           id="originAccessId"
           onChange={(e) => {
-            const newState = props.originAccessIdHandler(
-              e,
-              origin,
-              destination
-            );
-            dispatch(updateOriginAccessId(newState));
+            const newState = props.accessIdHandler(e, remote);
+            dispatch(updateAccessId({ newState, remoteType }));
           }}
         ></input>
         <label
@@ -116,8 +95,8 @@ const Remote = (props) => {
           name="secretKey"
           id="originSecretKey"
           onChange={(e) => {
-            const newState = props.secretKeyHandler(e, origin);
-            dispatch(updateOriginSecretKey(newState));
+            const newState = props.secretKeyHandler(e, remote);
+            dispatch(updateSecretKey({newState, remoteType}));
           }}
         ></input>
 
@@ -129,7 +108,7 @@ const Remote = (props) => {
         </label>
       </div>
 
-      {props.name === 'Cloudflare' && (
+      {remote.name === 'Cloudflare' && (
         <div className="relative z-0 w-full h-full mb-6 group">
           <input
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -139,13 +118,7 @@ const Remote = (props) => {
             id="accountId"
             name="accountId"
             onChange={(e) => {
-              const newState = props.accountIdHandler(
-                e,
-                origin,
-                destination,
-                props.remoteType
-              );
-              dispatch(updateAccountId(newState));
+              dispatch(updateAccountId({accountId: e.target.value.trim(), remoteType}));
             }}
           ></input>
           <label
@@ -157,7 +130,7 @@ const Remote = (props) => {
         </div>
       )}
 
-      {origin.errorMessage ? (
+      {remote.errorMessage ? (
         <ErrorDisplay></ErrorDisplay>
       ) : (
         <div className="relative z-0 w-full h-full mb-6 group">
@@ -165,7 +138,6 @@ const Remote = (props) => {
         </div>
       )}
     </div>
-    </>
   );
 };
 

@@ -10,7 +10,6 @@ const startingState = {
     secretKey: '',
     accountId: '',
     selectedBucket: '',
-    // service: '',
     bucketOptions: [],
     bucketLoading: false,
     errorMessage: '',
@@ -22,7 +21,6 @@ const startingState = {
     accessId: '',
     accountId: '',
     selectedBucket: '',
-    // service: '',
     bucketOptions: [],
     bucketLoading: false,
     errorMessage: '',
@@ -46,23 +44,21 @@ const slice = createSlice({
     updateDestinationCredentials: (state, action) => {
       state.destination = action.payload.destination;
     },
-    updateOriginAccessId: (state, action) => {
-      state.origin = action.payload.origin;
-      state.destination = action.payload.destination;
+    updateAccessId: (state, action) => {
+      const { newState } = action.payload;
+      const remoteName =
+        action.payload.remoteType === 'origin' ? 'origin' : 'destination';
+      state[remoteName] = newState;
     },
-    updateOriginSecretKey: (state, action) => {
-      state.origin = action.payload.origin;
-    },
-    updateDestinationAccessId: (state, action) => {
-      state.destination = action.payload.destination;
-    },
-    updateDestinationSecretKey: (state, action) => {
-      state.destination = action.payload.destination;
+    updateSecretKey: (state, action) => {
+      const { newState } = action.payload;
+      const remoteName =
+        action.payload.remoteType === 'origin' ? 'origin' : 'destination';
+      state[remoteName] = newState;
     },
     updateAccountId: (state, action) => {
-      const { origin, destination } = action.payload;
-      state.origin = origin;
-      state.destination = destination;
+      const { remoteType, accountId } = action.payload;
+      state[remoteType].accountId = accountId;
     },
     updateOriginBuckets: (state, action) => {
       state.origin.bucketOptions = action.payload;
@@ -164,10 +160,8 @@ export default slice.reducer;
 export const {
   migrationStatusChange,
   updateRemoteCredentials,
-  updateOriginAccessId,
-  updateOriginSecretKey,
-  updateDestinationSecretKey,
-  updateDestinationAccessId,
+  updateAccessId,
+  updateSecretKey,
   updateAccountId,
   updateOriginBuckets,
   updateDestinationBuckets,
