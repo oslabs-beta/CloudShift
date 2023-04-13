@@ -3,11 +3,11 @@ const express = require('express');
 const fsController = require('./controllers/fsController.js');
 const {
   rCloneCopyController,
-  rcloneListBuckets
+  rcloneListBuckets,
 } = require('./controllers/rcloneController');
 const {
   assignVariablesForFS,
-  getBucketLoc
+  getBucketLoc,
 } = require('./controllers/assignController.js');
 const resetAWSConfig = require('./controllers/resetAWSController.js');
 const { rcloneCopyString } = require('./services/rcloneCopyString.js');
@@ -17,9 +17,11 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(server, {
   cors: {
-    origin: '*'
-  }
+    origin: '*',
+  },
 });
+
+const fs = require('fs');
 
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '../client/public')));
@@ -44,9 +46,17 @@ app.post(
     res.locals.rcloneCopy.stderr.on('data', (data) => {
       console.error(data.toString());
     });
+    //delete config file
+    // try {
+    //   fs.unlinkSync(path.resolve(__dirname, '../rclone.conf'));
+    // } catch (error) {
+    //   console.log(error);
+    // }
     res.sendStatus(200);
   }
 );
+
+app.get('/deleteConfig', )
 
 //Redirect if there's any request to a page that doesn't exist.
 app.get('*', (req, res) => {
@@ -59,7 +69,7 @@ app.use((err, req, res, next) => {
     log: 'Express error handler caught unknown middleware error',
     status: 500,
     message: { err: 'An error occurred' },
-    field: ''
+    field: '',
   };
   const errorObj = Object.assign({}, defaultErr, err);
   console.log(errorObj.log);
