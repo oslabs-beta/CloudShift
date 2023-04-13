@@ -1,43 +1,39 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { getUserBuckets } from './services/getBuckets';
-
+import { createSlice } from "@reduxjs/toolkit";
+import { getUserBuckets } from "./services/getBuckets";
 
 const startingState = {
   isMigrating: false,
   origin: {
-    name: '',
-    accessId: '',
-    secretKey: '',
-    accountId: '',
-    selectedBucket: '',
-    service: '',
+    name: "",
+    accessId: "",
+    secretKey: "",
+    accountId: "",
+    selectedBucket: "",
+    service: "",
     bucketOptions: [],
     bucketLoading: false,
-    errorMessage: ''
+    errorMessage: "",
   },
   destination: {
-    name: '',
-    secretKey: '',
-    accessId: '',
-    accountId: '',
-    selectedBucket: '',
-    service: '',
+    name: "",
+    secretKey: "",
+    accessId: "",
+    accountId: "",
+    selectedBucket: "",
+    service: "",
     bucketOptions: [],
     bucketLoading: false,
-    errorMessage: ''
+    errorMessage: "",
   },
   socket: {
     isConnected: false,
-    dataTransferProgressPercent: ''
-  }
-}
-
-
-
+    dataTransferProgressPercent: "",
+  },
+};
 
 const slice = createSlice({
-  name: 'GUI',
-  initialState: {...startingState},
+  name: "GUI",
+  initialState: { ...startingState },
   reducers: {
     migrationStatusChange: (state, action) => {
       state.isMigrating = action.payload;
@@ -94,13 +90,13 @@ const slice = createSlice({
       state.destination.bucketLoading = action.payload;
     },
     clearOriginErrorMessage: (state, action) => {
-      state.origin.errorMessage = '';
+      state.origin.errorMessage = "";
     },
     clearDestinationErrorMessage: (state, action) => {
-      state.destination.errorMessage = ''
+      state.destination.errorMessage = "";
     },
-    resetState: (state,action) => {
-      return startingState
+    resetState: (state, action) => {
+      return startingState;
     },
   },
   extraReducers: (builder) => {
@@ -108,11 +104,11 @@ const slice = createSlice({
       .addCase(getUserBuckets.pending, (state, action) => {
         const { originOrDestination } = action.meta.arg;
         //Load the drop down and clear error message.
-        if (originOrDestination === 'origin') {
-          state.origin.errorMessage = '';
+        if (originOrDestination === "origin") {
+          state.origin.errorMessage = "";
           state.origin.bucketLoading = true;
         } else {
-          state.destination.errorMessage = '';
+          state.destination.errorMessage = "";
           state.destination.bucketLoading = true;
         }
       })
@@ -121,13 +117,13 @@ const slice = createSlice({
         const { originOrDestination } = action.meta.arg;
         //If server returned an error...
         if (!Array.isArray(data)) {
-          if (originOrDestination === 'origin')
+          if (originOrDestination === "origin")
             state.origin.errorMessage = data;
           else state.destination.errorMessage = data;
         }
         //Update appropriate data.
         else {
-          if (originOrDestination === 'origin') {
+          if (originOrDestination === "origin") {
             state.origin.bucketOptions = data;
             state.origin.bucketLoading = false;
           } else {
@@ -135,21 +131,21 @@ const slice = createSlice({
             state.destination.bucketLoading = false;
           }
         }
-        if (originOrDestination === 'origin') state.origin.bucketOptions = data;
-        else if (originOrDestination === 'destination')
+        if (originOrDestination === "origin") state.origin.bucketOptions = data;
+        else if (originOrDestination === "destination")
           state.destination.bucketOptions = data;
       })
       .addCase(getUserBuckets.rejected, (state, action) => {
         //Reset loading state.
         const { originOrDestination } = action.meta.arg;
-        if (originOrDestination === 'origin')
+        if (originOrDestination === "origin")
           state.origin.bucketLoading = false;
         else state.destination.bucketLoading = false;
         //Post an error.
         state.errorMessage =
-          'An unknown error occured. Please refresh and try again.';
+          "An unknown error occured. Please refresh and try again.";
       });
-  }
+  },
 });
 
 export default slice.reducer;
@@ -173,5 +169,5 @@ export const {
   updateDestinationBucketLoading,
   clearOriginErrorMessage,
   clearDestinationErrorMessage,
-  resetState
+  resetState,
 } = slice.actions;

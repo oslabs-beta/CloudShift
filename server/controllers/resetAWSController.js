@@ -1,4 +1,4 @@
-const AWS = require('aws-sdk');
+const AWS = require("aws-sdk");
 
 //Reset the config file. Prevents bugs within transfer services that relies on the AWS-SDK library.
 const resetAWSConfig = (req, res, next) => {

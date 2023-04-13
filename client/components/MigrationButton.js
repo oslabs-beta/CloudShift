@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { migrationStatusChange } from '../slice.js';
-import { migrateData } from '../services/migrate.js';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { migrationStatusChange } from "../slice.js";
+import { migrateData } from "../services/migrate.js";
 
 const StartMigrationButton = () => {
   const dispatch = useDispatch();
