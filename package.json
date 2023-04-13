@@ -4,9 +4,9 @@
   "description": "A cloud-to-cloud migration tool.",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve",
+    "start": "open-cli http://localhost:3000 & NODE_ENV=production node server/server.js",
     "build": "NODE_ENV=production webpack",
-    "test-build": "open-cli http://localhost:3000 & NODE_ENV=production node server/server.js"
+    "dev": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve"
   },
   "repository": {
     "type": "git",
