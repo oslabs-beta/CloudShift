@@ -17,7 +17,6 @@ export const RemoteContainer = (props) => {
               remoteType={'origin'}
               accessIdHandler={accessIdHandler}
               secretKeyHandler={secretKeyHandler}
-              accountIdHandler={accountIdHandler}
               displayName={origin.displayName}
             ></Remote>
           )}
@@ -31,7 +30,6 @@ export const RemoteContainer = (props) => {
               remoteType={'destination'}
               accessIdHandler={accessIdHandler}
               secretKeyHandler={secretKeyHandler}
-              accountIdHandler={accountIdHandler}
               displayName={destination.displayName}
             />
           )}
@@ -48,7 +46,7 @@ const accessIdHandler = (e, remote) => {
   );
   const isCloudflareAccessId = /^[a-z0-9]{32}$/.test(accessId);
   const isMicrosoftAccessId =
-    remote.name === 'azureblob' && !isAmazonAccessId && isCloudflareAccessId
+    remote.name === 'azureblob' && !isAmazonAccessId && !isCloudflareAccessId
       ? true
       : false;
   if (isAmazonAccessId || isCloudflareAccessId || isMicrosoftAccessId) {
