@@ -6,6 +6,7 @@ import { getUserBuckets } from '../services/getBuckets';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
 import ErrorDisplay from './ErrorDisplay';
+import StartMigrationButton from './MigrationButton'
 
 const Remote = (props) => {
   const dispatch = useDispatch();
@@ -145,6 +146,8 @@ const Remote = (props) => {
           {bucketSelect}
         </div>
       )}
+
+      {remote.selectedBucket  && remoteType === 'destination' ? <StartMigrationButton></StartMigrationButton> : null }
     </div>
   );
 };
