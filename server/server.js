@@ -76,6 +76,8 @@ app.use((err, req, res, next) => {
     .json({ message: errorObj.message, field: errorObj.field });
 });
 
+//Test 2
+
 server.listen(3000, () => console.log("Serving listening on port 3000..."));
 
 module.exports = { io };
