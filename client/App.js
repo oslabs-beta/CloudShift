@@ -44,8 +44,8 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      <div className="nav flex items-center justify-between mr-36 ml-20 p-6 text-xl ">
+    <div className="bg-gradient-to-br from-cyan-100 to-stone-200 !h-screen">
+      <div className="nav flex items-center justify-between mr-36 ml-20 p-6 text-xl">
         <div>CloudShift</div>
         <div>
           <a
@@ -58,7 +58,7 @@ const App = () => {
       </div>
       <RemoteContainer></RemoteContainer>
       {isMigrating && <Overlay></Overlay>}
-    </>
+    </div>
   );
 };
 
