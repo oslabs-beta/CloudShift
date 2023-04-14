@@ -24,7 +24,7 @@ export const RemoteContainer = (props) => {
 
         <div className="mx-20 my-8">
           {!destination.name ? (
-            <RemoteSelection source={"Destinaton"}></RemoteSelection>
+            <RemoteSelection source={"Destination"}></RemoteSelection>
           ) : (
             <Remote
               remoteType={"destination"}
