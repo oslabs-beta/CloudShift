@@ -8,6 +8,12 @@ export const RemoteContainer = (props) => {
 
   return (
     <>
+
+
+
+
+
+
       <div className="grid grid-rows-1 grid-cols-2 mx-32 my-16 p-6">
         <div className="mx-20 my-8">
           {!origin.name ? (
@@ -53,6 +59,7 @@ const accessIdHandler = (e, remote) => {
     return {
       ...remote,
       accessId: accessId.trim(),
+      errorField: '',
     };
   } else {
     //this should probably just return a red check mark
@@ -73,6 +80,7 @@ const secretKeyHandler = (e, remote) => {
     return {
       ...remote,
       secretKey: secretKey.trim(),
+      errorField: '',
     };
   } else {
     //this should probably just return a red check mark

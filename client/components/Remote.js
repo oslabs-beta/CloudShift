@@ -37,13 +37,16 @@ const Remote = (props) => {
     dispatch(getUserBuckets({ ...remote, originOrDestination: remoteType }));
   }, [remote.accessId, remote.secretKey, remote.name, remote.accountId]);
 
+  let correctInputClass = "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+  let wrongInputClass = "block py-2.5 px-0 w-full text-sm text-red-600 bg-transparent border-2 border-b-2 border-red-600  rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer"
+  
+  
   return (
     <div>
       <div className="relative z-0 w-full h-full mb-6 group">
         <div class="grid grid-cols-3 gap-2">
           <h1 class="mx-auto text-sm flex items-center font-mono">
-            {props.remoteType.charAt(0).toUpperCase()
-  + props.remoteType.slice(1)}: {props.displayName}
+            {props.remoteType.charAt(0).toUpperCase() + props.remoteType.slice(1)}: {props.displayName}
           </h1>
           {/* <div>
             <img
@@ -70,7 +73,7 @@ const Remote = (props) => {
       <div className="relative z-0 w-full h-full mb-6 group">
         <input
           type="key"
-          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          className={remote.errorField === 'accessId' || (remote.name === 'azureblob' && remote.errorMessage) ? wrongInputClass : correctInputClass}
           placeholder=" "
           required
           name="accessId"
@@ -91,7 +94,7 @@ const Remote = (props) => {
 
       <div className="block relative z-0 w-full h-full mb-6 group">
         <input
-          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          className={remote.errorField === 'secretKey' || (remote.name === 'azureblob' && remote.errorMessage) ? wrongInputClass : correctInputClass}
           placeholder=" "
           required
           type="key"
@@ -148,6 +151,7 @@ const Remote = (props) => {
       )}
 
       {remote.selectedBucket  && remoteType === 'destination' ? <StartMigrationButton></StartMigrationButton> : null }
+ 
     </div>
   );
 };
