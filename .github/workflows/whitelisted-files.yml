@@ -4,6 +4,13 @@ name: Staging Whitelisted Files/Folders Check
 on:
   pull_request:
     types: [opened, edited, reopened]
+    paths-ignore:
+      - '.github/**'
+      - 'build/**'
+      - 'server/**'
+      - 'LICENSE'
+      - 'package*.json'
+      - 'README.md'
 
 jobs:
   delete_files:
