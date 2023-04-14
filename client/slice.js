@@ -13,6 +13,7 @@ const startingState = {
     bucketOptions: [],
     bucketLoading: false,
     errorMessage: '',
+    errorField: ''
   },
   destination: {
     name: '',
@@ -24,6 +25,7 @@ const startingState = {
     bucketOptions: [],
     bucketLoading: false,
     errorMessage: '',
+    errorField: ''
   },
   socket: {
     isConnected: false,
@@ -121,13 +123,19 @@ const slice = createSlice({
       })
       .addCase(getUserBuckets.fulfilled, (state, action) => {
         const { data } = action.payload;
+        console.log('data',data)
         const { originOrDestination } = action.meta.arg;
         //If server returned an error...
         if (!Array.isArray(data)) {
-          if (originOrDestination === 'origin')
+          if (originOrDestination === 'origin'){
+
             state.origin.errorMessage = data;
-          else state.destination.errorMessage = data;
+            state.origin.errorField = data.field;
+          } else {
+            state.destination.errorMessage = data;
+            state.destination.errorField = data.field
         }
+      }
         //Update appropriate data.
         else {
           if (originOrDestination === 'origin') {
