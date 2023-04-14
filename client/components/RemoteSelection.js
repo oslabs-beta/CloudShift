@@ -1,10 +1,10 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
-import awsIcon from "../public/aws_edited.png";
-import azureIcon from "../public/azure.png";
-import cloudflareIcon from "../public/cloudflare_edited.png";
-import { updateRemoteName } from "../slice";
+import awsIcon from '../public/aws_edited.png';
+import azureIcon from '../public/azure.png';
+import cloudflareIcon from '../public/cloudflare_edited.png';
+import { updateRemoteName } from '../slice';
 
 const RemoteSelection = (props) => {
   const dispatch = useDispatch();
@@ -12,9 +12,9 @@ const RemoteSelection = (props) => {
 
   const changeSourceHandler = (e) => {
     const displayNames = {
-      azureblob: "Microsoft Storage Container",
-      Cloudflare: "Cloudflare R2",
-      AWS: "Amazon S3",
+      azureblob: 'Microsoft Storage Container',
+      Cloudflare: 'Cloudflare R2',
+      AWS: 'Amazon S3'
     };
 
     const name = e.target.id;
@@ -25,37 +25,55 @@ const RemoteSelection = (props) => {
 
   return (
     <>
-      <div class="grid grid-rows-5 items-center px-10">
-        <div class="text-center text-base font-mono row-span-1">
+      <div className="grid grid-rows-5 items-center px-10">
+        <div className="text-center text-base font-mono row-span-1">
           {props.source}
         </div>
-        <div class="text-base flex justify-center align-top row-span-4">
-          <button class="p-2" typeof="button" onClick={changeSourceHandler}>
+        <div className="text-base flex justify-center align-top row-span-4">
+          <button
+            className="p-2 group"
+            typeof="button"
+            onClick={changeSourceHandler}
+          >
             <img
-              class="flex items-center mx-auto object-scale-down h-24 w-24"
+              className="flex items-center mx-auto object-scale-down h-24 w-24"
               id="AWS"
               src={awsIcon}
               alt="aws"
             />
-            AWS
+            <span className="group-hover:underline underline-offset-8">
+              AWS
+            </span>
           </button>
-          <button class="p-2" typeof="button" onClick={changeSourceHandler}>
+          <button
+            className="p-2 group"
+            typeof="button"
+            onClick={changeSourceHandler}
+          >
             <img
-              class="flex items-center mx-auto object-scale-down h-24 w-24"
+              className="flex items-center mx-auto object-scale-down h-24 w-24"
               id="Cloudflare"
               src={cloudflareIcon}
               alt="cloudflare"
             />
-            Cloudflare
+            <span className="group-hover:underline underline-offset-8">
+              Cloudflare
+            </span>
           </button>
-          <button class="p-2" typeof="button" onClick={changeSourceHandler}>
+          <button
+            className="p-2 group"
+            typeof="button"
+            onClick={changeSourceHandler}
+          >
             <img
-              class="flex items-center mx-auto object-scale-down h-24 w-24"
+              className="flex items-center mx-auto object-scale-down h-24 w-24"
               id="azureblob"
               src={azureIcon}
               alt="azure"
             />
-            MS Azure
+            <span className="group-hover:underline underline-offset-8">
+              MS Azure
+            </span>
           </button>
         </div>
       </div>
