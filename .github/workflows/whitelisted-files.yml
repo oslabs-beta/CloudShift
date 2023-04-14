@@ -24,7 +24,7 @@ jobs:
 
       - name: Delete files
         run: |
-          find . -mindepth 1 -maxdepth 1 ! -name ".git" ! -name "server" ! -name "build" ! -name "LICENSE" ! -name "package.json" ! -name ".github" ! -name "package-lock.json" ! -name "README.md" -exec rm -rf {} \;
+          find . -mindepth 1 -maxdepth 1 ! -name ".git" ! -name "server" ! -name "build" ! -name "LICENSE" ! -name "package.json" ! -name ".github" ! -name "package-lock.json" ! -name "README.md" ! -name "Dockerfile" -exec rm -rf {} \;
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git add .
