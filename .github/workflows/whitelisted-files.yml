@@ -1,0 +1,26 @@
+#Only whitelisted files should pass. Otherwise, files should fail the test.
+name: Staging Whitelisted Files/Folders Check
+
+on:
+  pull_request:
+    paths-ignore:
+      - '.github/**'
+      - 'build/**'
+      - 'server/**'
+      - 'LICENSE'
+      - 'package*.json'
+      - 'README.md'
+
+jobs:
+  whitelist-only:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Make sure the actual branch is checked out when running on pull requests
+          ref: ${{ github.head_ref }}
+
+      - name: Non-whitelisted paths detected.
+        run: exit 1

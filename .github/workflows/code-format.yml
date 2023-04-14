@@ -3,6 +3,8 @@ name: Format Code
 on:
   pull_request: 
     types: [opened, edited, reopened]
+    paths:
+      - 'server/**'
 
 jobs:
   prettier:
