@@ -6,7 +6,7 @@ import { getUserBuckets } from '../services/getBuckets';
 import aws_edited from '../public/aws_edited.png';
 import cloudflare_edited from '../public/cloudflare_edited.png';
 import ErrorDisplay from './ErrorDisplay';
-import StartMigrationButton from './MigrationButton'
+import StartMigrationButton from './MigrationButton';
 
 const Remote = (props) => {
   const dispatch = useDispatch();
@@ -37,43 +37,32 @@ const Remote = (props) => {
     dispatch(getUserBuckets({ ...remote, originOrDestination: remoteType }));
   }, [remote.accessId, remote.secretKey, remote.name, remote.accountId]);
 
-  let correctInputClass = "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-  let wrongInputClass = "block py-2.5 px-0 w-full text-sm text-red-600 bg-transparent border-2 border-b-2 border-red-600  rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer"
-  
-  
+  let correctInputClass =
+    'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer';
+  let wrongInputClass =
+    'block py-2.5 px-0 w-full text-sm text-red-600 bg-transparent border-2 border-b-2 border-red-600  rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer';
+
   return (
     <div>
       <div className="relative z-0 w-full h-full mb-6 group">
         <div class="grid grid-cols-3 gap-2">
           <h1 class="mx-auto text-sm flex items-center font-mono">
-            {props.remoteType.charAt(0).toUpperCase() + props.remoteType.slice(1)}: {props.displayName}
+            {props.remoteType.charAt(0).toUpperCase() +
+              props.remoteType.slice(1)}
+            : {props.displayName}
           </h1>
-          {/* <div>
-            <img
-              class={`flex items-center mx-auto object-scale-down h-8 w-8 ${
-                props.name === 'Cloudflare' ? '' : 'grayscale'
-              }`}
-              // src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
-              src={cloudflare_edited}
-            />
-          </div> */}
-
-          {/* <div>
-            <img
-              class={`flex items-center mx-auto object-scale-down h-8 w-8 ${
-                props.name === 'AWS' ? '' : 'grayscale'
-              }`}
-              // src={props.name === 'AWS' ? aws_edited : cloudflare_edited}
-              src={aws_edited}
-            />
-          </div> */}
         </div>
       </div>
 
       <div className="relative z-0 w-full h-full mb-6 group">
         <input
           type="key"
-          className={remote.errorField === 'accessId' || (remote.name === 'azureblob' && remote.errorMessage) ? wrongInputClass : correctInputClass}
+          className={
+            remote.errorField === 'accessId' ||
+            (remote.name === 'azureblob' && remote.errorMessage)
+              ? wrongInputClass
+              : correctInputClass
+          }
           placeholder=" "
           required
           name="accessId"
@@ -94,7 +83,12 @@ const Remote = (props) => {
 
       <div className="block relative z-0 w-full h-full mb-6 group">
         <input
-          className={remote.errorField === 'secretKey' || (remote.name === 'azureblob' && remote.errorMessage) ? wrongInputClass : correctInputClass}
+          className={
+            remote.errorField === 'secretKey' ||
+            (remote.name === 'azureblob' && remote.errorMessage)
+              ? wrongInputClass
+              : correctInputClass
+          }
           placeholder=" "
           required
           type="key"
@@ -128,7 +122,7 @@ const Remote = (props) => {
               dispatch(
                 updateAccountId({
                   accountId: e.target.value.trim(),
-                  remoteType,
+                  remoteType
                 })
               );
             }}
@@ -150,8 +144,9 @@ const Remote = (props) => {
         </div>
       )}
 
-      {remote.selectedBucket  && remoteType === 'destination' ? <StartMigrationButton></StartMigrationButton> : null }
- 
+      {remote.selectedBucket && remoteType === 'destination' ? (
+        <StartMigrationButton></StartMigrationButton>
+      ) : null}
     </div>
   );
 };
