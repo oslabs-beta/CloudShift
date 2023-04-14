@@ -9,37 +9,36 @@ export const RemoteContainer = (props) => {
   return (
     <>
 
-
-
-
-
-
       <div className="grid grid-rows-1 grid-cols-2 mx-32 my-16 p-6">
         <div className="mx-20 my-8">
           {!origin.name ? (
             <RemoteSelection source={'Origin'}></RemoteSelection>
           ) : (
-            <Remote
-              remoteType={'origin'}
-              accessIdHandler={accessIdHandler}
-              secretKeyHandler={secretKeyHandler}
-              displayName={origin.displayName}
-            ></Remote>
+            
+              <Remote
+                remoteType={'origin'}
+                accessIdHandler={accessIdHandler}
+                secretKeyHandler={secretKeyHandler}
+                displayName={origin.displayName}
+              ></Remote>
           )}
         </div>
+        
 
         <div className="mx-20 my-8">
           {!destination.name ? (
-            <RemoteSelection source={'Destinaton'}></RemoteSelection>
+            <RemoteSelection source={'Destination'}></RemoteSelection>
           ) : (
-            <Remote
-              remoteType={'destination'}
-              accessIdHandler={accessIdHandler}
-              secretKeyHandler={secretKeyHandler}
-              displayName={destination.displayName}
-            />
+            
+              <Remote
+                remoteType={'destination'}
+                accessIdHandler={accessIdHandler}
+                secretKeyHandler={secretKeyHandler}
+                displayName={destination.displayName}
+              />
+           
           )}
-        </div>
+         </div>
       </div>
     </>
   );

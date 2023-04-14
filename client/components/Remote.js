@@ -44,10 +44,10 @@ const Remote = (props) => {
   return (
     <div>
       <div className="relative z-0 w-full h-full mb-6 group">
-        <div class="grid grid-cols-3 gap-2">
-          <h1 class="mx-auto text-sm flex items-center font-mono">
+        <div class="grid grid-cols-1 gap-2 items-center">
+          <div class="mx-auto text-sm flex items-center font-mono">
             {props.remoteType.charAt(0).toUpperCase() + props.remoteType.slice(1)}: {props.displayName}
-          </h1>
+          </div>
           {/* <div>
             <img
               class={`flex items-center mx-auto object-scale-down h-8 w-8 ${
@@ -73,7 +73,7 @@ const Remote = (props) => {
       <div className="relative z-0 w-full h-full mb-6 group">
         <input
           type="key"
-          className={remote.errorField === 'accessId' || (remote.name === 'azureblob' && remote.errorMessage) ? wrongInputClass : correctInputClass}
+          className={remote.errorMessage ? wrongInputClass : correctInputClass}
           placeholder=" "
           required
           name="accessId"
@@ -85,7 +85,7 @@ const Remote = (props) => {
         ></input>
         <label
           htmlFor={`${remoteType}AccessId`}
-          className="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          className={`${remote.errorMessage ? 'text-red-600 peer-focus:text-red-600' : 'peer-focus:text-blue-600'} peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6`}
         >
           {remote.name === 'azureblob' ? 'Account ID' : 'Access ID'}
           {remote.accessId ? <>{' \u2705'}</> : <></>}
@@ -94,7 +94,7 @@ const Remote = (props) => {
 
       <div className="block relative z-0 w-full h-full mb-6 group">
         <input
-          className={remote.errorField === 'secretKey' || (remote.name === 'azureblob' && remote.errorMessage) ? wrongInputClass : correctInputClass}
+          className={remote.errorMessage ? wrongInputClass : correctInputClass}
           placeholder=" "
           required
           type="key"
@@ -108,7 +108,7 @@ const Remote = (props) => {
 
         <label
           htmlFor="secretKey"
-          className="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          className={`${remote.errorMessage ? 'text-red-600 peer-focus:text-red-600' : 'peer-focus:text-blue-600'} peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6`}
         >
           {remote.name === 'azureblob' ? 'Access Key' : 'Secret Key'}
           {remote.secretKey ? <>{' \u2705'}</> : <></>}
@@ -118,8 +118,7 @@ const Remote = (props) => {
       {remote.name === 'Cloudflare' && (
         <div className="relative z-0 w-full h-full mb-6 group">
           <input
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
+            className={remote.errorMessage ? wrongInputClass : correctInputClass}placeholder=" "
             required
             type="id"
             id="accountId"
@@ -135,9 +134,9 @@ const Remote = (props) => {
           ></input>
           <label
             htmlFor="accountId"
-            className="peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Account ID {remote.accountId.length > 1 && <>{'\u2705'}</>}
+            className={`${remote.errorMessage ? 'text-red-600 peer-focus:text-red-600' : 'peer-focus:text-blue-600'} peer-focus:font-medium absolute text-base duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6`}
+            >
+            Account ID {remote.accountId.length===32 && <>{'\u2705'}</>}
           </label>
         </div>
       )}
@@ -150,7 +149,7 @@ const Remote = (props) => {
         </div>
       )}
 
-      {remote.selectedBucket  && remoteType === 'destination' ? <StartMigrationButton></StartMigrationButton> : null }
+      {origin.selectedBucket && destination.selectedBucket  && remoteType === 'destination' ? <StartMigrationButton></StartMigrationButton> : null }
  
     </div>
   );
