@@ -1,7 +1,7 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import RemoteSelection from "./RemoteSelection";
-import Remote from "./Remote";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import RemoteSelection from './RemoteSelection';
+import Remote from './Remote';
 
 export const RemoteContainer = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
@@ -11,10 +11,10 @@ export const RemoteContainer = (props) => {
       <div className="grid grid-rows-1 grid-cols-2 mx-32 my-16 p-6">
         <div className="mx-20 my-8">
           {!origin.name ? (
-            <RemoteSelection source={"Origin"}></RemoteSelection>
+            <RemoteSelection source={'Origin'}></RemoteSelection>
           ) : (
             <Remote
-              remoteType={"origin"}
+              remoteType={'origin'}
               accessIdHandler={accessIdHandler}
               secretKeyHandler={secretKeyHandler}
               displayName={origin.displayName}
@@ -24,10 +24,10 @@ export const RemoteContainer = (props) => {
 
         <div className="mx-20 my-8">
           {!destination.name ? (
-            <RemoteSelection source={"Destinaton"}></RemoteSelection>
+            <RemoteSelection source={'Destination'}></RemoteSelection>
           ) : (
             <Remote
-              remoteType={"destination"}
+              remoteType={'destination'}
               accessIdHandler={accessIdHandler}
               secretKeyHandler={secretKeyHandler}
               displayName={destination.displayName}
@@ -46,20 +46,20 @@ const accessIdHandler = (e, remote) => {
   );
   const isCloudflareAccessId = /^[a-z0-9]{32}$/.test(accessId);
   const isMicrosoftAccessId =
-    remote.name === "azureblob" && !isAmazonAccessId && !isCloudflareAccessId
+    remote.name === 'azureblob' && !isAmazonAccessId && !isCloudflareAccessId
       ? true
       : false;
   if (isAmazonAccessId || isCloudflareAccessId || isMicrosoftAccessId) {
     return {
       ...remote,
       accessId: accessId.trim(),
-      errorField: "",
+      errorField: ''
     };
   } else {
     //this should probably just return a red check mark
     return {
       ...remote,
-      accessId: "",
+      accessId: ''
     };
   }
 };
@@ -74,13 +74,13 @@ const secretKeyHandler = (e, remote) => {
     return {
       ...remote,
       secretKey: secretKey.trim(),
-      errorField: "",
+      errorField: ''
     };
   } else {
     //this should probably just return a red check mark
     return {
       ...remote,
-      secretKey: "",
+      secretKey: ''
     };
   }
 };
