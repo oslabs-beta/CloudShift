@@ -6,7 +6,7 @@ on:
       - closed
 
 jobs:
-  if_merged:
+  Push-to-Docker:
     if: github.event.pull_request.merged == true
 
     runs-on: ubuntu-latest
