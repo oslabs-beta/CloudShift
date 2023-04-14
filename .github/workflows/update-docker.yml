@@ -25,4 +25,4 @@ jobs:
         run: docker build . --file Dockerfile --tag cloudshiftdev/app
 
       - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKER_USER }}/cloudshiftdev
+        run: docker push cloudshiftdev/app
