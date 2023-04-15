@@ -8,6 +8,7 @@ import {
   updateDataTransferProgressPercent,
   updateSocketConnectivity,
 } from "./slice";
+import cloudshiftIcon from "../client/public/cloudshift.png";
 
 //import styles if necessary
 //may need to import functions from slices here
@@ -45,11 +46,23 @@ const App = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-cyan-100 to-stone-200 !h-screen">
-      <div className="nav flex items-center justify-between mr-36 ml-20 p-6 text-xl">
-        <div>CloudShift</div>
+    <div>
+      <div className="nav flex items-center justify-between mr-36 ml-20 p-4 text-xl !min-w-min !min-h-min">
+        <div className="grid grid-cols-5 items-center justify-center w-60">
+          <div className="mr-4">
+            <a href="https://www.cloudshift.dev" target="_blank">
+              <img
+                className="object-scale-down h-10 w-10"
+                src={cloudshiftIcon}
+              />{" "}
+            </a>
+          </div>
+          <div className="col-span-4 font-cabin">CloudShift</div>
+        </div>
+
         <div>
           <a
+            className="font-play"
             target="_blank"
             href="https://github.com/oslabs-beta/CloudShift/blob/dev/README.md"
           >
@@ -57,6 +70,7 @@ const App = () => {
           </a>
         </div>
       </div>
+
       <RemoteContainer></RemoteContainer>
       {isMigrating && <Overlay></Overlay>}
     </div>

@@ -25,18 +25,17 @@ const RemoteSelection = (props) => {
 
   return (
     <>
-      <div className="grid grid-rows-5 items-center px-10">
-        <div className="text-center text-base font-mono row-span-1">
-          {props.source}
-        </div>
-        <div className="text-base flex justify-center align-top row-span-4">
+      <div className="flex flex-col items-center !min-w-min !min-h-min">
+        <div className="text-center text-xl font-mono w-40">{props.source}</div>
+
+        <div className="text-base flex flex-col justify-center align-top">
           <button
-            className="p-2 group"
+            className="p-2 group "
             typeof="button"
             onClick={changeSourceHandler}
           >
             <img
-              className="flex items-center mx-auto object-scale-down h-24 w-24"
+              className="flex items-center mx-auto object-scale-down h-28 w-28 hover:scale-125 transition-all duration-500 cursor-pointer"
               id="AWS"
               src={awsIcon}
               alt="aws"
@@ -51,7 +50,7 @@ const RemoteSelection = (props) => {
             onClick={changeSourceHandler}
           >
             <img
-              className="flex items-center mx-auto object-scale-down h-24 w-24"
+              className="flex items-center mx-auto object-scale-down h-28 w-28 hover:scale-125 transition-all duration-500 cursor-pointer"
               id="Cloudflare"
               src={cloudflareIcon}
               alt="cloudflare"
@@ -66,7 +65,7 @@ const RemoteSelection = (props) => {
             onClick={changeSourceHandler}
           >
             <img
-              className="flex items-center mx-auto object-scale-down h-24 w-24"
+              className="flex items-center mx-auto object-scale-down h-28 w-28 hover:scale-125 transition-all duration-500 cursor-pointer"
               id="azureblob"
               src={azureIcon}
               alt="azure"

@@ -108,8 +108,6 @@ const slice = createSlice({
       };
     },
     resetRemote: (state, action) => {
-      console.log(action.payload);
-
       state[action.payload] = startingState[action.payload];
     },
   },
@@ -128,7 +126,6 @@ const slice = createSlice({
       })
       .addCase(getUserBuckets.fulfilled, (state, action) => {
         const { data } = action.payload;
-        console.log("data", data);
         const { originOrDestination } = action.meta.arg;
         //If server returned an error...
         if (!Array.isArray(data)) {
