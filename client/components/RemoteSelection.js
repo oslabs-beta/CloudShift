@@ -1,10 +1,10 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React from "react";
+import { useDispatch } from "react-redux";
 
-import awsIcon from '../public/aws_edited.png';
-import azureIcon from '../public/azure.png';
-import cloudflareIcon from '../public/cloudflare_edited.png';
-import { updateRemoteName } from '../slice';
+import awsIcon from "../public/aws_edited.png";
+import azureIcon from "../public/azure.png";
+import cloudflareIcon from "../public/cloudflare_edited.png";
+import { updateRemoteName } from "../slice";
 
 const RemoteSelection = (props) => {
   const dispatch = useDispatch();
@@ -12,9 +12,9 @@ const RemoteSelection = (props) => {
 
   const changeSourceHandler = (e) => {
     const displayNames = {
-      azureblob: 'Microsoft Storage Container',
-      Cloudflare: 'Cloudflare R2',
-      AWS: 'Amazon S3'
+      azureblob: "Microsoft Storage Container",
+      Cloudflare: "Cloudflare R2",
+      AWS: "Amazon S3",
     };
 
     const name = e.target.id;
