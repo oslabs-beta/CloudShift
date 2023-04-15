@@ -4,14 +4,12 @@
 
 [![License](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
 
-<h1 style="display: inline-block;">CloudShift</h1>
+<h1 style="display:inline-block">CloudShift</h1>
 
 <h3>A free open source tool for securely migrating data between cloud providers.</h3>
 <h3>CloudShift currently supports AWS S3, Azure Storage Accounts, and Cloudflare R2.</h3>
 <h3><a href="https://www.cloudshift.dev/">cloudshift.dev</a></h3>
 </div>
-
-<br/>
 <hr/>
 <br/>
 
