@@ -56,13 +56,26 @@ const Remote = (props) => {
   return (
     <div>
       <div className="relative z-0 w-full h-full mb-6 group">
-        <div class="grid grid-cols-1 gap-2 items-center">
-          <div class="mx-auto text-sm flex items-center font-mono">
-            {props.remoteType.charAt(0).toUpperCase() +
-              props.remoteType.slice(1)}
-            : {props.displayName}
+        
+        <div class='grid grid-rows-2'>
+          <div class='flex justify-end'>
+
+          <ResetButton remoteType={remoteType}></ResetButton>
+          
+      
           </div>
+          
+          <div class="grid grid-cols-1 gap-2 items-center">
+            <div class="mx-auto text-sm flex items-center font-mono">
+              {props.remoteType.charAt(0).toUpperCase() +
+                props.remoteType.slice(1)}
+              : {props.displayName}
+            </div>
+          </div>
+
         </div>
+        
+      
       </div>
 
       <div className="relative z-0 w-full h-full mb-6 group">
@@ -159,8 +172,6 @@ const Remote = (props) => {
           {bucketSelect}
         </div>
       )}
-
-      <ResetButton remoteType={remoteType}></ResetButton>
 
       {origin.selectedBucket &&
       destination.selectedBucket &&
