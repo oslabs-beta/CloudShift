@@ -6,6 +6,8 @@ import Remote from "./Remote";
 export const RemoteContainer = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
 
+  const clicked = "grid grid-rows-1 grid-cols-2 mx-32 my-16 p-6"
+  const nonclicked = ''
   return (
     <>
       <div className="grid grid-rows-1 grid-cols-2 mx-32 my-16 p-6">
