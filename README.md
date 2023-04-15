@@ -2,9 +2,11 @@
 
 ![CloudShift Logo](https://i.imgur.com/vMom9sD.png)
 
+[![License](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
+
 <summary><h1 style="display: inline-block;">CloudShift</h1></summary>
 
-<h3>A free open source tool for migrating data between cloud providers.</h3>
+<h3>A free open source tool for securely migrating data between cloud providers.</h3>
 <h3>CloudShift currently supports AWS S3, Microsoft Azure Storage Accounts, and Cloudflare R2.</h3>
 </div>
 
@@ -54,7 +56,44 @@ Before installing, [download and install Node.js](https://nodejs.org/en/download
 
   Under `scripts` > `start`, change `localhost:3000` to any port value.
 
+## Usage & Locating Credentials
+
+<br/>
+
+After installation & navigating to CloudShift in your browser, click on your origin & destination cloud providers.
+
+- Ex. if you are migrating an AWS S3 bucket to a Cloudflare R2 bucket, select AWS as origin and Cloudflare as destination.
+
+Origin & Destination will then populate with the necessary required credentials to complete the transfer process.
+
+    Using root or admin level access credentials is recommended to ensure correct permissions for transferring data.
+
+Credentials
+
+- AWS
+  - Access Key/Secret Key: These are both available by clicking on your Profile > Security credentials. You may have to create a new access key if one does not exist.
+- Azure Storage Account
+  - Account ID: The name of your storage account.
+  - Access Key: Within your storage account, click "Access keys" on the left navbar. Key1 or Key2 will work.
+- Cloudflare R2
+  - Access Key/Secret Key: Under R2, click "Manage R2 API Tokens" > Create API Token. <span style="font-weight:bold">Make sure to select Edit permissions.</span> Make note the Access Key ID & Secret Key.
+  - Account ID: You can find your Account ID on the right side of the main Cloudflare R2 page (clicking R2 on the left navbar).
+
+Select your origin & destination buckets from the dropdown lists, which populate after you insert your credentials. Then, press the "Start Migration" button.
+
+- It might take time for the transfer to begin. When "Transfer is complete" becomes visible, your data is now available on your destination bucket!
+
+## What CloudShift Does (and Doesn't)
+
+- See philosophy section below to gain insigh tinto why we made this decisions.
+
+-Secure, any outage won't affect data.
+
+-Doesn't delete origin, doesn't store credentials, create new buckets, doesn't allow for users to granularly specify options (see rclone for this)
+
 ## Philosophy
+
+--Link medium article.
 
 Why we did this.
 
@@ -63,5 +102,7 @@ Have medium article
 Make sure to link to rclone
 
 ## Connect With the Team
+
+-Our org account, our website.
 
 ## Want to Contribute?
