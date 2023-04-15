@@ -8,8 +8,8 @@ export const RemoteContainer = (props) => {
 
   return (
     <>
-      <div className="grid grid-rows-1 grid-cols-2 mx-32 my-16 p-6">
-        <div className="mx-20 my-8">
+      <div className="grid grid-rows-1 grid-cols-2 mx-32 my-4 p-2">
+        <div className="mx-20 my-0">
           {!origin.name ? (
             <RemoteSelection source={"Origin"}></RemoteSelection>
           ) : (
@@ -22,7 +22,7 @@ export const RemoteContainer = (props) => {
           )}
         </div>
 
-        <div className="mx-20 my-8">
+        <div className="mx-20 my-0">
           {!destination.name ? (
             <RemoteSelection source={"Destination"}></RemoteSelection>
           ) : (
