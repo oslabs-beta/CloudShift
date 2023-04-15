@@ -1,14 +1,13 @@
 <div align = 'center'>
 
-![CloudShift Logo](https://i.imgur.com/vMom9sD.png)
+![CloudShift Logo](https://i.imgur.com/S6mlVsy.png)
+
+<br/>
 
 [![License](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
 
-<h1 style="display:inline-block">CloudShift</h1>
-
-<h3>A free open source tool for securely migrating data between cloud providers.</h3>
-<h3>CloudShift currently supports AWS S3, Azure Storage Accounts, and Cloudflare R2.</h3>
-<h3><a href="https://www.cloudshift.dev/">cloudshift.dev</a></h3>
+<h2 style="margin: 1rem 0">A free open source tool for securely migrating data between cloud providers.<br/>CloudShift currently supports AWS S3, Microsoft Azure Storage Accounts, and Cloudflare R2.</h2>
+<h2 style="margin: 1rem 0"><a href="https://www.cloudshift.dev/">cloudshift.dev</a></h2>
 </div>
 <hr/>
 <br/>
@@ -63,7 +62,7 @@ Origin & Destination will then populate with the necessary required credentials 
 
     Using root or admin level access credentials is recommended to ensure correct permissions for transferring data.
 
-Credentials
+<span style="text-decoration:underline;">Credentials</span>
 
 - AWS
   - Access Key/Secret Key: These are both available by clicking on your Profile > Security credentials. You may have to create a new access key if one does not exist.
