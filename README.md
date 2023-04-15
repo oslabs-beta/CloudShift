@@ -8,6 +8,7 @@
 
 <h3>A free open source tool for securely migrating data between cloud providers.</h3>
 <h3>CloudShift currently supports AWS S3, Microsoft Azure Storage Accounts, and Cloudflare R2.</h3>
+<h3><a href="https://www.cloudshift.dev/">cloudshift.dev</a></h3>
 </div>
 
 <br/>
@@ -85,24 +86,40 @@ Select your origin & destination buckets from the dropdown lists, which populate
 
 ## What CloudShift Does (and Doesn't)
 
-- See philosophy section below to gain insigh tinto why we made this decisions.
+See [Philosophy](#philosophy) for the motivation behind our design decisions.
 
--Secure, any outage won't affect data.
+Built on [Rclone](https://rclone.org/).
 
--Doesn't delete origin, doesn't store credentials, create new buckets, doesn't allow for users to granularly specify options (see rclone for this)
+Cloudshift...
+
+- Transfers data securely.
+
+- Will not corrupt your data or break your containers if the transfer process fails for any reason.
+
+Couldshift does NOT...
+
+- Delete your origin bucket or any data within your origin bucket upon completition.
+
+- Store credentials/data. All config files are auto deleted after the transfer completes.
+
+- Address specific use-cases that don't apply to most users.
+
+If you find that CloudShift doesn't provide you with the granular control necessary for your use-case, or you wish to learn more about Rclone (and how the transfer process works), [visit the Rclone docs](https://rclone.org/).
 
 ## Philosophy
 
---Link medium article.
+For an in-depth read about our motivation, check out our Medium article here.
 
-Why we did this.
-
-Have medium article
-
-Make sure to link to rclone
+If you feel like CloudShift lacks a feature that fits with our design philosophy, [connect with us](#connect-with-the-team) or [get involved](#want-to-contribute)
 
 ## Connect With the Team
 
--Our org account, our website.
+Send us a [message on our LinkedIn](https://www.linkedin.com/company/93845906/).
+
+If this concerns a bug, [submit an issue](https://github.com/oslabs-beta/CloudShift/issues).
 
 ## Want to Contribute?
+
+CloudShift is an open-source product that is open to input and contributions from the community. After trying out the product, feel free to raise issues or submit a PR request.
+
+We welcome community contributions, including new developers who've never [made an open source Pull Request before](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github). If you'd like to start a new PR, we recommend [creating an issue](https://docs.github.com/en/github/managing-your-work-on-github/creating-an-issue) for discussion first. This lets us open a conversation, ensuring work is not duplicated unnecessarily and that the proposed PR is a fix or feature we're actively looking to add.
