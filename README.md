@@ -101,7 +101,7 @@ If you find that CloudShift doesn't provide you with the granular control necess
 
 ## Philosophy
 
-For an in-depth read about our motivation, check out our Medium article here.
+For an in-depth read about our motivation, check out our [Medium article here](https://medium.com/cloudshift/cloudshift-data-migration-simplified-f5c4848d7cb8).
 
 If you feel like CloudShift lacks a feature that fits with our design philosophy, [connect with us](#connect-with-the-team) or [get involved](#want-to-contribute)
 
