@@ -1,6 +1,6 @@
 <div align = 'center'>
 
-![CloudShift Logo](cloudshift%20banner.png)
+![CloudShift Logo](https://i.imgur.com/S6mlVsy.png)
 
 <br/>
 
