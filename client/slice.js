@@ -1,40 +1,40 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { getUserBuckets } from './services/getBuckets';
+import { createSlice } from "@reduxjs/toolkit";
+import { getUserBuckets } from "./services/getBuckets";
 
 const startingState = {
   isMigrating: false,
   origin: {
-    name: '',
-    displayName: '',
-    accessId: '',
-    secretKey: '',
-    accountId: '',
-    selectedBucket: '',
+    name: "",
+    displayName: "",
+    accessId: "",
+    secretKey: "",
+    accountId: "",
+    selectedBucket: "",
     bucketOptions: [],
     bucketLoading: false,
-    errorMessage: '',
-    errorField: ''
+    errorMessage: "",
+    errorField: "",
   },
   destination: {
-    name: '',
-    displayName: '',
-    secretKey: '',
-    accessId: '',
-    accountId: '',
-    selectedBucket: '',
+    name: "",
+    displayName: "",
+    secretKey: "",
+    accessId: "",
+    accountId: "",
+    selectedBucket: "",
     bucketOptions: [],
     bucketLoading: false,
-    errorMessage: '',
-    errorField: ''
+    errorMessage: "",
+    errorField: "",
   },
   socket: {
     isConnected: false,
-    dataTransferProgressPercent: ''
-  }
+    dataTransferProgressPercent: "",
+  },
 };
 
 const slice = createSlice({
-  name: 'GUI',
+  name: "GUI",
   initialState: { ...startingState },
   reducers: {
     migrationStatusChange: (state, action) => {
@@ -49,13 +49,13 @@ const slice = createSlice({
     updateAccessId: (state, action) => {
       const { newState } = action.payload;
       const remoteName =
-        action.payload.remoteType === 'origin' ? 'origin' : 'destination';
+        action.payload.remoteType === "origin" ? "origin" : "destination";
       state[remoteName] = newState;
     },
     updateSecretKey: (state, action) => {
       const { newState } = action.payload;
       const remoteName =
-        action.payload.remoteType === 'origin' ? 'origin' : 'destination';
+        action.payload.remoteType === "origin" ? "origin" : "destination";
       state[remoteName] = newState;
     },
     updateAccountId: (state, action) => {
@@ -90,37 +90,37 @@ const slice = createSlice({
       state.destination.bucketLoading = action.payload;
     },
     clearOriginErrorMessage: (state, action) => {
-      state.origin.errorMessage = '';
+      state.origin.errorMessage = "";
     },
     clearDestinationErrorMessage: (state, action) => {
-      state.destination.errorMessage = '';
+      state.destination.errorMessage = "";
     },
     resetState: (state, action) => {
       return startingState;
     },
     updateRemoteName: (state, action) => {
       const remoteName =
-        action.payload.source === 'Origin' ? 'origin' : 'destination';
+        action.payload.source === "Origin" ? "origin" : "destination";
       state[remoteName] = {
         ...state[remoteName],
         name: action.payload.name,
-        displayName: action.payload.displayName
+        displayName: action.payload.displayName,
       };
     },
     resetRemote: (state, action) => {
       state[action.payload] = startingState[action.payload];
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getUserBuckets.pending, (state, action) => {
         const { originOrDestination } = action.meta.arg;
         //Load the drop down and clear error message.
-        if (originOrDestination === 'origin') {
-          state.origin.errorMessage = '';
+        if (originOrDestination === "origin") {
+          state.origin.errorMessage = "";
           state.origin.bucketLoading = true;
         } else {
-          state.destination.errorMessage = '';
+          state.destination.errorMessage = "";
           state.destination.bucketLoading = true;
         }
       })
@@ -129,7 +129,7 @@ const slice = createSlice({
         const { originOrDestination } = action.meta.arg;
         //If server returned an error...
         if (!Array.isArray(data)) {
-          if (originOrDestination === 'origin') {
+          if (originOrDestination === "origin") {
             state.origin.errorMessage = data;
             state.origin.errorField = data.field;
           } else {
@@ -139,7 +139,7 @@ const slice = createSlice({
         }
         //Update appropriate data.
         else {
-          if (originOrDestination === 'origin') {
+          if (originOrDestination === "origin") {
             state.origin.bucketOptions = data;
             state.origin.bucketLoading = false;
           } else {
@@ -147,21 +147,21 @@ const slice = createSlice({
             state.destination.bucketLoading = false;
           }
         }
-        if (originOrDestination === 'origin') state.origin.bucketOptions = data;
-        else if (originOrDestination === 'destination')
+        if (originOrDestination === "origin") state.origin.bucketOptions = data;
+        else if (originOrDestination === "destination")
           state.destination.bucketOptions = data;
       })
       .addCase(getUserBuckets.rejected, (state, action) => {
         //Reset loading state.
         const { originOrDestination } = action.meta.arg;
-        if (originOrDestination === 'origin')
+        if (originOrDestination === "origin")
           state.origin.bucketLoading = false;
         else state.destination.bucketLoading = false;
         //Post an error.
         state.errorMessage =
-          'An unknown error occured. Please refresh and try again.';
+          "An unknown error occured. Please refresh and try again.";
       });
-  }
+  },
 });
 
 export default slice.reducer;
@@ -185,5 +185,5 @@ export const {
   clearDestinationErrorMessage,
   resetState,
   updateRemoteName,
-  resetRemote
+  resetRemote,
 } = slice.actions;

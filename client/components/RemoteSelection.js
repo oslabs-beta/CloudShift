@@ -26,9 +26,7 @@ const RemoteSelection = (props) => {
   return (
     <>
       <div className="flex flex-col items-center !min-w-min !min-h-min">
-        <div className="text-center text-xl font-mono w-40">
-          {props.source}
-        </div>
+        <div className="text-center text-xl font-mono w-40">{props.source}</div>
 
         <div className="text-base flex flex-col justify-center align-top">
           <button
