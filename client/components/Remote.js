@@ -5,7 +5,7 @@ import BucketSelect from "./BucketSelect";
 import { getUserBuckets } from "../services/getBuckets";
 import ErrorDisplay from "./ErrorDisplay";
 import StartMigrationButton from "./MigrationButton";
-import ResetButton from "./ResetButton"
+import ResetButton from "./ResetButton";
 
 const Remote = (props) => {
   const dispatch = useDispatch();
@@ -37,20 +37,16 @@ const Remote = (props) => {
   }, [remote.accessId, remote.secretKey, remote.name, remote.accountId]);
 
   useEffect(() => {
-    if(remote.accessId){
-      document.querySelector(`#${remoteType}SecretKey`).focus()
+    if (remote.accessId) {
+      document.querySelector(`#${remoteType}SecretKey`).focus();
     }
-  },[remote.accessId])
+  }, [remote.accessId]);
 
   useEffect(() => {
-    if(remote.secretKey && remote.name === 'Cloudflare'){
-      document.querySelector(`#${remoteType}accountId`).focus()
+    if (remote.secretKey && remote.name === "Cloudflare") {
+      document.querySelector(`#${remoteType}accountId`).focus();
     }
-    
-  },[remote.secretKey])
-
-
-
+  }, [remote.secretKey]);
 
   let correctInputClass =
     "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer";
@@ -164,9 +160,8 @@ const Remote = (props) => {
         </div>
       )}
 
-
       <ResetButton remoteType={remoteType}></ResetButton>
-      
+
       {origin.selectedBucket &&
       destination.selectedBucket &&
       remoteType === "destination" ? (
