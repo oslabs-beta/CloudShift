@@ -57,15 +57,12 @@ const Remote = (props) => {
     <div>
       <div className="relative z-0 w-full h-full mb-6 group">
         
-        <div class='grid grid-rows-2'>
-          <div class='flex justify-end'>
+        <div class='grid grid-cols-1'>
+          <div class='grid grid-cols-12'>
 
-          <ResetButton remoteType={remoteType}></ResetButton>
           
-      
-          </div>
-          
-          <div class="grid grid-cols-1 gap-2 items-center">
+
+          <div class="col-span-11 grid grid-cols-1 gap-2 items-center">
             <div class="mx-auto text-sm flex items-center font-mono">
               {props.remoteType.charAt(0).toUpperCase() +
                 props.remoteType.slice(1)}
@@ -73,7 +70,13 @@ const Remote = (props) => {
             </div>
           </div>
 
-        </div>
+          <div class='flex justify-center align-middle'>
+            <ResetButton remoteType={remoteType}></ResetButton>
+          </div>
+
+          </div>
+          
+      </div>
         
       
       </div>

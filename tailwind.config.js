@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./client/**/*.{js,jsx}", "./public/index.html"],
   theme: {
-    extend: {},
+    extend:
+    {
+      fontFamily:{
+        'play': ['Play', 'sans-serif']
+      },
+    },
   },
   plugins: [],
 };
