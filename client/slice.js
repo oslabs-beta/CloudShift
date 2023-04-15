@@ -107,6 +107,11 @@ const slice = createSlice({
         displayName: action.payload.displayName,
       };
     },
+    resetRemote: (state,action) => {
+      console.log(action.payload)
+      
+      state[action.payload] = startingState[action.payload]
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -183,4 +188,5 @@ export const {
   clearDestinationErrorMessage,
   resetState,
   updateRemoteName,
+  resetRemote
 } = slice.actions;

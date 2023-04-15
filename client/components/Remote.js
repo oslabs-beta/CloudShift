@@ -5,6 +5,7 @@ import BucketSelect from "./BucketSelect";
 import { getUserBuckets } from "../services/getBuckets";
 import ErrorDisplay from "./ErrorDisplay";
 import StartMigrationButton from "./MigrationButton";
+import ResetButton from "./ResetButton"
 
 const Remote = (props) => {
   const dispatch = useDispatch();
@@ -35,6 +36,22 @@ const Remote = (props) => {
     dispatch(getUserBuckets({ ...remote, originOrDestination: remoteType }));
   }, [remote.accessId, remote.secretKey, remote.name, remote.accountId]);
 
+  useEffect(() => {
+    if(remote.accessId){
+      document.querySelector(`#${remoteType}SecretKey`).focus()
+    }
+  },[remote.accessId])
+
+  useEffect(() => {
+    if(remote.secretKey && remote.name === 'Cloudflare'){
+      document.querySelector(`#${remoteType}accountId`).focus()
+    }
+    
+  },[remote.secretKey])
+
+
+
+
   let correctInputClass =
     "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer";
   let wrongInputClass =
@@ -55,6 +72,7 @@ const Remote = (props) => {
       <div className="relative z-0 w-full h-full mb-6 group">
         <input
           type="key"
+          autoFocus
           className={remote.errorMessage ? wrongInputClass : correctInputClass}
           placeholder=" "
           required
@@ -85,7 +103,7 @@ const Remote = (props) => {
           required
           type="key"
           name="secretKey"
-          id={`${remote}SecretKey`}
+          id={`${remoteType}SecretKey`}
           onChange={(e) => {
             const newState = props.secretKeyHandler(e, remote);
             dispatch(updateSecretKey({ newState, remoteType }));
@@ -114,7 +132,7 @@ const Remote = (props) => {
             placeholder=" "
             required
             type="id"
-            id="accountId"
+            id={`${remoteType}accountId`}
             name="accountId"
             onChange={(e) => {
               dispatch(
@@ -146,6 +164,9 @@ const Remote = (props) => {
         </div>
       )}
 
+
+      <ResetButton remoteType={remoteType}></ResetButton>
+      
       {origin.selectedBucket &&
       destination.selectedBucket &&
       remoteType === "destination" ? (
