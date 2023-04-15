@@ -9,14 +9,10 @@
 <h2 style="margin: 1rem 0">A free open source tool for securely migrating data between cloud providers.<br/>CloudShift currently supports AWS S3, Microsoft Azure Storage Accounts, and Cloudflare R2.</h2>
 <h2 style="margin: 1rem 0"><a href="https://www.cloudshift.dev/">cloudshift.dev</a></h2>
 </div>
-
-<br/>
 <hr/>
 <br/>
 
 ## Installation & Getting Started
-
-<br/>
 
 CloudShift is a web application available as a container on Docker Hub or for direct download by cloning this repo.
 
@@ -57,8 +53,6 @@ Before installing, [download and install Node.js](https://nodejs.org/en/download
   Under `scripts` > `start`, change `localhost:3000` to any port value.
 
 ## Usage & Locating Credentials
-
-<br/>
 
 After installation & navigating to CloudShift in your browser, click on your origin & destination cloud providers.
 
