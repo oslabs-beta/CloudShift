@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         play: ["Play", "sans-serif"],
+        cabin: ["Cabin"],
       },
     },
   },

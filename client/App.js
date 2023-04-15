@@ -47,14 +47,14 @@ const App = () => {
 
   return (
     <div>
-      <div className="nav flex items-center justify-between mr-36 ml-20 p-0 text-xl">
-        <div class="grid grid-cols-5 items-center justify-center">
+      <div className="nav flex items-center justify-between mr-36 ml-20 p-4 text-xl !min-w-min !min-h-min">
+        <div class="grid grid-cols-5 items-center justify-center w-60">
           <div className="mr-4">
-            <a href="https://www.cloudshift.dev">
-              <img class="h-10 w-10" src={cloudshiftIcon} />{" "}
+            <a href="https://www.cloudshift.dev" target="_blank">
+              <img class="object-scale-down h-10 w-10" src={cloudshiftIcon} />{" "}
             </a>
           </div>
-          <div class="col-span-4 font-play">CloudShift</div>
+          <div class="col-span-4 font-cabin">CloudShift</div>
         </div>
 
         <div>

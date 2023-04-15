@@ -54,8 +54,8 @@ const Remote = (props) => {
     "block py-2.5 px-0 w-full text-sm text-red-600 bg-transparent border-0 border-b-2 border-red-600 appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer";
 
   return (
-    <div>
-      <div className="relative z-0 w-full h-full mb-6 group">
+    <div class="w-80 hidden sm:block">
+      <div class="relative z-0 w-full h-full mb-6 group">
         <div class="grid grid-cols-1">
           <div class="grid grid-cols-12">
             <div class="col-span-11 grid grid-cols-1 gap-2 items-center">

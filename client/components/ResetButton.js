@@ -13,7 +13,7 @@ const ResetButton = (props) => {
   return (
     <div>
       <button
-        className="text-slate-500 hover:text-black hover:font-extrabold text-3xl dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none dark:focus:ring-blue-800"
+        className="text-slate-500 hover:text-black hover:font-extrabold text-3xl focus:outline-none"
         onClick={reset}
       >
         {" \u27F3"}
