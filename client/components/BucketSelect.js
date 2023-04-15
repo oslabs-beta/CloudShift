@@ -1,7 +1,7 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateSelectedBucket } from '../slice';
-import LoadingButton from './LoadingButton';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateSelectedBucket } from "../slice";
+import LoadingButton from "./LoadingButton";
 
 const BucketSelect = (props) => {
   const dispatch = useDispatch();
@@ -28,12 +28,13 @@ const BucketSelect = (props) => {
             Choose a bucket:
           </label>
           <select
+            autoFocus
             className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             name="buckets"
             onChange={(e) => {
               const payload = {
                 bucket: e.target.value,
-                remote: props.remote
+                remote: props.remote,
               };
               dispatch(updateSelectedBucket(payload));
             }}

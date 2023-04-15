@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
 const ErrorDisplay = () => {
   const { origin, destination } = useSelector((state) => state.GUI);
