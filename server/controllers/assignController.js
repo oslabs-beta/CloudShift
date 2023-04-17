@@ -1,16 +1,15 @@
-const AWS = require("aws-sdk");
+const AWS = require('aws-sdk');
 
 const getBucketLoc = async (req, res, next) => {
-  //REFACTOR THIS. NOTE THAT YOU CAN'T TRANSFER FROM AMAZON TO AMAZON WITH THE CURRENT LOGIC.
   if (
-    req.body.originProvider === "AWS" ||
-    req.body.destinationProvider === "AWS"
+    req.body.originProvider === 'AWS' ||
+    req.body.destinationProvider === 'AWS'
   ) {
-    if (req.body.originProvider === "AWS") {
+    if (req.body.originProvider === 'AWS') {
       try {
         AWS.config.update({
           accessKeyId: req.body.originAccessId,
-          secretAccessKey: req.body.originSecretKey,
+          secretAccessKey: req.body.originSecretKey
         });
         const s3 = new AWS.S3();
         const data = await s3
@@ -18,19 +17,19 @@ const getBucketLoc = async (req, res, next) => {
           .promise();
         res.locals.awsRegion = data.LocationConstraint;
         //NEED TO RETURN US-EAST-1 IF STRING IS ''.
-        if (res.locals.awsRegion === "") res.locals.awsRegion = "us-east-1";
+        if (res.locals.awsRegion === '') res.locals.awsRegion = 'us-east-1';
       } catch (err) {
         return next({
           log: `Unkown error:, ${err}`,
-          message: "Unknown error when getting bucket location.",
+          message: 'Unknown error when getting bucket location.'
         });
       }
     }
-    if (req.body.destinationProvider === "AWS") {
+    if (req.body.destinationProvider === 'AWS') {
       try {
         AWS.config.update({
           accessKeyId: req.body.destAccessId,
-          secretAccessKey: req.body.destSecretKey,
+          secretAccessKey: req.body.destSecretKey
         });
         const s3 = new AWS.S3();
         const data = await s3
@@ -38,23 +37,23 @@ const getBucketLoc = async (req, res, next) => {
           .promise();
         res.locals.awsRegion = data.LocationConstraint;
         //NEED TO RETURN US-EAST-1 IF STRING IS ''.
-        if (res.locals.awsRegion === "") res.locals.awsRegion = "us-east-1";
+        if (res.locals.awsRegion === '') res.locals.awsRegion = 'us-east-1';
       } catch (err) {
         return next({
           log: `Unkown error:, ${err}`,
-          message: "Unknown error when getting bucket location.",
+          message: 'Unknown error when getting bucket location.'
         });
       }
     }
     //WILL NEED TO MODIFY LOGIC TO CONSIDER IF BOTH BUCKETS ARE AWS AT SOME POINT.
     if (!res.locals.awsRegion) {
       return next({
-        log: "Error in getBucketLoc",
+        log: 'Error in getBucketLoc',
         message: `Could not select AWS region for bucket ${
-          req.body.originProvider === "AWS"
+          req.body.originProvider === 'AWS'
             ? req.body.originBucket
             : req.body.destinationBucket
-        }. Make sure your credentials have correct permissions and try again.`,
+        }. Make sure your credentials have correct permissions and try again.`
       });
     }
   }
@@ -63,7 +62,6 @@ const getBucketLoc = async (req, res, next) => {
 
 //This controller parses the req.body and assigns provided input variables to variables that can be used by the fsController.
 const assignVariablesForFS = (req, res, next) => {
-  //DO ERROR LOGIC HERE IF ALL THESE VARIABLES DON'T EXIST.
   const {
     originProvider,
     originAccessId,
@@ -72,30 +70,30 @@ const assignVariablesForFS = (req, res, next) => {
     destinationProvider,
     destAccessId,
     destSecretKey,
-    destAccountId,
+    destAccountId
   } = req.body;
 
   //Set the origin info.
-  if (originProvider === "AWS") {
+  if (originProvider === 'AWS') {
     res.locals.awsAccessId = originAccessId;
     res.locals.awsSecretKey = originSecretKey;
-  } else if (originProvider === "Cloudflare") {
+  } else if (originProvider === 'Cloudflare') {
     res.locals.cloudflareAccessId = originAccessId;
     res.locals.cloudflareSecretKey = originSecretKey;
     res.locals.cloudflareAccountId = originAccountId;
-  } else if (originProvider === "azureblob") {
+  } else if (originProvider === 'azureblob') {
     res.locals.azureBlobAccessId = originAccessId;
     res.locals.azureBlobSecretKey = originSecretKey;
   }
   //Set the destination info.
-  if (destinationProvider === "AWS") {
+  if (destinationProvider === 'AWS') {
     res.locals.awsAccessId = destAccessId;
     res.locals.awsSecretKey = destSecretKey;
-  } else if (destinationProvider === "Cloudflare") {
+  } else if (destinationProvider === 'Cloudflare') {
     res.locals.cloudflareAccessId = destAccessId;
     res.locals.cloudflareSecretKey = destSecretKey;
     res.locals.cloudflareAccountId = destAccountId;
-  } else if (destinationProvider === "azureblob") {
+  } else if (destinationProvider === 'azureblob') {
     res.locals.azureBlobAccessId = destAccessId;
     res.locals.azureBlobSecretKey = destSecretKey;
   }
