@@ -1,0 +1,33 @@
+#Only whitelisted files should pass. Otherwise, delete the extra files.
+name: Staging Whitelisted Files/Folders Check
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+    paths-ignore:
+      - '.github/**'
+      - 'build/**'
+      - 'server/**'
+      - 'LICENSE'
+      - 'package*.json'
+      - 'README.md'
+      - 'Dockerfile'
+
+jobs:
+  delete_files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Make sure the actual branch is checked out when running on pull requests
+          ref: ${{ github.head_ref }}
+
+      - name: Delete files
+        run: |
+          find . -mindepth 1 -maxdepth 1 ! -name ".git" ! -name "server" ! -name "build" ! -name "LICENSE" ! -name "package.json" ! -name ".github" ! -name "package-lock.json" ! -name "README.md" ! -name "Dockerfile" -exec rm -rf {} \;
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          git add .
+          git commit -m "Deleted all non-whitelisted files/folders."
+          git push
