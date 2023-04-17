@@ -6,11 +6,22 @@
 
 [![License](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
 
-<h2 style="margin: 1rem 0">A free open source tool for securely migrating data between cloud providers.<br/>CloudShift currently supports AWS S3, Microsoft Azure Storage Accounts, and Cloudflare R2.</h2>
+<h2 style="margin: 1rem 0">A free open source tool for securely migrating data between cloud providers.<br/>CloudShift currently supports AWS S3, Microsoft Azure Storage Accounts, and Cloudflare R2.<br/>Built on <a href='https://rclone.org/'>RClone</a>.</h2>
 <h2 style="margin: 1rem 0"><a href="https://www.cloudshift.dev/">cloudshift.dev</a></h2>
 </div>
 <hr/>
 <br/>
+
+## Table of Contents
+
+- [Installation & Getting Started](#installation--getting-started)
+- [Usage & Locating Credentials](#usage--locating-credentials)
+- [What CloudShift Does (and Doesn't)](#what-cloudshift-does-and-doesnt)
+- [Philosophy](#philosophy)
+- [Connect With the Team](#connect-with-the-team)
+- [Want to Contribute?](#want-to-contribute)
+
+  <br/>
 
 ## Installation & Getting Started
 
@@ -97,13 +108,17 @@ Couldshift does NOT...
 
 - Address specific use-cases that don't apply to most users.
 
+- Currently(!) support same provider transfers.
+
 If you find that CloudShift doesn't provide you with the granular control necessary for your use-case, or you wish to learn more about Rclone (and how the transfer process works), [visit the Rclone docs](https://rclone.org/).
 
 ## Philosophy
 
 For an in-depth read about our motivation, check out our [Medium article here](https://medium.com/cloudshift/cloudshift-data-migration-simplified-f5c4848d7cb8).
 
-If you feel like CloudShift lacks a feature that fits with our design philosophy, [connect with us](#connect-with-the-team) or [get involved](#want-to-contribute)
+CloudShift seeks to abstract as much of the cloud data migration process as possible for the majority of use-cases. If you require granular control of the transfer process, we recommend using the [Rclone CLI](https://rclone.org/).
+
+If you feel like CloudShift lacks a feature that fits with our design philosophy, [connect with us](#connect-with-the-team) or [get involved](#want-to-contribute).
 
 ## Connect With the Team
 
