@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { updateSecretKey, updateAccessId, updateAccountId } from "../slice";
+import {
+  updateSecretKey,
+  updateAccessId,
+  updateAccountId,
+  updateDestinationErrorMessage,
+} from "../slice";
 import { useDispatch, useSelector } from "react-redux";
 import BucketSelect from "./BucketSelect";
 import { getUserBuckets } from "../services/getBuckets";
@@ -48,13 +53,25 @@ const Remote = (props) => {
     }
   }, [remote.secretKey]);
 
+  //CloudShift currently does not support same origin and destination transfer.
+  useEffect(() => {
+    if (remoteType === "destination" && origin.name === destination.name) {
+      dispatch(
+        updateDestinationErrorMessage({
+          message:
+            "CloudShift currently does not support same origin/desintation provider transfer.",
+        })
+      );
+    }
+  }, [remote.name]);
+
   let correctInputClass =
     "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer";
   let wrongInputClass =
     "block py-2.5 px-0 w-full text-sm text-red-600 bg-transparent border-0 border-b-2 border-red-600 appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer";
 
   return (
-    <div className="flex flex-col items-center !min-w-min !min-h-min mx-[10%] my-[5%] md:my-[0]">
+    <div className="flex flex-col items-center !min-w-min !min-h-min mx-[10%] my-[5%] md:my-[0] md:w-[25%]">
       <div className="relative z-0 w-full h-full mb-6 group">
         <div className="grid grid-cols-1">
           <div className="grid grid-cols-12">

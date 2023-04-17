@@ -2,7 +2,6 @@ const rclone = require("rclone.js");
 const { resolve } = require("path");
 const errorGenerator = require("../services/errorGenerator");
 
-//NEED LOTS OF ERROR HANDLING LOGIC HERE.
 const rCloneCopyController = (req, res, next) => {
   // Build the strings for rClone to do the copying.
   const {
@@ -11,6 +10,14 @@ const rCloneCopyController = (req, res, next) => {
     originBucket,
     destinationBucket,
   } = req.body;
+
+  //CloudShift currently does not support same origin and destination transfer.
+  if (originProvider === destinationProvider)
+    return next({
+      log: "Error in rcloneListBuckets middleware.",
+      message:
+        "CloudShift currently does not support same origin/desintation provider transfer.",
+    });
 
   const originString = `${originProvider.toLowerCase()}:${originBucket.toLowerCase()}`;
   const destinationString = `${destinationProvider.toLowerCase()}:${destinationBucket.toLowerCase()}`;

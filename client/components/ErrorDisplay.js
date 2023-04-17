@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 const ErrorDisplay = () => {
   const { origin, destination } = useSelector((state) => state.GUI);
   const errorMessage = origin.errorMessage || destination.errorMessage;
-  const { message } = errorMessage;
+  let { message } = errorMessage;
+  if (!message) message = errorMessage;
 
   return (
     <div>

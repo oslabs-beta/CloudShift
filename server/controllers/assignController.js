@@ -1,7 +1,6 @@
 const AWS = require("aws-sdk");
 
 const getBucketLoc = async (req, res, next) => {
-  //REFACTOR THIS. NOTE THAT YOU CAN'T TRANSFER FROM AMAZON TO AMAZON WITH THE CURRENT LOGIC.
   if (
     req.body.originProvider === "AWS" ||
     req.body.destinationProvider === "AWS"
@@ -63,7 +62,6 @@ const getBucketLoc = async (req, res, next) => {
 
 //This controller parses the req.body and assigns provided input variables to variables that can be used by the fsController.
 const assignVariablesForFS = (req, res, next) => {
-  //DO ERROR LOGIC HERE IF ALL THESE VARIABLES DON'T EXIST.
   const {
     originProvider,
     originAccessId,
