@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
-import './app.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { RemoteContainer } from './components/RemoteContainer';
-import Overlay from './components/Overlay';
-import { socket } from './socket';
+import React, { useEffect } from "react";
+import "./app.css";
+import { useDispatch, useSelector } from "react-redux";
+import { RemoteContainer } from "./components/RemoteContainer";
+import Overlay from "./components/Overlay";
+import { socket } from "./socket";
 import {
   updateDataTransferProgressPercent,
-  updateSocketConnectivity
-} from './slice';
-import cloudshiftIcon from '../client/public/cloudshift.png';
+  updateSocketConnectivity,
+} from "./slice";
+import cloudshiftIcon from "../client/public/cloudshift.png";
 
 //import styles if necessary
 //may need to import functions from slices here
@@ -30,18 +30,18 @@ const App = () => {
 
     function onDataTransfer(value) {
       //Don't update value if it isn't a valid increase.
-      if (value === '') return;
+      if (value === "") return;
       dispatch(updateDataTransferProgressPercent(value));
     }
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-    socket.on('data transfer', onDataTransfer);
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("data transfer", onDataTransfer);
 
     return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('data transfer', onDataTransfer);
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("data transfer", onDataTransfer);
     };
   }, []);
 
@@ -54,7 +54,7 @@ const App = () => {
               <img
                 className="object-scale-down h-10 w-10"
                 src={cloudshiftIcon}
-              />{' '}
+              />{" "}
             </a>
           </div>
           <div className="col-span-4 font-cabin">CloudShift</div>
