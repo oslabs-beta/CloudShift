@@ -7,35 +7,28 @@ export const RemoteContainer = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
 
   return (
-    <>
-      <div className="grid grid-rows-1 grid-cols-2 mx-32 my-4 p-2">
-        <div className="mx-20 my-0">
-          {!origin.name ? (
-            <RemoteSelection source={"Origin"}></RemoteSelection>
-          ) : (
-            <Remote
-              remoteType={"origin"}
-              accessIdHandler={accessIdHandler}
-              secretKeyHandler={secretKeyHandler}
-              displayName={origin.displayName}
-            ></Remote>
-          )}
-        </div>
-
-        <div className="mx-20 my-0">
-          {!destination.name ? (
-            <RemoteSelection source={"Destination"}></RemoteSelection>
-          ) : (
-            <Remote
-              remoteType={"destination"}
-              accessIdHandler={accessIdHandler}
-              secretKeyHandler={secretKeyHandler}
-              displayName={destination.displayName}
-            />
-          )}
-        </div>
-      </div>
-    </>
+    <div className="flex flex-col justify-center my-4 w-screen md:flex-row md:items-start">
+      {!origin.name ? (
+        <RemoteSelection source={"Origin"}></RemoteSelection>
+      ) : (
+        <Remote
+          remoteType={"origin"}
+          accessIdHandler={accessIdHandler}
+          secretKeyHandler={secretKeyHandler}
+          displayName={origin.displayName}
+        ></Remote>
+      )}
+      {!destination.name ? (
+        <RemoteSelection source={"Destination"}></RemoteSelection>
+      ) : (
+        <Remote
+          remoteType={"destination"}
+          accessIdHandler={accessIdHandler}
+          secretKeyHandler={secretKeyHandler}
+          displayName={destination.displayName}
+        />
+      )}
+    </div>
   );
 };
 

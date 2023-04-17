@@ -47,7 +47,7 @@ const App = () => {
 
   return (
     <div>
-      <div className="nav flex items-center justify-between mr-36 ml-20 p-4 text-xl !min-w-min !min-h-min">
+      <div className="nav flex items-center justify-between text-xl w-screen py-3.5 px-[6%]">
         <div className="grid grid-cols-5 items-center justify-center w-60">
           <div className="mr-4">
             <a href="https://www.cloudshift.dev" target="_blank">
@@ -70,9 +70,10 @@ const App = () => {
           </a>
         </div>
       </div>
-
-      <RemoteContainer></RemoteContainer>
-      {isMigrating && <Overlay></Overlay>}
+      <div className="flex mt-3.5">
+        <RemoteContainer></RemoteContainer>
+        {isMigrating && <Overlay></Overlay>}
+      </div>
     </div>
   );
 };
