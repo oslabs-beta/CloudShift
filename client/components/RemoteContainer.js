@@ -7,7 +7,7 @@ export const RemoteContainer = (props) => {
   const { origin, destination } = useSelector((state) => state.GUI);
 
   return (
-    <div className="flex flex-col justify-center items-center my-4 w-screen md:flex-row">
+    <div className="flex flex-col justify-center my-4 w-screen md:flex-row md:items-start">
       {!origin.name ? (
         <RemoteSelection source={'Origin'}></RemoteSelection>
       ) : (
