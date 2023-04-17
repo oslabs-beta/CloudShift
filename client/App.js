@@ -64,7 +64,7 @@ const App = () => {
           <a
             className="font-play"
             target="_blank"
-            href="https://github.com/oslabs-beta/CloudShift/blob/dev/README.md"
+            href="https://github.com/oslabs-beta/CloudShift/blob/main/README.md"
           >
             ReadMe
           </a>
