@@ -7,8 +7,8 @@ import {
 } from "@testing-library/react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import App from "../client/App";
-import store from "../client/store";
+import App from "../src/client/App";
+import store from "../src/client/store";
 
 describe("Unit testing React components", () => {
   describe("Renders necessary components.", () => {

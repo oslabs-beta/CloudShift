@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "outDir": "./build",        
+        "sourceMap": true,          
+        "strictNullChecks": true,   
+        "module": "ESNext",            
+        "jsx": "react",             
+        "target": "es6",            
+        "allowJs": true,
+        "esModuleInterop": true,             
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": ["node_modules", "test", ".github"]
+}

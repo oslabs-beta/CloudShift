@@ -24,7 +24,7 @@ const io = new Server(server, {
 app.use(express.json());
 
 const servePath =
-  process.env.NODE_ENV === "development" ? "../client/public" : "../build";
+  process.env.NODE_ENV === "development" ? "../src/client/public" : "../build";
 
 app.use(express.static(path.resolve(__dirname, servePath)));
 

@@ -1,33 +1,34 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-  entry: "./client/index.js",
-  mode: "development",
+  entry: './src/client/index.tsx',
+  mode: 'development',
   output: {
-    path: path.resolve(__dirname, "./build"),
-    filename: "index_bundle.js",
+    path: path.resolve(__dirname, './build'),
+    filename: 'index_bundle.js',
   },
-  target: "web",
+  devtool: 'source-map',
+  target: 'web',
   devServer: {
-    port: "8080",
+    port: '8080',
     proxy: {
-      "/": "http://localhost:3000",
+      '/': 'http://localhost:3000',
     },
     static: {
-      directory: path.join(__dirname, "./client/public"),
+      directory: path.join(__dirname, './src/client/public'),
     },
     open: true,
     hot: true,
     liveReload: true,
   },
   resolve: {
-    extensions: [".js", ".jsx", ".json"],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(t|j)sx?$/,
         exclude: /node_modules/,
         use: "babel-loader",
       },
@@ -35,23 +36,29 @@ module.exports = {
         test: /\.(gif|png|jpe?g)$/,
         use: [
           {
-            loader: "file-loader",
+            loader: 'file-loader',
             options: {
-              name: "[name].[ext]",
-              outputPath: "assets/images/",
+              name: '[name].[ext]',
+              outputPath: 'assets/images/',
             },
           },
         ],
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader", "postcss-loader"],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'source-map-loader',
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./client/public/index.html"),
+      template: path.resolve(__dirname, './src/client/public/index.html'),
     }),
   ],
 };
